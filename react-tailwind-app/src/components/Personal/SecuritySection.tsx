@@ -126,7 +126,7 @@ export const SecuritySection: React.FC = () => {
               <Input
                 type="number"
                 value={settings.sessionTimeout}
-                onChange={(value: string) => setSettings({ ...settings, sessionTimeout: parseInt(value) || 30 })}
+                onChange={(e) => setSettings({ ...settings, sessionTimeout: parseInt(e.target.value) || 30 })}
                 placeholder="분 단위"
                 min="5"
                 max="480"

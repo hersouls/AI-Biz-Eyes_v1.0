@@ -141,7 +141,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Input
                 value={formData.projectName}
-                onChange={(value: string) => handleInputChange('projectName', value)}
+                onChange={(e) => handleInputChange('projectName', e.target.value)}
                 placeholder="사업명을 입력하세요"
                 error={errors.projectName}
               />
@@ -172,7 +172,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Input
                 value={formData.bidNtceNo}
-                onChange={(value: string) => handleInputChange('bidNtceNo', value)}
+                onChange={(e) => handleInputChange('bidNtceNo', e.target.value)}
                 placeholder="연계 공고번호 (선택사항)"
               />
             </div>
@@ -183,7 +183,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Input
                 value={formData.organization}
-                onChange={(value: string) => handleInputChange('organization', value)}
+                onChange={(e) => handleInputChange('organization', e.target.value)}
                 placeholder="참여기관명을 입력하세요"
                 error={errors.organization}
               />
@@ -196,7 +196,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               <Input
                 type="number"
                 value={formData.participationYear}
-                onChange={(value: string) => handleInputChange('participationYear', parseInt(value))}
+                onChange={(e) => handleInputChange('participationYear', parseInt(e.target.value))}
                 placeholder="참여연도를 입력하세요"
                 min="2000"
                 max={new Date().getFullYear() + 1}
@@ -211,7 +211,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               <Input
                 type="number"
                 value={formData.contractAmount}
-                onChange={(value: string) => handleInputChange('contractAmount', parseInt(value))}
+                onChange={(e) => handleInputChange('contractAmount', parseInt(e.target.value))}
                 placeholder="계약금액을 입력하세요"
                 min="0"
                 error={errors.contractAmount}

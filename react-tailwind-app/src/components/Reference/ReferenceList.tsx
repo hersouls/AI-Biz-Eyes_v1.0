@@ -188,7 +188,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Input
             placeholder="사업명 검색"
             value={filters.search || ''}
-            onChange={(value: string) => handleSearch(value)}
+            onChange={(e) => handleSearch(e.target.value)}
           />
           <Select
             placeholder="사업유형"
