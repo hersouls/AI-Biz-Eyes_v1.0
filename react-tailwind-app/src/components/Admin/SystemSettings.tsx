@@ -295,7 +295,7 @@ const SystemSettings: React.FC = () => {
                       <Input
                         type={showPassword[editingConfig.id] ? 'text' : 'password'}
                         value={formData.value}
-                        onChange={(value: string) => setFormData(prev => ({ ...prev, value }))}
+                        onChange={(e) => setFormData(prev => ({ ...prev, value: e.target.value }))}
                         className="flex-1"
                       />
                       <Button
@@ -314,7 +314,7 @@ const SystemSettings: React.FC = () => {
                     <Input
                       type="text"
                       value={formData.value}
-                      onChange={(value: string) => setFormData(prev => ({ ...prev, value }))}
+                      onChange={(e) => setFormData(prev => ({ ...prev, value: e.target.value }))}
                     />
                   )}
                 </div>
@@ -326,7 +326,7 @@ const SystemSettings: React.FC = () => {
                   <Input
                     type="text"
                     value={formData.description}
-                    onChange={(value: string) => setFormData(prev => ({ ...prev, description: value }))}
+                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="설정에 대한 설명을 입력하세요"
                   />
                 </div>

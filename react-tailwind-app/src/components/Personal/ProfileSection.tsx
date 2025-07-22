@@ -168,7 +168,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.name || ''}
-                    onChange={(value: string) => setFormData({ ...formData, name: value })}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="이름을 입력하세요"
                   />
                 ) : (
@@ -192,7 +192,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.organization || ''}
-                    onChange={(value: string) => setFormData({ ...formData, organization: value })}
+                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
                     placeholder="소속을 입력하세요"
                   />
                 ) : (
@@ -208,7 +208,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.department || ''}
-                    onChange={(value: string) => setFormData({ ...formData, department: value })}
+                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                     placeholder="부서를 입력하세요"
                   />
                 ) : (
@@ -224,7 +224,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.position || ''}
-                    onChange={(value: string) => setFormData({ ...formData, position: value })}
+                    onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                     placeholder="직책을 입력하세요"
                   />
                 ) : (
@@ -240,7 +240,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.phone || ''}
-                    onChange={(value: string) => setFormData({ ...formData, phone: value })}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="연락처를 입력하세요"
                   />
                 ) : (
@@ -299,19 +299,19 @@ export const ProfileSection: React.FC = () => {
             <Input
               type="password"
               value={passwordData.currentPassword}
-              onChange={(value: string) => setPasswordData({ ...passwordData, currentPassword: value })}
+              onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
               placeholder="현재 비밀번호"
             />
             <Input
               type="password"
               value={passwordData.newPassword}
-              onChange={(value: string) => setPasswordData({ ...passwordData, newPassword: value })}
+              onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
               placeholder="새 비밀번호"
             />
             <Input
               type="password"
               value={passwordData.confirmPassword}
-              onChange={(value: string) => setPasswordData({ ...passwordData, confirmPassword: value })}
+              onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
               placeholder="새 비밀번호 확인"
             />
           </div>

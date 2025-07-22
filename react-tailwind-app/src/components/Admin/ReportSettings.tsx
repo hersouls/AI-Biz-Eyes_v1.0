@@ -279,7 +279,7 @@ const ReportSettings: React.FC = () => {
                   <Input
                     type="text"
                     value={formData.recipients}
-                    onChange={(value: string) => setFormData(prev => ({ ...prev, recipients: value }))}
+                    onChange={(e) => setFormData(prev => ({ ...prev, recipients: e.target.value }))}
                     placeholder="user1@example.com, user2@example.com"
                   />
                 </div>
@@ -291,7 +291,7 @@ const ReportSettings: React.FC = () => {
                   <Input
                     type="text"
                     value={formData.schedule}
-                    onChange={(value: string) => setFormData(prev => ({ ...prev, schedule: value }))}
+                    onChange={(e) => setFormData(prev => ({ ...prev, schedule: e.target.value }))}
                     placeholder="0 9 * * *"
                   />
                   <p className="text-xs text-gray-500 mt-1">

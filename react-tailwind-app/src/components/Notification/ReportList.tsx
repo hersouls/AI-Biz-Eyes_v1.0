@@ -312,13 +312,13 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportClick }) => {
               <Input
                 label="시작일"
                 value={createForm.startDate}
-                onChange={(value: string) => setCreateForm(prev => ({ ...prev, startDate: value }))}
+                onChange={(e) => setCreateForm(prev => ({ ...prev, startDate: e.target.value }))}
               />
               
               <Input
                 label="종료일"
                 value={createForm.endDate}
-                onChange={(value: string) => setCreateForm(prev => ({ ...prev, endDate: value }))}
+                onChange={(e) => setCreateForm(prev => ({ ...prev, endDate: e.target.value }))}
               />
             </div>
             
