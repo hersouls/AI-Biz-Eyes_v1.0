@@ -12,6 +12,7 @@ import Badge from '../Badge';
 const SystemLogs: React.FC = () => {
   const [logs, setLogs] = useState<SystemLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 50,
@@ -31,6 +32,7 @@ const SystemLogs: React.FC = () => {
   const loadLogs = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const params = {
         page: pagination.page,
         limit: pagination.limit,
@@ -46,6 +48,7 @@ const SystemLogs: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to load logs:', err);
+      setError(err instanceof Error ? err.message : '시스템 로그를 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
