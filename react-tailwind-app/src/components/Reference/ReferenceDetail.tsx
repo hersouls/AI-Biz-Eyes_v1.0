@@ -27,7 +27,10 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
     return <Badge variant={config?.color || 'default'}>{config?.text || status}</Badge>;
   };
 
-  const getScoreBadge = (score: string) => {
+  const getScoreBadge = (score: string | undefined) => {
+    if (!score) {
+      return <Badge variant="gray">평가 없음</Badge>;
+    }
     const scoreConfig: Record<string, { color: 'success' | 'warning' | 'danger', text: string }> = {
       'A+': { color: 'success', text: 'A+' },
       'A': { color: 'success', text: 'A' },
@@ -36,10 +39,13 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
       'D': { color: 'danger', text: 'D' }
     };
     const config = scoreConfig[score];
-    return <Badge variant={config?.color || 'default'}>{config?.text || score}</Badge>;
+    return <Badge variant={config?.color || 'gray'}>{config?.text || score}</Badge>;
   };
 
-  const formatAmount = (amount: number) => {
+  const formatAmount = (amount: number | undefined) => {
+    if (amount === undefined || amount === null) {
+      return '금액 미정';
+    }
     return new Intl.NumberFormat('ko-KR').format(amount) + '원';
   };
 

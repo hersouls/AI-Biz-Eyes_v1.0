@@ -36,14 +36,14 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   useEffect(() => {
     if (reference) {
       setFormData({
-        projectName: reference.projectName,
-        projectType: reference.projectType,
+        projectName: reference.projectName || '',
+        projectType: reference.projectType || '',
         bidNtceNo: reference.bidNtceNo || '',
         organization: reference.organization,
-        participationYear: reference.participationYear,
-        contractAmount: reference.contractAmount,
+        participationYear: reference.participationYear || 0,
+        contractAmount: reference.contractAmount || 0,
         status: reference.status,
-        score: reference.score,
+        score: reference.score || 'A',
         description: reference.description || '',
         files: reference.files || []
       });

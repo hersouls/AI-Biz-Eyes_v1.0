@@ -76,7 +76,10 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     return <Badge variant={config?.color || 'default'}>{config?.text || status}</Badge>;
   };
 
-  const getScoreBadge = (score: string) => {
+  const getScoreBadge = (score: string | undefined) => {
+    if (!score) {
+      return <Badge variant="gray">평가 없음</Badge>;
+    }
     const scoreConfig: Record<string, { color: 'success' | 'warning' | 'danger', text: string }> = {
       'A+': { color: 'success', text: 'A+' },
       'A': { color: 'success', text: 'A' },
@@ -85,10 +88,13 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
       'D': { color: 'danger', text: 'D' }
     };
     const config = scoreConfig[score];
-    return <Badge variant={config?.color || 'default'}>{config?.text || score}</Badge>;
+    return <Badge variant={config?.color || 'gray'}>{config?.text || score}</Badge>;
   };
 
-  const formatAmount = (amount: number) => {
+  const formatAmount = (amount: number | undefined) => {
+    if (amount === undefined || amount === null) {
+      return '금액 미정';
+    }
     return new Intl.NumberFormat('ko-KR').format(amount) + '원';
   };
 
@@ -123,7 +129,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     {
       key: 'contractAmount',
       header: '계약금액',
-      render: (value: number) => (
+      render: (value: number | undefined) => (
         <span className="font-medium text-gray-900">{formatAmount(value)}</span>
       )
     },
@@ -135,7 +141,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     {
       key: 'score',
       header: '평가등급',
-      render: (value: string) => getScoreBadge(value)
+      render: (value: string | undefined) => getScoreBadge(value)
     },
     {
       key: 'actions',
@@ -252,7 +258,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
         <Card>
           <div className="text-center">
             <div className="text-2xl font-bold text-gray-600">
-              {formatAmount(references.reduce((sum, r) => sum + r.contractAmount, 0))}
+              {formatAmount(references.reduce((sum, r) => sum + (r.contractAmount ?? 0), 0))}
             </div>
             <div className="text-sm text-gray-600">총 계약금액</div>
           </div>

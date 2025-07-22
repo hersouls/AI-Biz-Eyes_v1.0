@@ -139,7 +139,7 @@ export const getReferences = async (
   
   if (filters.title) {
     filteredReferences = filteredReferences.filter(ref => 
-      ref.title.toLowerCase().includes(filters.title!.toLowerCase())
+      ref.title?.toLowerCase().includes(filters.title!.toLowerCase()) || false
     );
   }
   if (filters.organization) {
@@ -159,12 +159,12 @@ export const getReferences = async (
   }
   if (filters.minBudget) {
     filteredReferences = filteredReferences.filter(ref => 
-      ref.budget >= filters.minBudget!
+      (ref.budget ?? 0) >= filters.minBudget!
     );
   }
   if (filters.maxBudget) {
     filteredReferences = filteredReferences.filter(ref => 
-      ref.budget <= filters.maxBudget!
+      (ref.budget ?? 0) <= filters.maxBudget!
     );
   }
   
@@ -211,16 +211,22 @@ export const createReference = async (data: ReferenceRequest): Promise<Reference
   
   const newReference: ReferenceData = {
     id: Date.now(),
+    projectName: data.projectName,
     title: data.title,
     description: data.description,
     organization: data.organization,
+    projectType: data.projectType,
     businessType: data.businessType,
+    participationYear: data.participationYear,
+    contractAmount: data.contractAmount,
     budget: data.budget,
     startDate: data.startDate,
     endDate: data.endDate,
     status: data.status || 'planned',
+    score: data.score,
     successRate: data.successRate || 0,
     tags: data.tags || [],
+    files: data.files || [],
     attachments: data.attachments || [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -378,7 +384,6 @@ export const getReferenceMatches = async (referenceId: number): Promise<Referenc
   return {
     success: true,
     data: {
-      originalReference: reference,
       matches
     },
     message: '레퍼런스 매칭 조회 성공'
