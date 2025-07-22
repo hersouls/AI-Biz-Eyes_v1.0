@@ -13,10 +13,15 @@ import {
   UserManagement, 
   SystemLogs, 
   FetchLogs, 
-  AdminNotificationSettings,
+  NotificationSettings,
   ReportSettings,
   SystemSettings,
-  BackupManagement
+  BackupManagement,
+  // 품질/감사 기능 추가
+  QualityDashboard,
+  AuditLogs,
+  QualityReport,
+  AuditSettings
 } from './components/Admin';
 
 function App() {
@@ -54,7 +59,7 @@ function App() {
           } />
           <Route path="/admin/notifications" element={
             <AdminLayout>
-              <AdminNotificationSettings />
+              <NotificationSettings />
             </AdminLayout>
           } />
           <Route path="/admin/reports" element={
@@ -70,6 +75,28 @@ function App() {
           <Route path="/admin/backups" element={
             <AdminLayout>
               <BackupManagement />
+            </AdminLayout>
+          } />
+          
+          {/* 품질/감사 기능 라우트 */}
+          <Route path="/admin/quality" element={
+            <AdminLayout>
+              <QualityDashboard />
+            </AdminLayout>
+          } />
+          <Route path="/admin/audit-logs" element={
+            <AdminLayout>
+              <AuditLogs />
+            </AdminLayout>
+          } />
+          <Route path="/admin/quality-report" element={
+            <AdminLayout>
+              <QualityReport />
+            </AdminLayout>
+          } />
+          <Route path="/admin/audit-settings" element={
+            <AdminLayout>
+              <AuditSettings />
             </AdminLayout>
           } />
           

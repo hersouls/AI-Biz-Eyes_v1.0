@@ -141,3 +141,129 @@ export interface FetchLogsResponse {
   logs: FetchLog[];
   pagination: PaginationInfo;
 }
+
+// 품질/감사 기능 타입 정의
+export interface QualityMetrics {
+  systemHealth: {
+    uptime: number;
+    responseTime: number;
+    errorRate: number;
+    successRate: number;
+  };
+  dataQuality: {
+    totalRecords: number;
+    validRecords: number;
+    duplicateRecords: number;
+    missingDataRate: number;
+  };
+  apiPerformance: {
+    totalCalls: number;
+    successCalls: number;
+    failedCalls: number;
+    averageResponseTime: number;
+  };
+  userActivity: {
+    activeUsers: number;
+    totalSessions: number;
+    averageSessionDuration: number;
+    pageViews: number;
+  };
+  securityMetrics: {
+    failedLogins: number;
+    suspiciousActivities: number;
+    blockedRequests: number;
+    lastSecurityScan: string;
+  };
+}
+
+export interface AuditLog {
+  id: number;
+  userId?: number;
+  userName?: string;
+  action: string;
+  resource: string;
+  resourceId?: string;
+  details?: Record<string, any>;
+  ipAddress?: string;
+  userAgent?: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  category: 'user_activity' | 'data_access' | 'system_change' | 'security_event';
+  timestamp: string;
+  sessionId?: string;
+  requestId?: string;
+}
+
+export interface QualityReport {
+  period: {
+    start: string;
+    end: string;
+  };
+  summary: {
+    totalIssues: number;
+    criticalIssues: number;
+    resolvedIssues: number;
+    openIssues: number;
+  };
+  trends: {
+    daily: Array<{
+      date: string;
+      issues: number;
+      resolved: number;
+    }>;
+    weekly: Array<{
+      week: string;
+      issues: number;
+      resolved: number;
+    }>;
+  };
+  categories: Array<{
+    category: string;
+    count: number;
+    percentage: number;
+  }>;
+  recommendations: Array<{
+    id: number;
+    title: string;
+    description: string;
+    priority: 'low' | 'medium' | 'high' | 'critical';
+    status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  }>;
+}
+
+export interface AuditSettings {
+  id: number;
+  enabled: boolean;
+  retentionDays: number;
+  logLevel: 'all' | 'important' | 'critical';
+  categories: string[];
+  excludedUsers: number[];
+  excludedActions: string[];
+  realTimeAlerts: boolean;
+  alertThresholds: {
+    failedLogins: number;
+    suspiciousActivities: number;
+    dataAccess: number;
+  };
+  exportSettings: {
+    format: 'json' | 'csv' | 'xml';
+    includeDetails: boolean;
+    compression: boolean;
+  };
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface AuditLogsResponse {
+  logs: AuditLog[];
+  pagination: PaginationInfo;
+}
+
+export interface QualityMetricsResponse {
+  metrics: QualityMetrics;
+  lastUpdated: string;
+}
+
+export interface QualityReportResponse {
+  report: QualityReport;
+  generatedAt: string;
+}
