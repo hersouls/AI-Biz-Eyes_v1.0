@@ -12,37 +12,37 @@ import {
 
 export default function Dashboard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 font-pretendard">
       {/* Header Section */}
       <div className="md:flex md:items-center md:justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900">
+          <h1 className="text-heading1 text-primary font-bold leading-tight">
             B2G 공모사업 자동화 대시보드
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-2 text-body2 text-gray-600">
             실시간 공고 현황 및 참여 관리 통합 플랫폼
           </p>
         </div>
         <div className="mt-4 flex md:ml-4 md:mt-0 space-x-3">
           <button
             type="button"
-            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            className="inline-flex items-center rounded-5 bg-white px-4 py-2 text-body2 font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200"
           >
-            <AdjustmentsHorizontalIcon className="h-4 w-4 mr-2" />
+            <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
             대시보드 설정
           </button>
           <button
             type="button"
-            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            className="inline-flex items-center rounded-5 bg-white px-4 py-2 text-body2 font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200"
           >
-            <DocumentArrowDownIcon className="h-4 w-4 mr-2" />
+            <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
             리포트 다운로드
           </button>
           <button
             type="button"
-            className="inline-flex items-center rounded-md bg-[#119891] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0d7a73] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#119891]"
+            className="inline-flex items-center rounded-5 bg-secondary px-4 py-2 text-body2 font-medium text-white shadow-sm hover:bg-secondary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-colors duration-200"
           >
-            <ArrowPathIcon className="h-4 w-4 mr-2" />
+            <ArrowPathIcon className="h-5 w-5 mr-2" />
             데이터 새로고침
           </button>
         </div>
@@ -51,8 +51,8 @@ export default function Dashboard() {
       {/* Quick Stats - KPI Cards */}
       <section>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">전체 현황 요약</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-subtitle1 text-primary font-bold">전체 현황 요약</h2>
+          <p className="text-body3 text-gray-600 mt-1">
             실시간 공고 통계 및 주요 지표
           </p>
         </div>
@@ -62,8 +62,8 @@ export default function Dashboard() {
       {/* Charts and Analytics */}
       <section>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">트렌드 & 인사이트</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-subtitle1 text-primary font-bold">트렌드 & 인사이트</h2>
+          <p className="text-body3 text-gray-600 mt-1">
             공고 분석, 트렌드 및 시각화 데이터
           </p>
         </div>
@@ -73,8 +73,8 @@ export default function Dashboard() {
       {/* Recent Activity and Notifications */}
       <section>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">최근 활동 & 추천</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-subtitle1 text-primary font-bold">최근 활동 & 추천</h2>
+          <p className="text-body3 text-gray-600 mt-1">
             최근 공고, 알림 및 AI 기반 추천 사업
           </p>
         </div>
@@ -84,8 +84,8 @@ export default function Dashboard() {
       {/* Calendar and Timeline */}
       <section>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">일정 관리</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-subtitle1 text-primary font-bold">일정 관리</h2>
+          <p className="text-body3 text-gray-600 mt-1">
             공고 마감일, 설명회 및 중요 일정
           </p>
         </div>
@@ -94,28 +94,37 @@ export default function Dashboard() {
 
       {/* Quick Actions Panel */}
       <section>
-        <div className="bg-gradient-to-r from-[#031B4B] to-[#119891] rounded-lg shadow-lg p-6">
+        <div className="bg-gradient-to-r from-primary to-secondary rounded-12 shadow-lg p-6">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-white">빠른 액션</h3>
-              <p className="text-sm text-blue-100 mt-1">
+              <h3 className="text-subtitle1 font-bold text-white">빠른 액션</h3>
+              <p className="mt-1 text-body3 text-white/90">
                 자주 사용하는 기능에 빠르게 접근하세요
               </p>
             </div>
-            <div className="mt-4 sm:mt-0 sm:ml-4 flex flex-wrap gap-3">
-              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-[#031B4B] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                공고 등록
-              </button>
-              <button className="inline-flex items-center px-4 py-2 border border-white text-sm font-medium rounded-md text-white hover:bg-white hover:text-[#031B4B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                레퍼런스 추가
-              </button>
-              <button className="inline-flex items-center px-4 py-2 border border-white text-sm font-medium rounded-md text-white hover:bg-white hover:text-[#031B4B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                알림 설정
-              </button>
-              <button className="inline-flex items-center px-4 py-2 border border-white text-sm font-medium rounded-md text-white hover:bg-white hover:text-[#031B4B] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                리포트 생성
+            <div className="mt-4 sm:mt-0">
+              <button
+                type="button"
+                className="inline-flex items-center rounded-5 bg-white/20 backdrop-blur-sm px-4 py-2 text-body2 font-medium text-white hover:bg-white/30 transition-colors duration-200"
+              >
+                <Cog6ToothIcon className="h-5 w-5 mr-2" />
+                설정
               </button>
             </div>
+          </div>
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <button className="flex items-center justify-center rounded-5 bg-white/10 backdrop-blur-sm px-4 py-3 text-body2 font-medium text-white hover:bg-white/20 transition-colors duration-200">
+              <span>신규 공고 등록</span>
+            </button>
+            <button className="flex items-center justify-center rounded-5 bg-white/10 backdrop-blur-sm px-4 py-3 text-body2 font-medium text-white hover:bg-white/20 transition-colors duration-200">
+              <span>레퍼런스 추가</span>
+            </button>
+            <button className="flex items-center justify-center rounded-5 bg-white/10 backdrop-blur-sm px-4 py-3 text-body2 font-medium text-white hover:bg-white/20 transition-colors duration-200">
+              <span>알림 설정</span>
+            </button>
+            <button className="flex items-center justify-center rounded-5 bg-white/10 backdrop-blur-sm px-4 py-3 text-body2 font-medium text-white hover:bg-white/20 transition-colors duration-200">
+              <span>리포트 생성</span>
+            </button>
           </div>
         </div>
       </section>
