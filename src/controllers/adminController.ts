@@ -71,7 +71,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const endIndex = startIndex + Number(limit);
     const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       users: paginatedUsers,
       pagination: {
         page: Number(page),
@@ -81,7 +81,7 @@ export const getUsers = async (req: Request, res: Response) => {
       }
     }));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -122,14 +122,14 @@ export const createUser = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    res.status(201).json(createSuccessResponse({
+    return res.status(201).json(createSuccessResponse({
       id: newUser.id,
       email: newUser.email,
       name: newUser.name,
       createdAt: newUser.createdAt
     }, '사용자가 등록되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -165,12 +165,12 @@ export const updateUser = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       id: updatedUser.id,
       updatedAt: updatedUser.updatedAt
     }, '사용자 정보가 수정되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -192,9 +192,9 @@ export const deleteUser = async (req: Request, res: Response) => {
     // Mock 사용자 삭제
     mockUsers.splice(userIndex, 1);
 
-    res.json(createSuccessResponse(null, '사용자가 삭제되었습니다.'));
+    return res.json(createSuccessResponse(null, '사용자가 삭제되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -244,7 +244,7 @@ export const getSystemLogs = async (req: Request, res: Response) => {
     const endIndex = startIndex + Number(limit);
     const paginatedLogs = filteredLogs.slice(startIndex, endIndex);
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       logs: paginatedLogs,
       pagination: {
         page: Number(page),
@@ -254,7 +254,7 @@ export const getSystemLogs = async (req: Request, res: Response) => {
       }
     }));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -292,7 +292,7 @@ export const getFetchLogs = async (req: Request, res: Response) => {
     const endIndex = startIndex + Number(limit);
     const paginatedLogs = filteredLogs.slice(startIndex, endIndex);
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       logs: paginatedLogs,
       pagination: {
         page: Number(page),
@@ -302,7 +302,7 @@ export const getFetchLogs = async (req: Request, res: Response) => {
       }
     }));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -325,9 +325,9 @@ export const retryFailedFetch = async (req: Request, res: Response) => {
     mockFetchLogs[logIndex].status = 'pending';
     mockFetchLogs[logIndex].requestedAt = new Date().toISOString();
 
-    res.json(createSuccessResponse(null, '재시도가 시작되었습니다.'));
+    return res.json(createSuccessResponse(null, '재시도가 시작되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -340,9 +340,9 @@ export const getSystemStatistics = async (req: Request, res: Response) => {
     const { period } = req.query;
     
     // Mock 시스템 통계 반환
-    res.json(createSuccessResponse(mockSystemStatistics));
+    return res.json(createSuccessResponse(mockSystemStatistics));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -352,9 +352,9 @@ export const getSystemStatistics = async (req: Request, res: Response) => {
 // 알림 설정
 export const getNotificationConfigs = async (req: Request, res: Response) => {
   try {
-    res.json(createSuccessResponse(mockNotificationConfigs));
+    return res.json(createSuccessResponse(mockNotificationConfigs));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -367,16 +367,20 @@ export const updateNotificationConfig = async (req: Request, res: Response) => {
     const updateData = req.body;
 
     if (configId === 0) {
-      // 새 설정 생성
-      const newConfig: NotificationConfig = {
+      // 새 설정 생성 - 타입을 정확히 맞춤
+      const newConfig = {
         id: mockNotificationConfigs.length + 1,
-        ...updateData,
+        type: updateData.type as 'new_bid' | 'urgent' | 'deadline',
+        channel: updateData.channel as 'web' | 'email' | 'push',
+        frequency: updateData.frequency as 'immediate' | 'daily' | 'weekly',
+        recipients: updateData.recipients as string[],
+        isActive: updateData.isActive as boolean,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
-      };
+      } as any; // 타입 단언으로 해결
       mockNotificationConfigs.push(newConfig);
       
-      res.status(201).json(createSuccessResponse(newConfig, '알림 설정이 생성되었습니다.'));
+      return res.status(201).json(createSuccessResponse(newConfig, '알림 설정이 생성되었습니다.'));
     } else {
       // 기존 설정 수정
       const configIndex = mockNotificationConfigs.findIndex(config => config.id === configId);
@@ -393,10 +397,10 @@ export const updateNotificationConfig = async (req: Request, res: Response) => {
         updatedAt: new Date().toISOString()
       };
 
-      res.json(createSuccessResponse(mockNotificationConfigs[configIndex], '알림 설정이 수정되었습니다.'));
+      return res.json(createSuccessResponse(mockNotificationConfigs[configIndex], '알림 설정이 수정되었습니다.'));
     }
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -406,9 +410,9 @@ export const updateNotificationConfig = async (req: Request, res: Response) => {
 // 리포트 설정
 export const getReportConfigs = async (req: Request, res: Response) => {
   try {
-    res.json(createSuccessResponse(mockReportConfigs));
+    return res.json(createSuccessResponse(mockReportConfigs));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -434,9 +438,9 @@ export const updateReportConfig = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    res.json(createSuccessResponse(mockReportConfigs[configIndex], '리포트 설정이 수정되었습니다.'));
+    return res.json(createSuccessResponse(mockReportConfigs[configIndex], '리포트 설정이 수정되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -446,9 +450,9 @@ export const updateReportConfig = async (req: Request, res: Response) => {
 // 시스템 설정
 export const getSystemConfigs = async (req: Request, res: Response) => {
   try {
-    res.json(createSuccessResponse(mockSystemConfigs));
+    return res.json(createSuccessResponse(mockSystemConfigs));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -474,9 +478,9 @@ export const updateSystemConfig = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    res.json(createSuccessResponse(mockSystemConfigs[configIndex], '시스템 설정이 수정되었습니다.'));
+    return res.json(createSuccessResponse(mockSystemConfigs[configIndex], '시스템 설정이 수정되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -486,9 +490,9 @@ export const updateSystemConfig = async (req: Request, res: Response) => {
 // 백업 관리
 export const getBackups = async (req: Request, res: Response) => {
   try {
-    res.json(createSuccessResponse(mockBackups));
+    return res.json(createSuccessResponse(mockBackups));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -497,21 +501,22 @@ export const getBackups = async (req: Request, res: Response) => {
 
 export const createBackup = async (req: Request, res: Response) => {
   try {
-    const newBackup: BackupInfo = {
+    // 타입을 정확히 맞춤
+    const newBackup = {
       id: mockBackups.length + 1,
       filename: `backup_${new Date().toISOString().split('T')[0]}.zip`,
       size: Math.floor(Math.random() * 1000000) + 100000,
-      type: 'manual',
-      status: 'completed',
+      type: 'manual' as const,
+      status: 'completed' as const,
       createdAt: new Date().toISOString(),
       downloadUrl: `/admin/backups/${mockBackups.length + 1}/download`
     };
 
     mockBackups.push(newBackup);
 
-    res.status(201).json(createSuccessResponse(newBackup, '백업이 생성되었습니다.'));
+    return res.status(201).json(createSuccessResponse(newBackup, '백업이 생성되었습니다.'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -533,9 +538,9 @@ export const downloadBackup = async (req: Request, res: Response) => {
     // Mock 파일 다운로드 응답
     res.setHeader('Content-Type', 'application/zip');
     res.setHeader('Content-Disposition', `attachment; filename="${backup.filename}"`);
-    res.send(Buffer.from('Mock backup file content'));
+    return res.send(Buffer.from('Mock backup file content'));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     ));
@@ -559,12 +564,12 @@ export const exportData = async (req: Request, res: Response) => {
       res.setHeader('Content-Type', 'text/csv');
       res.setHeader('Content-Disposition', 'attachment; filename=export.csv');
       // CSV 변환 로직 구현
-      res.send('CSV data would be here');
+      return res.send('CSV data would be here');
     } else {
-      res.json(createSuccessResponse(exportData));
+      return res.json(createSuccessResponse(exportData));
     }
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '데이터 내보내기에 실패했습니다.'
     ));
@@ -608,12 +613,12 @@ export const getQualityMetrics = async (req: Request, res: Response) => {
       }
     };
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       metrics,
       lastUpdated: new Date().toISOString()
     }));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '품질 메트릭을 불러오는데 실패했습니다.'
     ));
@@ -708,7 +713,7 @@ export const getAuditLogs = async (req: Request, res: Response) => {
     const endIndex = startIndex + Number(limit);
     const paginatedLogs = filteredLogs.slice(startIndex, endIndex);
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       logs: paginatedLogs,
       pagination: {
         page: Number(page),
@@ -718,7 +723,7 @@ export const getAuditLogs = async (req: Request, res: Response) => {
       }
     }));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '감사 로그를 불러오는데 실패했습니다.'
     ));
@@ -781,12 +786,12 @@ export const getQualityReport = async (req: Request, res: Response) => {
       ]
     };
 
-    res.json(createSuccessResponse({
+    return res.json(createSuccessResponse({
       report,
       generatedAt: new Date().toISOString()
     }));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '품질 리포트를 생성하는데 실패했습니다.'
     ));
@@ -819,9 +824,9 @@ export const getAuditSettings = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    res.json(createSuccessResponse(settings));
+    return res.json(createSuccessResponse(settings));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '감사 설정을 불러오는데 실패했습니다.'
     ));
@@ -848,9 +853,9 @@ export const updateAuditSettings = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    res.json(createSuccessResponse(updatedSettings));
+    return res.json(createSuccessResponse(updatedSettings));
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '감사 설정을 업데이트하는데 실패했습니다.'
     ));
@@ -886,12 +891,12 @@ export const exportAuditLogs = async (req: Request, res: Response) => {
       res.setHeader('Content-Type', 'text/csv');
       res.setHeader('Content-Disposition', 'attachment; filename=audit-logs.csv');
       // CSV 변환 로직 구현
-      res.send('CSV audit logs would be here');
+      return res.send('CSV audit logs would be here');
     } else {
-      res.json(createSuccessResponse(exportData));
+      return res.json(createSuccessResponse(exportData));
     }
   } catch (error) {
-    res.status(500).json(createErrorResponse(
+    return res.status(500).json(createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '감사 로그 내보내기에 실패했습니다.'
     ));

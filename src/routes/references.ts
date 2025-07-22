@@ -104,13 +104,13 @@ router.get('/', [
       }
     });
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -149,13 +149,13 @@ router.post('/', [
       createdAt: newReference.createdAt
     }, '레퍼런스가 등록되었습니다.');
 
-    res.status(201).json(response);
+    return res.status(201).json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -199,13 +199,13 @@ router.put('/:id', [
       updatedAt: updatedReference.updatedAt
     }, '레퍼런스가 수정되었습니다.');
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -236,13 +236,13 @@ router.delete('/:id', [
     }
 
     const response = createSuccessResponse(null, '레퍼런스가 삭제되었습니다.');
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -262,7 +262,8 @@ router.get('/match', [
       return res.status(422).json(errorResponse);
     }
 
-    const { bidNtceNo, limit = 5 }: ReferenceMatchQuery = req.query;
+    const bidNtceNo = req.query.bidNtceNo as string;
+    const limit = req.query.limit ? Number(req.query.limit) : 5;
 
     // Mock 매칭 결과
     const matches = [
@@ -300,13 +301,13 @@ router.get('/match', [
       matches
     });
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 

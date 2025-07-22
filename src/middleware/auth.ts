@@ -10,7 +10,7 @@ export const authenticateToken = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   const authHeader = req.headers.authorization;
   const token = extractTokenFromHeader(authHeader || '');
 
@@ -19,7 +19,8 @@ export const authenticateToken = (
       'AUTH_TOKEN_MISSING',
       '인증 토큰이 필요합니다.'
     );
-    return res.status(401).json(errorResponse);
+    res.status(401).json(errorResponse);
+    return;
   }
 
   try {
@@ -31,18 +32,20 @@ export const authenticateToken = (
       'AUTH_TOKEN_INVALID',
       '유효하지 않은 토큰입니다.'
     );
-    return res.status(401).json(errorResponse);
+    res.status(401).json(errorResponse);
+    return;
   }
 };
 
 export const requireRole = (roles: string[]) => {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     if (!req.user) {
       const errorResponse = createErrorResponse(
         'AUTH_REQUIRED',
         '인증이 필요합니다.'
       );
-      return res.status(401).json(errorResponse);
+      res.status(401).json(errorResponse);
+      return;
     }
 
     if (!roles.includes(req.user.role)) {
@@ -50,9 +53,14 @@ export const requireRole = (roles: string[]) => {
         'AUTH_INSUFFICIENT_PERMISSIONS',
         '권한이 부족합니다.'
       );
-      return res.status(403).json(errorResponse);
+      res.status(403).json(errorResponse);
+      return;
     }
 
     next();
   };
+};
+
+export const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  return requireRole(['admin'])(req, res, next);
 };

@@ -14,6 +14,6 @@ router.get('/references', authenticateToken, StatisticsController.getReferenceSt
 router.get('/notifications', authenticateToken, StatisticsController.getNotificationStatistics);
 
 // 시스템 통계 조회 (관리자만)
-router.get('/system', authenticateToken, requireRole('admin'), StatisticsController.getSystemStatistics);
+router.get('/system', authenticateToken, requireRole(['admin']), StatisticsController.getSystemStatistics);
 
 export default router;

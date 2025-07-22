@@ -34,13 +34,13 @@ router.post('/', [
     };
 
     const response = createSuccessResponse(newWebhook, '웹훅이 등록되었습니다.');
-    res.status(201).json(response);
+    return res.status(201).json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -67,13 +67,13 @@ router.get('/', (req: Request, res: Response) => {
     ];
 
     const response = createSuccessResponse({ webhooks });
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 

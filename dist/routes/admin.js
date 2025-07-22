@@ -1,0 +1,37 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const auth_1 = require("../middleware/auth");
+const adminController_1 = require("../controllers/adminController");
+const router = express_1.default.Router();
+router.use(auth_1.authenticateToken);
+router.use(auth_1.requireAdmin);
+router.get('/users', adminController_1.getUsers);
+router.post('/users', adminController_1.createUser);
+router.put('/users/:id', adminController_1.updateUser);
+router.delete('/users/:id', adminController_1.deleteUser);
+router.get('/logs', adminController_1.getSystemLogs);
+router.get('/fetch-logs', adminController_1.getFetchLogs);
+router.post('/fetch-logs/:id/retry', adminController_1.retryFailedFetch);
+router.get('/statistics', adminController_1.getSystemStatistics);
+router.get('/notification-configs', adminController_1.getNotificationConfigs);
+router.put('/notification-configs/:id', adminController_1.updateNotificationConfig);
+router.get('/report-configs', adminController_1.getReportConfigs);
+router.put('/report-configs/:id', adminController_1.updateReportConfig);
+router.get('/system-configs', adminController_1.getSystemConfigs);
+router.put('/system-configs/:id', adminController_1.updateSystemConfig);
+router.get('/backups', adminController_1.getBackups);
+router.post('/backups', adminController_1.createBackup);
+router.get('/backups/:id/download', adminController_1.downloadBackup);
+router.get('/export', adminController_1.exportData);
+router.get('/quality/metrics', adminController_1.getQualityMetrics);
+router.get('/quality/audit-logs', adminController_1.getAuditLogs);
+router.get('/quality/report', adminController_1.getQualityReport);
+router.get('/quality/audit-settings', adminController_1.getAuditSettings);
+router.put('/quality/audit-settings', adminController_1.updateAuditSettings);
+router.get('/quality/export-audit-logs', adminController_1.exportAuditLogs);
+exports.default = router;
+//# sourceMappingURL=admin.js.map

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { query, param, body, validationResult } from 'express-validator';
-import { createSuccessResponse, createErrorResponse, createPaginationResponse } from '../utils/response';
+import { createSuccessResponse, createErrorResponse, createPaginatedResponse } from '../utils/response';
 import { 
   initialMockBids, 
   initialMockBidDetails, 
@@ -72,18 +72,18 @@ router.get('/', [
 
     // 날짜 필터링
     if (startDate) {
-      filteredBids = filteredBids.filter(bid => bid.bidNtceDate >= startDate);
+      filteredBids = filteredBids.filter(bid => bid.bidNtceDate && bid.bidNtceDate >= startDate);
     }
     if (endDate) {
-      filteredBids = filteredBids.filter(bid => bid.bidNtceDate <= endDate);
+      filteredBids = filteredBids.filter(bid => bid.bidNtceDate && bid.bidNtceDate <= endDate);
     }
 
     // 예산 필터링
     if (minBudget) {
-      filteredBids = filteredBids.filter(bid => bid.asignBdgtAmt >= minBudget);
+      filteredBids = filteredBids.filter(bid => bid.asignBdgtAmt && bid.asignBdgtAmt >= minBudget);
     }
     if (maxBudget) {
-      filteredBids = filteredBids.filter(bid => bid.asignBdgtAmt <= maxBudget);
+      filteredBids = filteredBids.filter(bid => bid.asignBdgtAmt && bid.asignBdgtAmt <= maxBudget);
     }
 
     // 정렬
@@ -118,13 +118,13 @@ router.get('/', [
       }
     });
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -155,13 +155,13 @@ router.get('/:id', [
     }
 
     const response = createSuccessResponse(bidDetail);
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -194,13 +194,13 @@ router.post('/sync', [
     };
 
     const response = createSuccessResponse(syncResult, '공고 동기화가 완료되었습니다.');
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -225,13 +225,13 @@ router.get('/statistics', [
 
     // Mock 통계 데이터 반환
     const response = createSuccessResponse(mockBidStatistics);
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 

@@ -1,0 +1,26 @@
+import { Request, Response } from 'express';
+export declare const getUsers: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const createUser: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const updateUser: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const deleteUser: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getSystemLogs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getFetchLogs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const retryFailedFetch: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getSystemStatistics: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getNotificationConfigs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const updateNotificationConfig: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getReportConfigs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const updateReportConfig: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getSystemConfigs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const updateSystemConfig: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getBackups: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const createBackup: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const downloadBackup: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const exportData: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getQualityMetrics: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getAuditLogs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getQualityReport: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const getAuditSettings: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const updateAuditSettings: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+export declare const exportAuditLogs: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+//# sourceMappingURL=adminController.d.ts.map

@@ -20,13 +20,13 @@ router.post('/upload', (req: Request, res: Response) => {
     };
 
     const response = createSuccessResponse(fileResponse, '파일이 업로드되었습니다.');
-    res.status(201).json(response);
+    return res.status(201).json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'FILE_UPLOAD_ERROR',
       '파일 업로드 중 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -53,13 +53,13 @@ router.get('/:id/download', [
     res.setHeader('Content-Length', '2048576');
     
     // Mock 파일 데이터 (빈 버퍼)
-    res.send(Buffer.alloc(1024));
+    return res.send(Buffer.alloc(1024));
   } catch (error) {
     const errorResponse = createErrorResponse(
       'FILE_DOWNLOAD_ERROR',
       '파일 다운로드 중 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
