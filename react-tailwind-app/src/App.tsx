@@ -5,13 +5,14 @@ import './App.css';
 // Components
 import { ReferenceManager } from './components/Reference';
 import { NotificationPage } from './components/Notification';
+import { StatisticsPage } from './components/Statistics';
 import { 
   AdminLayout,
   AdminDashboard, 
   UserManagement, 
   SystemLogs, 
   FetchLogs, 
-  NotificationSettings,
+  AdminNotificationSettings,
   ReportSettings,
   SystemSettings,
   BackupManagement
@@ -26,6 +27,7 @@ function App() {
           <Route path="/" element={<Navigate to="/admin" replace />} />
           <Route path="/references" element={<ReferenceManager />} />
           <Route path="/notifications" element={<NotificationPage />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={

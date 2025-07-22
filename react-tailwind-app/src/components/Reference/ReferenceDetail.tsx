@@ -1,8 +1,8 @@
 import React from 'react';
 import { ReferenceData } from '../../types/reference';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Badge } from '../Badge';
+import Card from '../Card';
+import Button from '../Button';
+import Badge from '../Badge';
 
 interface ReferenceDetailProps {
   reference: ReferenceData;
@@ -24,7 +24,7 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
       ongoing: { color: 'blue', text: '진행중' }
     };
     const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    return <Badge variant={config.color}>{config.text}</Badge>;
   };
 
   const getScoreBadge = (score: string) => {
@@ -36,7 +36,7 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
       'D': { color: 'red', text: 'D' }
     };
     const config = scoreConfig[score as keyof typeof scoreConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    return <Badge variant={config.color}>{config.text}</Badge>;
   };
 
   const formatAmount = (amount: number) => {
@@ -85,7 +85,7 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
           <Button variant="outline" onClick={onEdit}>
             수정
           </Button>
-          <Button color="red" variant="outline" onClick={onDelete}>
+          <Button variant="danger" onClick={onDelete}>
             삭제
           </Button>
         </div>
@@ -221,7 +221,7 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
           </div>
         </div>
         <div className="mt-4">
-          <Button variant="outline" color="blue">
+          <Button variant="outline">
             유사 공고 찾기
           </Button>
         </div>

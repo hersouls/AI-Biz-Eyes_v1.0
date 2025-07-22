@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Notification } from '../../types/notification';
 import { NotificationService } from '../../services/notificationService';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Badge } from '../Badge';
+import Card from '../Card';
+import Button from '../Button';
+import Badge from '../Badge';
 
 interface NotificationDetailProps {
   notification: Notification | null;
@@ -159,10 +159,10 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <h3 className="text-lg font-medium text-gray-900">{notification.title}</h3>
-                <Badge color={getPriorityColor(notification.priority)}>
+                <Badge variant={getPriorityColor(notification.priority)}>
                   {getPriorityLabel(notification.priority)}
                 </Badge>
-                <Badge color={getStatusColor(notification.status)}>
+                <Badge variant={getStatusColor(notification.status)}>
                   {getStatusLabel(notification.status)}
                 </Badge>
               </div>

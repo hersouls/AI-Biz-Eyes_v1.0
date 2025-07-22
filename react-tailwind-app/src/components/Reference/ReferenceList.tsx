@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ReferenceData, ReferenceFilters } from '../../types/reference';
 import { getReferences, getMockReferences } from '../../services/referenceService';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { Select } from '../Select';
-import { Badge } from '../Badge';
-import { Table } from '../Table';
+import Card from '../Card';
+import Button from '../Button';
+import Input from '../Input';
+import Select from '../Select';
+import Badge from '../Badge';
+import Table from '../Table';
 
 interface ReferenceListProps {
   onAddNew?: () => void;
@@ -73,7 +73,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
       ongoing: { color: 'blue', text: '진행중' }
     };
     const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    return <Badge variant={config.color}>{config.text}</Badge>;
   };
 
   const getScoreBadge = (score: string) => {
@@ -85,7 +85,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
       'D': { color: 'red', text: 'D' }
     };
     const config = scoreConfig[score as keyof typeof scoreConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    return <Badge variant={config.color}>{config.text}</Badge>;
   };
 
   const formatAmount = (amount: number) => {
@@ -159,7 +159,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Button
             size="sm"
             variant="outline"
-            color="red"
+
             onClick={() => onDelete?.(record.id)}
           >
             삭제
@@ -177,7 +177,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <h1 className="text-2xl font-bold text-gray-900">레퍼런스 관리</h1>
           <p className="text-gray-600">조직의 사업 경험과 성과를 관리합니다</p>
         </div>
-        <Button onClick={onAddNew} color="blue">
+        <Button onClick={onAddNew}>
           + 새 레퍼런스 등록
         </Button>
       </div>
@@ -188,12 +188,12 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Input
             placeholder="사업명 검색"
             value={filters.search || ''}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(value: string) => handleSearch(value)}
           />
           <Select
             placeholder="사업유형"
             value={filters.type || ''}
-            onChange={(value) => handleFilterChange('type', value)}
+            onChange={(value: string | number) => handleFilterChange('type', value as string)}
             options={[
               { value: '용역', label: '용역' },
               { value: '개발', label: '개발' },
@@ -204,7 +204,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Select
             placeholder="성과상태"
             value={filters.status || ''}
-            onChange={(value) => handleFilterChange('status', value as any)}
+            onChange={(value: string | number) => handleFilterChange('status', value as any)}
             options={[
               { value: 'success', label: '성공' },
               { value: 'failure', label: '실패' },
@@ -214,7 +214,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Select
             placeholder="참여연도"
             value={filters.year?.toString() || ''}
-            onChange={(value) => handleFilterChange('year', parseInt(value) || undefined)}
+            onChange={(value: string | number) => handleFilterChange('year', parseInt(value as string) || undefined)}
             options={[
               { value: '2024', label: '2024년' },
               { value: '2023', label: '2023년' },
@@ -266,7 +266,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           data={references}
           loading={loading}
           pagination={pagination}
-          onPageChange={(page) => setPagination(prev => ({ ...prev, page }))}
+          onPageChange={(page: number) => setPagination(prev => ({ ...prev, page }))}
         />
       </Card>
     </div>

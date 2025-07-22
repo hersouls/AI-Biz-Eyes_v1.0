@@ -1,7 +1,7 @@
 import React from 'react';
 import { Report } from '../../types/notification';
-import { Card } from '../Card';
-import { Button } from '../Button';
+import Card from '../Card';
+import Button from '../Button';
 
 interface ReportDetailProps {
   report: Report | null;

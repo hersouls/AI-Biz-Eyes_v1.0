@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DocumentTextIcon, EnvelopeIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
 import { ReportSettings } from '../../types/personal';
-import { Button } from '../Button';
+import Button from '../Button';
 
 export const ReportSettingsSection: React.FC = () => {
   const [settings, setSettings] = useState<ReportSettings | null>(null);

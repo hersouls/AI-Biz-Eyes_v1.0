@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { UserIcon, EnvelopeIcon, BuildingOfficeIcon, PhoneIcon, UserGroupIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
 import { UserProfile, ProfileUpdateRequest, PasswordChangeRequest } from '../../types/personal';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { Badge } from '../Badge';
+import Button from '../Button';
+import Input from '../Input';
+import Badge from '../Badge';
 
 export const ProfileSection: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -99,10 +99,10 @@ export const ProfileSection: React.FC = () => {
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'admin': return 'red';
-      case 'user': return 'blue';
-      case 'guest': return 'gray';
-      default: return 'gray';
+      case 'admin': return 'danger';
+      case 'user': return 'primary';
+      case 'guest': return 'default';
+      default: return 'default';
     }
   };
 
@@ -168,7 +168,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.name || ''}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(value: string) => setFormData({ ...formData, name: value })}
                     placeholder="이름을 입력하세요"
                   />
                 ) : (
@@ -192,7 +192,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.organization || ''}
-                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                    onChange={(value: string) => setFormData({ ...formData, organization: value })}
                     placeholder="소속을 입력하세요"
                   />
                 ) : (
@@ -208,7 +208,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.department || ''}
-                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                    onChange={(value: string) => setFormData({ ...formData, department: value })}
                     placeholder="부서를 입력하세요"
                   />
                 ) : (
@@ -224,7 +224,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.position || ''}
-                    onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                    onChange={(value: string) => setFormData({ ...formData, position: value })}
                     placeholder="직책을 입력하세요"
                   />
                 ) : (
@@ -240,7 +240,7 @@ export const ProfileSection: React.FC = () => {
                 {isEditing ? (
                   <Input
                     value={formData.phone || ''}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(value: string) => setFormData({ ...formData, phone: value })}
                     placeholder="연락처를 입력하세요"
                   />
                 ) : (
@@ -299,19 +299,19 @@ export const ProfileSection: React.FC = () => {
             <Input
               type="password"
               value={passwordData.currentPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+              onChange={(value: string) => setPasswordData({ ...passwordData, currentPassword: value })}
               placeholder="현재 비밀번호"
             />
             <Input
               type="password"
               value={passwordData.newPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+              onChange={(value: string) => setPasswordData({ ...passwordData, newPassword: value })}
               placeholder="새 비밀번호"
             />
             <Input
               type="password"
               value={passwordData.confirmPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+              onChange={(value: string) => setPasswordData({ ...passwordData, confirmPassword: value })}
               placeholder="새 비밀번호 확인"
             />
           </div>

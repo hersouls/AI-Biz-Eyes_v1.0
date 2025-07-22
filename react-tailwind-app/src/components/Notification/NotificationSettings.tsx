@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { NotificationSettings as Settings } from '../../types/notification';
 import { NotificationService } from '../../services/notificationService';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Select } from '../Select';
+import Card from '../Card';
+import Button from '../Button';
+import Select from '../Select';
 
 export const NotificationSettings: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -151,7 +151,7 @@ export const NotificationSettings: React.FC = () => {
                 </label>
                 <Select
                   value={settings.emailNotifications.frequency}
-                  onChange={(value) => setSettings(prev => ({
+                  onChange={(value: string | number) => setSettings(prev => ({
                     ...prev,
                     emailNotifications: {
                       ...prev.emailNotifications,

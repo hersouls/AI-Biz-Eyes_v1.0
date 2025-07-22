@@ -1,7 +1,7 @@
 // Core Components
 export { default as Button } from './Button';
 export { default as Card, CardHeader, CardContent, CardFooter } from './Card';
-export { default as Table, TableHeader, TableFooter, Badge as TableBadge } from './Table';
+export { default as Table, TableHeader, TableFooter } from './Table';
 export { default as Badge } from './Badge';
 
 // Form Components
@@ -19,3 +19,6 @@ export * from './Notification';
 
 // Admin Components
 export * from './Admin';
+
+// Statistics Components
+export * from './Statistics';

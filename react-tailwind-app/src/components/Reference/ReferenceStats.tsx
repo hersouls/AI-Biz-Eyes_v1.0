@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReferenceStats as ReferenceStatsType } from '../../types/reference';
-import { Card } from '../Card';
+import Card from '../Card';
 
 interface ReferenceStatsProps {
   stats: ReferenceStatsType;

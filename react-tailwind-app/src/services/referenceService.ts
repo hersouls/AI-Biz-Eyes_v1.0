@@ -192,7 +192,7 @@ export const getMockReferences = (): ReferenceData[] => [
     participationYear: 2023,
     contractAmount: 300000000,
     status: "success",
-    score: "A+",
+    score: "A",
     description: "AI 기술을 활용한 제품 품질관리 시스템 개발",
     createdBy: 1,
     createdAt: "2024-07-21T14:20:00Z",

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChartBarIcon, EyeIcon, EyeSlashIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
 import { DashboardSettings, DashboardWidget } from '../../types/personal';
-import { Button } from '../Button';
+import Button from '../Button';
 
 const widgetLabels = {
   overview: '전체 현황',

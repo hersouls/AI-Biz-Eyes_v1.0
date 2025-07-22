@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import Card, { CardHeader, CardContent, CardFooter } from './Card';
-import Table, { TableHeader, TableFooter, Badge } from './Table';
+import Table, { TableHeader, TableFooter } from './Table';
+import Badge from './Badge';
 import Input from './Input';
 import Select from './Select';
 import BadgeComponent from './Badge';
@@ -241,9 +242,9 @@ const UIComponents: React.FC = () => {
               <div>
                 <h4 className="text-subtitle2 text-gray-900 mb-3">배지 크기</h4>
                 <div className="flex flex-wrap items-center gap-2">
-                  <BadgeComponent size="sm">Small</BadgeComponent>
-                  <BadgeComponent size="md">Medium</BadgeComponent>
-                  <BadgeComponent size="lg">Large</BadgeComponent>
+                  <BadgeComponent variant="primary" size="sm">Small</BadgeComponent>
+                  <BadgeComponent variant="primary" size="md">Medium</BadgeComponent>
+                  <BadgeComponent variant="primary" size="lg">Large</BadgeComponent>
                 </div>
               </div>
             </div>
@@ -291,7 +292,7 @@ const UIComponents: React.FC = () => {
                   label="업무구분"
                   options={selectOptions}
                   value={selectValue}
-                  onChange={setSelectValue}
+                  onChange={(value: string | number) => setSelectValue(value as string)}
                   required
                 />
                 <Select

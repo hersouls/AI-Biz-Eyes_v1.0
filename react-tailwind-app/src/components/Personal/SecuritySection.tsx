@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ShieldCheckIcon, KeyIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
 import { SecuritySettings, SecuritySettingsUpdateRequest } from '../../types/personal';
-import { Button } from '../Button';
-import { Input } from '../Input';
+import Button from '../Button';
+import Input from '../Input';
 
 export const SecuritySection: React.FC = () => {
   const [settings, setSettings] = useState<SecuritySettings | null>(null);
@@ -126,7 +126,7 @@ export const SecuritySection: React.FC = () => {
               <Input
                 type="number"
                 value={settings.sessionTimeout}
-                onChange={(e) => setSettings({ ...settings, sessionTimeout: parseInt(e.target.value) || 30 })}
+                onChange={(value: string) => setSettings({ ...settings, sessionTimeout: parseInt(value) || 30 })}
                 placeholder="분 단위"
                 min="5"
                 max="480"

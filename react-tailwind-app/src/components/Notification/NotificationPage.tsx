@@ -5,8 +5,8 @@ import { ReportList } from './ReportList';
 import { NotificationSettings } from './NotificationSettings';
 import { NotificationDetail } from './NotificationDetail';
 import { ReportDetail } from './ReportDetail';
-import { Card } from '../Card';
-import { Button } from '../Button';
+import Card from '../Card';
+import Button from '../Button';
 
 type TabType = 'notifications' | 'reports' | 'settings';
 
