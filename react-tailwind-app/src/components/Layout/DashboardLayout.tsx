@@ -57,17 +57,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="h-full bg-white">
       <Dialog className="relative z-50 lg:hidden" open={sidebarOpen} onClose={setSidebarOpen}>
-        <Transition
-          as={React.Fragment}
-          enter="transition-opacity ease-linear duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity ease-linear duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-900/80" />
-        </Transition>
+        <>
+          <Transition
+            as={React.Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-900/80" />
+          </Transition>
 
           <div className="fixed inset-0 flex">
             <Transition
@@ -80,25 +81,26 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               leaveTo="-translate-x-full"
             >
               <DialogPanel className="relative mr-16 flex w-full max-w-xs flex-1">
-                <Transition
-                  as={React.Fragment}
-                  enter="ease-in-out duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in-out duration-300"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                    <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
-                      <span className="sr-only">사이드바 닫기</span>
-                      <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
-                    </button>
-                  </div>
-                </Transition>
+                <>
+                  <Transition
+                    as={React.Fragment}
+                    enter="ease-in-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in-out duration-300"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
+                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                        <span className="sr-only">사이드바 닫기</span>
+                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </Transition>
 
-                {/* Sidebar component */
-                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#031B4B] px-6 pb-4 ring-1 ring-white/10">
+                  {/* Sidebar component */}
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#031B4B] px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
                     <div className="flex items-center space-x-3">
                       <div className="h-8 w-8 bg-[#119891] rounded-lg flex items-center justify-center">
@@ -162,10 +164,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     </ul>
                   </nav>
                 </div>
+                </>
               </DialogPanel>
             </Transition>
           </div>
-        </Dialog>
+        </>
+      </Dialog>
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
