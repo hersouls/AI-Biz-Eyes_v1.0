@@ -268,7 +268,7 @@ export const ProfileSection: React.FC = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700">계정 상태</label>
               <div className="mt-1">
-                <Badge variant={profile.isActive ? 'green' : 'red'}>
+                <Badge variant={profile.isActive ? 'success' : 'danger'}>
                   {profile.isActive ? '활성' : '비활성'}
                 </Badge>
               </div>
