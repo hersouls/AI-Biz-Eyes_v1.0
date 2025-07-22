@@ -101,8 +101,8 @@ export const ProfileSection: React.FC = () => {
     switch (role) {
       case 'admin': return 'danger';
       case 'user': return 'primary';
-      case 'guest': return 'default';
-      default: return 'default';
+      case 'guest': return 'gray';
+      default: return 'secondary';
     }
   };
 
