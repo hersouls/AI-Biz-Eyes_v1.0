@@ -15,20 +15,26 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:300
 const mockReferences: ReferenceData[] = [
   {
     id: 1,
+    projectName: 'IT 시스템 구축 사업',
     title: 'IT 시스템 구축 사업',
     description: '2023년도 IT 시스템 구축 사업 레퍼런스',
     organization: '테크노파크',
+    projectType: 'IT',
     businessType: 'IT',
     budget: 500000000,
+    contractAmount: 500000000,
+    participationYear: 2023,
     startDate: '2023-03-01',
     endDate: '2023-12-31',
     status: 'success',
+    score: 'A',
     successRate: 95,
     tags: ['IT', '시스템구축', '성공사례'],
     attachments: [
       { id: 1, name: '사업계획서.pdf', url: '/attachments/plan.pdf', size: 2048576 },
       { id: 2, name: '결과보고서.pdf', url: '/attachments/report.pdf', size: 3072000 }
     ],
+    createdBy: 1,
     createdAt: '2024-01-15T00:00:00Z',
     updatedAt: '2024-07-22T10:30:00Z'
   },
