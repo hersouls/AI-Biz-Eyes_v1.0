@@ -69,7 +69,7 @@ interface ButtonProps {
 <Button variant="primary">Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="outline">Outline</Button>
-<Button variant="success">Success</Button>
+<Button variant="primary" className="bg-green-600 hover:bg-green-700">Success</Button>
 <Button variant="danger">Danger</Button>
 <Button variant="ghost">Ghost</Button>
 
