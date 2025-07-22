@@ -177,7 +177,7 @@ const AuditSettingsComponent: React.FC = () => {
                 label="로그 보관 기간 (일)"
                 type="number"
                 value={settings.retentionDays}
-                onChange={(e) => handleInputChange('retentionDays', parseInt(e.target.value))}
+                onChange={(value) => handleInputChange('retentionDays', parseInt(value))}
                 min="1"
                 max="365"
               />
@@ -264,7 +264,7 @@ const AuditSettingsComponent: React.FC = () => {
               label="실패 로그인 임계값"
               type="number"
               value={settings.alertThresholds.failedLogins}
-              onChange={(e) => handleThresholdChange('failedLogins', parseInt(e.target.value))}
+              onChange={(value) => handleThresholdChange('failedLogins', parseInt(value))}
               min="1"
               max="100"
             />
@@ -272,7 +272,7 @@ const AuditSettingsComponent: React.FC = () => {
               label="의심스러운 활동 임계값"
               type="number"
               value={settings.alertThresholds.suspiciousActivities}
-              onChange={(e) => handleThresholdChange('suspiciousActivities', parseInt(e.target.value))}
+              onChange={(value) => handleThresholdChange('suspiciousActivities', parseInt(value))}
               min="1"
               max="50"
             />
@@ -280,7 +280,7 @@ const AuditSettingsComponent: React.FC = () => {
               label="데이터 접근 임계값"
               type="number"
               value={settings.alertThresholds.dataAccess}
-              onChange={(e) => handleThresholdChange('dataAccess', parseInt(e.target.value))}
+              onChange={(value) => handleThresholdChange('dataAccess', parseInt(value))}
               min="1"
               max="1000"
             />

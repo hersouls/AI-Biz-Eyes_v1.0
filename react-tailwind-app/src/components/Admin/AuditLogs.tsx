@@ -142,8 +142,8 @@ const AuditLogs: React.FC = () => {
     }
   };
 
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const handleFilterChange = (key: string, value: string | number) => {
+    setFilters(prev => ({ ...prev, [key]: String(value) }));
     setPagination(prev => ({ ...prev, page: 1 }));
   };
 
@@ -163,7 +163,7 @@ const AuditLogs: React.FC = () => {
   const columns = [
     {
       key: 'timestamp',
-      label: '시간',
+      header: '시간',
       render: (log: AuditLog) => (
         <div className="text-sm">
           <div className="font-medium text-gray-900">
@@ -177,7 +177,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'userName',
-      label: '사용자',
+      header: '사용자',
       render: (log: AuditLog) => (
         <div className="flex items-center">
           <UserIcon className="h-4 w-4 text-gray-400 mr-2" />
@@ -189,7 +189,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'action',
-      label: '액션',
+      header: '액션',
       render: (log: AuditLog) => (
         <span className="text-sm font-medium text-gray-900">
           {truncateText(log.action, 30)}
@@ -198,7 +198,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'resource',
-      label: '리소스',
+      header: '리소스',
       render: (log: AuditLog) => (
         <span className="text-sm text-gray-600">
           {log.resource}
@@ -207,17 +207,17 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'severity',
-      label: '심각도',
+      header: '심각도',
       render: (log: AuditLog) => getSeverityBadge(log.severity)
     },
     {
       key: 'category',
-      label: '카테고리',
+      header: '카테고리',
       render: (log: AuditLog) => getCategoryBadge(log.category)
     },
     {
       key: 'ipAddress',
-      label: 'IP 주소',
+      header: 'IP 주소',
       render: (log: AuditLog) => (
         <span className="text-sm text-gray-600 font-mono">
           {log.ipAddress || '-'}
@@ -226,7 +226,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'actions',
-      label: '액션',
+      header: '액션',
       render: (log: AuditLog) => (
         <Button
           variant="ghost"
@@ -295,13 +295,13 @@ const AuditLogs: React.FC = () => {
               label="사용자 ID"
               type="number"
               value={filters.userId}
-              onChange={(e) => handleFilterChange('userId', e.target.value)}
+              onChange={(value) => handleFilterChange('userId', value)}
               placeholder="사용자 ID 입력"
             />
             <Input
               label="액션"
               value={filters.action}
-              onChange={(e) => handleFilterChange('action', e.target.value)}
+              onChange={(value) => handleFilterChange('action', value)}
               placeholder="액션 검색"
             />
           </div>
@@ -310,13 +310,13 @@ const AuditLogs: React.FC = () => {
               label="시작일"
               type="date"
               value={filters.startDate}
-              onChange={(e) => handleFilterChange('startDate', e.target.value)}
+              onChange={(value) => handleFilterChange('startDate', value)}
             />
             <Input
               label="종료일"
               type="date"
               value={filters.endDate}
-              onChange={(e) => handleFilterChange('endDate', e.target.value)}
+              onChange={(value) => handleFilterChange('endDate', value)}
             />
           </div>
           <div className="flex justify-end mt-4 space-x-2">
