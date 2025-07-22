@@ -18,8 +18,14 @@ import {
   XMarkIcon,
   DocumentTextIcon,
   DocumentIcon,
+  ClipboardDocumentListIcon,
+  EyeIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import Dashboard from './components/Dashboard'
+import BidList from './components/BidList'
+import BidDetail from './components/BidDetail'
+import ReferenceManager from './components/ReferenceManager'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -29,61 +35,114 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentDocument, setCurrentDocument] = useState(null)
+  const [currentView, setCurrentView] = useState('dashboard')
+  const [selectedBidId, setSelectedBidId] = useState(null)
 
   const navigation = [
-    { name: '대시보드', href: '#', icon: HomeIcon, current: true, description: '프로젝트 개요 및 요약 정보', content: `
-      <h1>개발 문서 사이트 대시보드</h1>
-      <p>B2G 공모사업 자동화 관리 웹서비스의 개발 문서를 관리하는 사이트입니다.</p>
-      
-      <h2>프로젝트 개요</h2>
-      <p>이 프로젝트는 정부/공공기관의 공모·입찰·사업 공고를 자동 수집·구조화·분석·알림까지 한 번에 처리하는 올인원 자동화 웹서비스입니다.</p>
-      
-      <h2>주요 기능</h2>
-      <ul>
-        <li><strong>공고 관리:</strong> 나라장터 OpenAPI 연동을 통한 실시간 공고 수집</li>
-        <li><strong>레퍼런스 관리:</strong> 내부 참여 이력/사업성과 관리</li>
-        <li><strong>알림 시스템:</strong> 실시간 알림 및 이메일, 웹, 푸시 알림</li>
-        <li><strong>대시보드:</strong> 전체 공고 현황 및 KPI 실시간 모니터링</li>
-      </ul>
-      
-      <h2>기술 스택</h2>
-      <h3>프론트엔드</h3>
-      <ul>
-        <li>React 18.x + TypeScript 5.x</li>
-        <li>Tailwind CSS 3.x</li>
-        <li>Zustand (상태 관리)</li>
-        <li>React Router v6</li>
-      </ul>
-      
-      <h3>백엔드</h3>
-      <ul>
-        <li>Node.js 18.x + Express.js 4.x</li>
-        <li>PostgreSQL 15.x + Redis 7.x</li>
-        <li>Prisma 5.x (ORM)</li>
-        <li>JWT + bcrypt (인증)</li>
-      </ul>
-      
-      <h2>개발 일정</h2>
-      <p>총 16주 개발 일정으로 진행되며, 3단계로 나누어 개발됩니다:</p>
-      <ol>
-        <li><strong>1단계 (4주):</strong> 프로토타입 개발</li>
-        <li><strong>2단계 (8주):</strong> 정식 버전 개발</li>
-        <li><strong>3단계 (4주):</strong> 고도화 및 최적화</li>
-      </ol>
-      
-      <h2>문서 구조</h2>
-      <p>왼쪽 사이드바에서 다음 문서들을 확인할 수 있습니다:</p>
-      <ul>
-        <li><strong>기술 문서:</strong> API 명세서, 개발 기술 명세서, 데이터베이스 설계서</li>
-        <li><strong>설계 문서:</strong> 화면 정의서, PRD, 디자인 가이드</li>
-        <li><strong>관리 문서:</strong> 개발 일정표</li>
-      </ul>
-    ` },
-    { name: '팀', href: '#', icon: UsersIcon, current: false, description: '개발 팀 정보 및 구성원' },
-    { name: '프로젝트', href: '#', icon: FolderIcon, current: false, description: '프로젝트 관리 및 진행 상황' },
-    { name: '일정', href: '#', icon: CalendarIcon, current: false, description: '개발 일정 및 마일스톤' },
-    { name: '문서', href: '#', icon: DocumentDuplicateIcon, current: false, description: '프로젝트 관련 문서들' },
-    { name: '보고서', href: '#', icon: ChartPieIcon, current: false, description: '프로젝트 통계 및 분석' },
+    { 
+      name: '대시보드', 
+      href: '#', 
+      icon: HomeIcon, 
+      current: true, 
+      view: 'dashboard',
+      description: '프로젝트 개요 및 요약 정보', 
+      content: `
+        <h1>개발 문서 사이트 대시보드</h1>
+        <p>B2G 공모사업 자동화 관리 웹서비스의 개발 문서를 관리하는 사이트입니다.</p>
+        
+        <h2>프로젝트 개요</h2>
+        <p>이 프로젝트는 정부/공공기관의 공모·입찰·사업 공고를 자동 수집·구조화·분석·알림까지 한 번에 처리하는 올인원 자동화 웹서비스입니다.</p>
+        
+        <h2>주요 기능</h2>
+        <ul>
+          <li><strong>공고 관리:</strong> 나라장터 OpenAPI 연동을 통한 실시간 공고 수집</li>
+          <li><strong>레퍼런스 관리:</strong> 내부 참여 이력/사업성과 관리</li>
+          <li><strong>알림 시스템:</strong> 실시간 알림 및 이메일, 웹, 푸시 알림</li>
+          <li><strong>대시보드:</strong> 전체 공고 현황 및 KPI 실시간 모니터링</li>
+        </ul>
+        
+        <h2>기술 스택</h2>
+        <h3>프론트엔드</h3>
+        <ul>
+          <li>React 18.x + TypeScript 5.x</li>
+          <li>Tailwind CSS 3.x</li>
+          <li>Zustand (상태 관리)</li>
+          <li>React Router v6</li>
+        </ul>
+        
+        <h3>백엔드</h3>
+        <ul>
+          <li>Node.js 18.x + Express.js 4.x</li>
+          <li>PostgreSQL 15.x + Redis 7.x</li>
+          <li>Prisma 5.x (ORM)</li>
+          <li>JWT + bcrypt (인증)</li>
+        </ul>
+        
+        <h2>개발 일정</h2>
+        <p>총 16주 개발 일정으로 진행되며, 3단계로 나누어 개발됩니다:</p>
+        <ol>
+          <li><strong>1단계 (4주):</strong> 프로토타입 개발</li>
+          <li><strong>2단계 (8주):</strong> 정식 버전 개발</li>
+          <li><strong>3단계 (4주):</strong> 고도화 및 최적화</li>
+        </ol>
+        
+        <h2>문서 구조</h2>
+        <p>왼쪽 사이드바에서 다음 문서들을 확인할 수 있습니다:</p>
+        <ul>
+          <li><strong>기술 문서:</strong> API 명세서, 개발 기술 명세서, 데이터베이스 설계서</li>
+          <li><strong>설계 문서:</strong> 화면 정의서, PRD, 디자인 가이드</li>
+          <li><strong>관리 문서:</strong> 개발 일정표</li>
+        </ul>
+      ` 
+    },
+    { 
+      name: '공고 리스트', 
+      href: '#', 
+      icon: ClipboardDocumentListIcon, 
+      current: false, 
+      view: 'bidList',
+      description: '전체 공고 목록 및 관리' 
+    },
+    { 
+      name: '팀', 
+      href: '#', 
+      icon: UsersIcon, 
+      current: false, 
+      view: 'team',
+      description: '개발 팀 정보 및 구성원' 
+    },
+    { 
+      name: '프로젝트', 
+      href: '#', 
+      icon: FolderIcon, 
+      current: false, 
+      view: 'project',
+      description: '프로젝트 관리 및 진행 상황' 
+    },
+    { 
+      name: '일정', 
+      href: '#', 
+      icon: CalendarIcon, 
+      current: false, 
+      view: 'schedule',
+      description: '개발 일정 및 마일스톤' 
+    },
+    { 
+      name: '레퍼런스', 
+      href: '#', 
+      icon: DocumentDuplicateIcon, 
+      current: false, 
+      view: 'references',
+      description: '내부 참여 이력 및 성과 관리' 
+    },
+    { 
+      name: '보고서', 
+      href: '#', 
+      icon: ChartPieIcon, 
+      current: false, 
+      view: 'reports',
+      description: '프로젝트 통계 및 분석' 
+    },
   ]
 
   const technicalDocs = [
@@ -171,6 +230,26 @@ function App() {
     }
   }
 
+  const handleNavigation = (item) => {
+    // 모든 네비게이션 항목의 current 상태를 false로 설정
+    navigation.forEach(nav => nav.current = false)
+    
+    // 선택된 항목의 current 상태를 true로 설정
+    item.current = true
+    
+    // 뷰 변경
+    setCurrentView(item.view)
+    
+    // 문서 관련 상태 초기화
+    setCurrentDocument(null)
+    setSelectedBidId(null)
+  }
+
+  const handleBidSelect = (bidId) => {
+    setSelectedBidId(bidId)
+    setCurrentView('bidDetail')
+  }
+
   const filterDocuments = () => {
     // 검색 기능 구현 (필요시)
     console.log('Searching for:', searchQuery)
@@ -178,8 +257,29 @@ function App() {
 
   useEffect(() => {
     // 초기 문서 선택 (대시보드)
-    selectDocument(navigation[0])
+    handleNavigation(navigation[0])
   }, [])
+
+  const renderMainContent = () => {
+    switch (currentView) {
+      case 'dashboard':
+        return <Dashboard />
+      case 'bidList':
+        return <BidList onBidSelect={handleBidSelect} />
+      case 'bidDetail':
+        return <BidDetail bidId={selectedBidId} />
+      case 'references':
+        return <ReferenceManager />
+      default:
+        return (
+          <div className="max-w-4xl mx-auto text-center">
+            <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <h1 className="mt-2 text-3xl font-bold text-gray-900">개발 문서 사이트</h1>
+            <p className="mt-1 text-sm text-gray-500">왼쪽 사이드바에서 문서를 선택하여 시작하세요.</p>
+          </div>
+        )
+    }
+  }
 
   return (
     <div>
@@ -229,7 +329,7 @@ function App() {
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
                     <DocumentTextIcon className="h-8 w-8 text-indigo-500" />
-                    <span className="ml-2 text-xl font-bold text-white">개발 문서</span>
+                    <span className="ml-2 text-xl font-bold text-white">B2G 관리</span>
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -238,7 +338,7 @@ function App() {
                           {navigation.map((item) => (
                             <li key={item.name}>
                               <button
-                                onClick={() => selectDocument(item)}
+                                onClick={() => handleNavigation(item)}
                                 className={classNames(
                                   item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                                   'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold cursor-pointer w-full text-left'
@@ -290,7 +390,7 @@ function App() {
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center">
             <DocumentTextIcon className="h-8 w-8 text-indigo-500" />
-            <span className="ml-2 text-xl font-bold text-white">개발 문서</span>
+            <span className="ml-2 text-xl font-bold text-white">B2G 관리</span>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -299,7 +399,7 @@ function App() {
                   {navigation.map((item) => (
                     <li key={item.name}>
                       <button
-                        onClick={() => selectDocument(item)}
+                        onClick={() => handleNavigation(item)}
                         className={classNames(
                           item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                           'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold cursor-pointer w-full text-left'
@@ -445,12 +545,8 @@ function App() {
                 </div>
               </div>
             ) : (
-              /* Welcome Screen */
-              <div className="max-w-4xl mx-auto text-center">
-                <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
-                <h1 className="mt-2 text-3xl font-bold text-gray-900">개발 문서 사이트</h1>
-                <p className="mt-1 text-sm text-gray-500">왼쪽 사이드바에서 문서를 선택하여 시작하세요.</p>
-              </div>
+              /* Main Content */
+              renderMainContent()
             )}
           </div>
         </main>
