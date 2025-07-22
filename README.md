@@ -1,274 +1,125 @@
-# B2G 공모사업 자동화 관리 웹서비스
+# 개발 문서 사이트
 
-## 📋 프로젝트 개요
+Vue.js와 Tailwind CSS를 사용하여 구축된 개발 문서 관리 시스템입니다.
 
-B2G 공모사업 자동화 관리 웹서비스는 정부/공공기관의 공모·입찰·사업 공고를 자동 수집·구조화·분석·알림까지 한 번에 처리하는 올인원 자동화 웹서비스입니다.
+## 🚀 기능
 
-### 🎯 주요 목적
-- 정부/공공기관 공모·입찰·사업 공고 자동 수집·구조화·분석·알림
-- 인적 누락/중복·담당자 리스크 최소화
-- 조직 내 사업 경험 레퍼런스 자동 매칭
-- 실시간 전략적 의사결정 지원
+- **반응형 사이드바 레이아웃**: 데스크톱과 모바일에서 모두 최적화된 사용자 경험
+- **문서 관리**: 다양한 개발 문서들을 체계적으로 관리
+- **검색 기능**: 문서 내 빠른 검색
+- **모던 UI**: Tailwind CSS와 Headless UI를 활용한 현대적인 디자인
+- **마크다운 지원**: 문서 내용의 풍부한 표현
 
-### 👥 대상 사용자
-- B2G 사업 담당자(기획/실무/관리자)
-- 10명 이상 조직
-- PC/모바일(Responsive Web, Chrome/Edge 기준)
+## 📋 포함된 문서
 
-## 🚀 주요 기능
+### 메인 네비게이션
+- 대시보드
+- 팀
+- 프로젝트
+- 일정
+- 문서
+- 보고서
 
-### 📊 대시보드
-- 전체 공고 현황 및 KPI 실시간 모니터링
-- 그래프/차트를 통한 데이터 시각화
-- 공고 타임라인/캘린더 기반 일정 관리
-- AI 기반 추천 공고 및 알림 센터
+### 기술 문서
+- API 명세서
+- 개발 기술 명세서
+- 데이터베이스 설계서
+- 화면 정의서
+- 개발 일정표
+- PRD (Product Requirements Document)
+- 디자인 가이드
 
-### 📋 공고 관리
-- 나라장터 OpenAPI 연동을 통한 실시간 공고 수집
-- 고급 검색 및 필터링 기능
-- 공고 상세 정보 및 원문 링크 제공
-- Excel/CSV 내보내기 기능
+## 🛠️ 기술 스택
 
-### 📚 레퍼런스 관리
-- 내부 참여 이력/사업성과 관리
-- 유사 공고 자동 매칭 및 추천
-- 레퍼런스 등록·수정·성과 분석
-- 첨부파일 관리 및 검색
+- **Frontend**: Vue.js 3
+- **Styling**: Tailwind CSS
+- **UI Components**: Headless UI
+- **Icons**: Heroicons
+- **Build Tool**: Vite
 
-### 🔔 알림 시스템
-- 실시간 알림 (신규/긴급/마감임박/누락/중복)
-- 이메일, 웹, 푸시 알림 지원
-- 개인화된 알림 설정
-- 일간/주간/월간 리포트 자동 생성
+## 📦 설치 및 실행
 
-### ⚙️ 관리자 기능
-- 사용자/권한 관리
-- 시스템 모니터링 및 로그 관리
-- 데이터 백업/복구
-- API 연동 상태 관리
-
-## 🛠 기술 스택
-
-### Frontend
-- **Framework**: React 18.x
-- **Language**: TypeScript 5.x
-- **Styling**: Tailwind CSS 3.x
-- **State Management**: Zustand
-- **Routing**: React Router v6
-- **UI Components**: Headless UI, Radix UI
-- **Icons**: Heroicons, Lucide React, Radix Icons
-- **Charts**: Recharts
-- **HTTP Client**: Axios
-
-### Backend
-- **Runtime**: Node.js 18.x
-- **Framework**: Express.js 4.x
-- **Language**: TypeScript 5.x
-- **Database**: PostgreSQL 15.x
-- **Cache**: Redis 7.x
-- **ORM**: Prisma 5.x
-- **Authentication**: JWT + bcrypt
-- **API Documentation**: Swagger/OpenAPI 3.0
-
-### DevOps & Infrastructure
-- **Container**: Docker & Docker Compose
-- **CI/CD**: GitHub Actions
-- **Cloud**: AWS (EC2, RDS, S3, CloudFront)
-- **Monitoring**: Winston + Sentry, CloudWatch
-- **SSL**: Let's Encrypt
-
-### External APIs & Services
-- **나라장터 OpenAPI**: 공고 데이터 수집
-- **Google Sheets API**: 데이터 연동
-- **Email Service**: SendGrid
-- **Push Notification**: Web Push API
-- **File Storage**: AWS S3
-
-## 📁 프로젝트 구조
-
-```
-B2G_v1.0/
-├── Docs/                          # 프로젝트 문서
-│   ├── 화면정의서                 # 상세 화면 기능 정의
-│   ├── PRD                        # 제품 요구사항 문서
-│   ├── 디자인가이드               # UI/UX 디자인 가이드
-│   ├── 개발기술명세서.md          # 기술 스택 및 아키텍처
-│   ├── 데이터베이스설계서.md      # DB 스키마 및 설계
-│   ├── API명세서.md               # REST API 명세
-│   └── 개발일정표.md              # 개발 일정 및 마일스톤
-├── frontend/                      # React 프론트엔드
-├── backend/                       # Node.js 백엔드
-├── docker/                        # Docker 설정
-├── docs/                          # API 문서
-└── README.md                      # 프로젝트 README
-```
-
-## 📚 개발 문서
-
-### 📋 요구사항 및 설계 문서
-- **[화면정의서](Docs/화면정의서)**: 상세한 화면별 기능 정의
-- **[PRD](Docs/PRD)**: 제품 요구사항 및 기능 명세
-- **[디자인가이드](Docs/디자인가이드)**: UI/UX 디자인 시스템
-
-### 🔧 기술 문서
-- **[개발기술명세서](Docs/개발기술명세서.md)**: 기술 스택, 아키텍처, 개발 환경
-- **[데이터베이스설계서](Docs/데이터베이스설계서.md)**: DB 스키마, ERD, 최적화 전략
-- **[API명세서](Docs/API명세서.md)**: REST API 엔드포인트 및 응답 형식
-
-### 📅 프로젝트 관리 문서
-- **[개발일정표](Docs/개발일정표.md)**: 16주 개발 일정 및 마일스톤
-
-## 🚀 개발 단계
-
-### 1단계: 프로토타입 (4주)
-- Mock 데이터 기반 UI/UX 완성
-- 주요 기능/데이터 구조 시뮬레이션
-- 전체 플로우 설계 및 피드백 반영
-
-### 2단계: 정식 버전 (8주)
-- Open API(나라장터 등) 연동
-- 실데이터 자동수집/분석/알림
-- Google 스프레드시트 자동 저장/관리
-- 완전 자동화 시스템 구축
-
-### 3단계: 고도화 (4주)
-- 성능 최적화 및 보안 강화
-- 모니터링 시스템 구축
-- 배포 자동화 및 문서화 완료
-
-## 🛠 개발 환경 설정
-
-### 필수 소프트웨어
-- Node.js 18.x 이상
-- PostgreSQL 15.x
-- Redis 7.x
-- Docker & Docker Compose
-- Git
-
-### 개발 환경 구성
+### 1. 의존성 설치
 ```bash
-# 프로젝트 클론
-git clone [repository-url]
-cd b2g-automation
-
-# 의존성 설치
 npm install
+```
 
-# 환경변수 설정
-cp .env.example .env
-
-# 데이터베이스 마이그레이션
-npx prisma migrate dev
-
-# 개발 서버 실행
+### 2. 개발 서버 실행
+```bash
 npm run dev
 ```
 
-### 환경변수 설정
-```env
-# Database
-DATABASE_URL="postgresql://username:password@localhost:5432/b2g_db"
-REDIS_URL="redis://localhost:6379"
-
-# JWT
-JWT_SECRET="your-jwt-secret"
-JWT_EXPIRES_IN="7d"
-
-# External APIs
-G2B_API_KEY="your-g2b-api-key"
-GOOGLE_SHEETS_CREDENTIALS="path/to/credentials.json"
-
-# Email
-SENDGRID_API_KEY="your-sendgrid-api-key"
-
-# AWS
-AWS_ACCESS_KEY_ID="your-aws-access-key"
-AWS_SECRET_ACCESS_KEY="your-aws-secret-key"
-AWS_REGION="ap-northeast-2"
-AWS_S3_BUCKET="your-s3-bucket"
+### 3. 빌드
+```bash
+npm run build
 ```
 
-## 📊 주요 마일스톤
+### 4. 빌드 결과 미리보기
+```bash
+npm run preview
+```
 
-### 1단계 마일스톤
-- **7월 26일**: 프로젝트 초기 설정 완료
-- **8월 9일**: 기본 페이지 구현 완료
-- **8월 16일**: 프로토타입 완성 및 피드백 수집
+## 🎨 주요 컴포넌트
 
-### 2단계 마일스톤
-- **8월 30일**: 나라장터 API 연동 완료
-- **9월 13일**: 레퍼런스 관리 시스템 완료
-- **9월 27일**: 알림 시스템 완료
-- **10월 11일**: 관리자 기능 완료
+### 사이드바 (Sidebar)
+- 데스크톱에서는 고정 사이드바
+- 모바일에서는 오버레이 사이드바
+- 문서 카테고리별 분류
+- 현재 선택된 문서 하이라이트
 
-### 3단계 마일스톤
-- **10월 18일**: 성능 최적화 완료
-- **10월 25일**: 보안 및 모니터링 완료
-- **11월 1일**: 배포 자동화 완료
-- **11월 8일**: 프로젝트 완료
+### 헤더 (Header)
+- 검색 기능
+- 알림 버튼
+- 사용자 프로필 드롭다운
+- 모바일 메뉴 토글
 
-## 👥 개발팀
+### 메인 콘텐츠 영역
+- 문서 제목 및 설명
+- 마크다운 렌더링
+- 반응형 레이아웃
 
-### 팀 구성
-- **프로젝트 매니저**: 1명 (전체 관리)
-- **프론트엔드 개발자**: 2명 (React, TypeScript)
-- **백엔드 개발자**: 2명 (Node.js, PostgreSQL)
-- **DevOps 엔지니어**: 1명 (AWS, Docker)
+## 📱 반응형 디자인
 
-### 역할 분담
-- **프론트엔드**: UI/UX 구현, 컴포넌트 개발
-- **백엔드**: API 개발, 데이터베이스 설계
-- **DevOps**: 인프라 구축, 배포 자동화
+- **데스크톱 (lg+)**: 고정 사이드바 + 메인 콘텐츠
+- **태블릿 (md-lg)**: 접을 수 있는 사이드바
+- **모바일 (sm-md)**: 오버레이 사이드바
 
-## 🔒 보안 고려사항
+## 🎯 사용법
 
-### 인증/인가
-- JWT 토큰 기반 인증
-- Role-based Access Control (RBAC)
-- API 요청 제한 (Rate Limiting)
+1. **문서 선택**: 왼쪽 사이드바에서 원하는 문서를 클릭
+2. **검색**: 상단 검색바를 사용하여 문서 검색
+3. **네비게이션**: 사이드바를 통해 다른 문서로 이동
+4. **모바일**: 햄버거 메뉴를 통해 사이드바 열기/닫기
 
-### 데이터 보안
-- HTTPS 강제 적용
-- 민감 정보 암호화 저장
-- SQL Injection 방지 (Prisma ORM 사용)
-- XSS 방지 (React 기본 방어)
+## 🔧 커스터마이징
 
-### 외부 API 보안
-- API 키 환경변수 관리
-- 요청/응답 로깅
-- 에러 처리 및 재시도 로직
+### 새로운 문서 추가
+`src/App.vue` 파일의 `technicalDocs` 배열에 새로운 문서 객체를 추가:
 
-## 📈 모니터링 및 로깅
+```javascript
+{
+  name: '문서명',
+  href: '#',
+  current: false,
+  description: '문서 설명',
+  content: `
+    <h1>문서 제목</h1>
+    <p>문서 내용...</p>
+  `
+}
+```
 
-### 로깅 전략
-- **Application Logs**: Winston
-- **Error Tracking**: Sentry
-- **Performance Monitoring**: AWS CloudWatch
-- **User Analytics**: Google Analytics
+### 스타일 수정
+`src/style.css` 파일에서 마크다운 스타일을 커스터마이징할 수 있습니다.
 
-### 알림 설정
-- **Critical Errors**: 즉시 알림
-- **Performance Issues**: 임계값 초과 시 알림
-- **System Status**: 정기 상태 리포트
+## 📄 라이선스
 
-## 📝 라이선스
+MIT License
 
-이 프로젝트는 MIT 라이선스 하에 배포됩니다.
+## 🤝 기여
 
-## 🤝 기여하기
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+프로젝트에 기여하고 싶으시다면 Pull Request를 보내주세요!
 
 ## 📞 문의
 
-프로젝트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
-
----
-
-**프로젝트 버전**: v1.0  
-**최종 업데이트**: 2024년 7월 22일  
-**개발팀**: B2G Automation Team
+프로젝트에 대한 문의사항이 있으시면 이슈를 생성해주세요.
