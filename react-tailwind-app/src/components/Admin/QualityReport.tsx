@@ -21,12 +21,14 @@ import Button from '../Button';
 const QualityReport: React.FC = () => {
   const [report, setReport] = useState<QualityReportType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [period, setPeriod] = useState('week');
   const [generatedAt, setGeneratedAt] = useState<string>('');
 
   const loadQualityReport = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await adminService.getQualityReport(period);
       if (response.data) {
         setReport(response.data.report);
@@ -34,6 +36,7 @@ const QualityReport: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to load quality report:', err);
+      setError(err instanceof Error ? err.message : '품질 리포트를 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }

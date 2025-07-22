@@ -14,6 +14,7 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
   const [logs, setLogs] = useState<IntegrationLog[]>([]);
   const [systems, setSystems] = useState<IntegrationSystem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   // 필터 상태
   const [filters, setFilters] = useState({
@@ -34,6 +35,7 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
   const fetchLogs = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const params: any = {
         page: filters.page,
         limit: filters.limit
@@ -47,6 +49,7 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
       setPagination(response.pagination);
     } catch (err) {
       console.error('로그 조회에 실패했습니다:', err);
+      setError(err instanceof Error ? err.message : '로그 조회에 실패했습니다.');
     } finally {
       setLoading(false);
     }
