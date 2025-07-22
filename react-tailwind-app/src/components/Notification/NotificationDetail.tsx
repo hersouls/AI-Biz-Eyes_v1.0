@@ -64,9 +64,9 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
       case 'normal':
         return 'primary';
       case 'low':
-        return 'default';
+        return 'info';
       default:
-        return 'default';
+        return 'gray';
     }
   };
 
