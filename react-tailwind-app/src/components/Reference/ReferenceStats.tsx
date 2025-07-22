@@ -7,7 +7,10 @@ interface ReferenceStatsProps {
 }
 
 const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
-  const formatAmount = (amount: number) => {
+  const formatAmount = (amount: number | undefined) => {
+    if (amount === undefined || amount === null) {
+      return '금액 미정';
+    }
     return new Intl.NumberFormat('ko-KR').format(amount) + '원';
   };
 
@@ -31,7 +34,7 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
             <div className="text-3xl font-bold text-green-600">{stats.successCount}</div>
             <div className="text-sm text-gray-600">성공 사례</div>
             <div className="text-xs text-gray-500 mt-1">
-              {formatPercentage(stats.successCount / stats.totalCount)}
+              {stats.successCount && stats.totalCount ? formatPercentage(stats.successCount / stats.totalCount) : '0%'}
             </div>
           </div>
         </Card>
@@ -41,7 +44,7 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
             <div className="text-3xl font-bold text-blue-600">{stats.ongoingCount}</div>
             <div className="text-sm text-gray-600">진행중</div>
             <div className="text-xs text-gray-500 mt-1">
-              {formatPercentage(stats.ongoingCount / stats.totalCount)}
+              {stats.ongoingCount && stats.totalCount ? formatPercentage(stats.ongoingCount / stats.totalCount) : '0%'}
             </div>
           </div>
         </Card>
@@ -80,7 +83,7 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {stats.yearlyStats.map((yearStat) => (
+              {stats.yearlyStats?.map((yearStat) => (
                 <tr key={yearStat.year}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {yearStat.year}년
@@ -92,7 +95,7 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
                     {formatAmount(yearStat.amount)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {formatPercentage(yearStat.count / stats.totalCount)}
+                    {stats.totalCount ? formatPercentage(yearStat.count / stats.totalCount) : '0%'}
                   </td>
                 </tr>
               ))}
@@ -125,7 +128,7 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {stats.typeStats.map((typeStat) => (
+              {stats.typeStats?.map((typeStat) => (
                 <tr key={typeStat.type}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {typeStat.type}
@@ -137,7 +140,7 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
                     {formatPercentage(typeStat.successRate)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {formatPercentage(typeStat.count / stats.totalCount)}
+                    {stats.totalCount ? formatPercentage(typeStat.count / stats.totalCount) : '0%'}
                   </td>
                 </tr>
               ))}
@@ -160,13 +163,13 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">성공률</span>
               <span className="text-lg font-semibold text-green-600">
-                {formatPercentage(stats.successCount / stats.totalCount)}
+                {stats.successCount && stats.totalCount ? formatPercentage(stats.successCount / stats.totalCount) : '0%'}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">평균 계약금액</span>
               <span className="text-lg font-semibold text-gray-900">
-                {formatAmount(stats.totalAmount / stats.totalCount)}
+                {stats.totalAmount && stats.totalCount ? formatAmount(stats.totalAmount / stats.totalCount) : '금액 미정'}
               </span>
             </div>
           </div>
@@ -181,13 +184,13 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">성공</span>
                 <span className="text-sm font-medium text-gray-900">
-                  {stats.successCount}건 ({formatPercentage(stats.successCount / stats.totalCount)})
+                  {stats.successCount || 0}건 ({stats.successCount && stats.totalCount ? formatPercentage(stats.successCount / stats.totalCount) : '0%'})
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-green-600 h-2 rounded-full" 
-                  style={{ width: `${(stats.successCount / stats.totalCount) * 100}%` }}
+                  style={{ width: `${stats.successCount && stats.totalCount ? (stats.successCount / stats.totalCount) * 100 : 0}%` }}
                 ></div>
               </div>
             </div>
@@ -196,13 +199,13 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">진행중</span>
                 <span className="text-sm font-medium text-gray-900">
-                  {stats.ongoingCount}건 ({formatPercentage(stats.ongoingCount / stats.totalCount)})
+                  {stats.ongoingCount || 0}건 ({stats.ongoingCount && stats.totalCount ? formatPercentage(stats.ongoingCount / stats.totalCount) : '0%'})
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-blue-600 h-2 rounded-full" 
-                  style={{ width: `${(stats.ongoingCount / stats.totalCount) * 100}%` }}
+                  style={{ width: `${stats.ongoingCount && stats.totalCount ? (stats.ongoingCount / stats.totalCount) * 100 : 0}%` }}
                 ></div>
               </div>
             </div>
@@ -211,13 +214,13 @@ const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">실패</span>
                 <span className="text-sm font-medium text-gray-900">
-                  {stats.failureCount}건 ({formatPercentage(stats.failureCount / stats.totalCount)})
+                  {stats.failureCount || 0}건 ({stats.failureCount && stats.totalCount ? formatPercentage(stats.failureCount / stats.totalCount) : '0%'})
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-red-600 h-2 rounded-full" 
-                  style={{ width: `${(stats.failureCount / stats.totalCount) * 100}%` }}
+                  style={{ width: `${stats.failureCount && stats.totalCount ? (stats.failureCount / stats.totalCount) * 100 : 0}%` }}
                 ></div>
               </div>
             </div>

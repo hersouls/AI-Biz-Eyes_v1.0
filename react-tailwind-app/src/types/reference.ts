@@ -92,7 +92,7 @@ export interface ReferenceResponse {
   success: boolean;
   data: {
     id: number;
-    projectName: string;
+    projectName?: string;
     createdAt?: string;
     updatedAt?: string;
   };
@@ -118,6 +118,7 @@ export interface ReferenceMatchResponse {
       matchReason: string;       // 매칭 이유
     }>;
   };
+  message?: string;              // 응답 메시지
 }
 
 // 레퍼런스 통계 타입
