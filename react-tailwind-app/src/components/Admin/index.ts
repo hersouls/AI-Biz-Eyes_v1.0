@@ -4,7 +4,7 @@ export { default as UserManagement } from './UserManagement';
 export { default as SystemLogs } from './SystemLogs';
 export { default as FetchLogs } from './FetchLogs';
 export { default as SystemSettings } from './SystemSettings';
-export { default as NotificationSettings } from './NotificationSettings';
+export { default as AdminNotificationSettings } from './NotificationSettings';
 export { default as ReportSettings } from './ReportSettings';
 export { default as BackupManagement } from './BackupManagement';
 // 품질/감사 기능 추가

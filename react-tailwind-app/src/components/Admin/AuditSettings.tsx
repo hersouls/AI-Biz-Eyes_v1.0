@@ -177,7 +177,7 @@ const AuditSettingsComponent: React.FC = () => {
                 label="로그 보관 기간 (일)"
                 type="number"
                 value={settings.retentionDays}
-                onChange={(e) => handleInputChange('retentionDays', parseInt(e.target.value))}
+                onChange={(value) => handleInputChange('retentionDays', parseInt(value))}
                 min="1"
                 max="365"
               />
@@ -264,7 +264,7 @@ const AuditSettingsComponent: React.FC = () => {
               label="실패 로그인 임계값"
               type="number"
               value={settings.alertThresholds.failedLogins}
-              onChange={(e) => handleThresholdChange('failedLogins', parseInt(e.target.value))}
+              onChange={(value) => handleThresholdChange('failedLogins', parseInt(value))}
               min="1"
               max="100"
             />
@@ -272,7 +272,7 @@ const AuditSettingsComponent: React.FC = () => {
               label="의심스러운 활동 임계값"
               type="number"
               value={settings.alertThresholds.suspiciousActivities}
-              onChange={(e) => handleThresholdChange('suspiciousActivities', parseInt(e.target.value))}
+              onChange={(value) => handleThresholdChange('suspiciousActivities', parseInt(value))}
               min="1"
               max="50"
             />
@@ -280,7 +280,7 @@ const AuditSettingsComponent: React.FC = () => {
               label="데이터 접근 임계값"
               type="number"
               value={settings.alertThresholds.dataAccess}
-              onChange={(e) => handleThresholdChange('dataAccess', parseInt(e.target.value))}
+              onChange={(value) => handleThresholdChange('dataAccess', parseInt(value))}
               min="1"
               max="1000"
             />
@@ -355,8 +355,8 @@ const AuditSettingsComponent: React.FC = () => {
               <p className="text-sm text-gray-500 mb-2">감사에서 제외할 사용자 ID를 쉼표로 구분하여 입력</p>
               <Input
                 value={settings.excludedUsers.join(', ')}
-                onChange={(e) => {
-                  const userIds = e.target.value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+                onChange={(value) => {
+                  const userIds = value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
                   handleInputChange('excludedUsers', userIds);
                 }}
                 placeholder="1, 2, 3"
@@ -367,8 +367,8 @@ const AuditSettingsComponent: React.FC = () => {
               <p className="text-sm text-gray-500 mb-2">감사에서 제외할 액션을 쉼표로 구분하여 입력</p>
               <Input
                 value={settings.excludedActions.join(', ')}
-                onChange={(e) => {
-                  const actions = e.target.value.split(',').map(action => action.trim()).filter(action => action);
+                onChange={(value) => {
+                  const actions = value.split(',').map(action => action.trim()).filter(action => action);
                   handleInputChange('excludedActions', actions);
                 }}
                 placeholder="HEARTBEAT, HEALTH_CHECK"

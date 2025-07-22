@@ -4,7 +4,6 @@ import {
   FunnelIcon,
   EyeIcon,
   ExclamationTriangleIcon,
-  InformationCircleIcon,
   XCircleIcon
 } from '@heroicons/react/24/outline';
 import { adminService } from '../../services/adminService';
@@ -63,10 +62,10 @@ const SystemLogs: React.FC = () => {
 
   const getLevelBadge = (level: string) => {
     const levelConfig = {
-      info: { color: 'blue', text: '정보', icon: InformationCircleIcon },
+      info: { color: 'blue', text: '정보', icon: ExclamationTriangleIcon },
       warning: { color: 'yellow', text: '경고', icon: ExclamationTriangleIcon },
       error: { color: 'red', text: '오류', icon: XCircleIcon },
-      debug: { color: 'gray', text: '디버그', icon: InformationCircleIcon }
+      debug: { color: 'gray', text: '디버그', icon: ExclamationTriangleIcon }
     };
     const config = levelConfig[level as keyof typeof levelConfig] || levelConfig.info;
     const Icon = config.icon;

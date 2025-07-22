@@ -3,17 +3,21 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 
 // Components
+import Dashboard from './components/Dashboard/Dashboard';
+import { BidList } from './components/BidList/BidList';
+import { BidDetail } from './components/BidDetail/BidDetail';
 import { ReferenceManager } from './components/Reference';
 import { NotificationPage } from './components/Notification';
 import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';
+import { PersonalPage } from './components/Personal/PersonalPage';
 import { 
   AdminLayout,
   AdminDashboard, 
   UserManagement, 
   SystemLogs, 
   FetchLogs, 
-  NotificationSettings,
+  AdminNotificationSettings,
   ReportSettings,
   SystemSettings,
   BackupManagement,
@@ -30,11 +34,15 @@ function App() {
       <div className="App">
         <Routes>
           {/* Main Routes */}
-          <Route path="/" element={<Navigate to="/admin" replace />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/bid-list" element={<BidList />} />
+          <Route path="/bid-detail/:bidNo" element={<BidDetail />} />
           <Route path="/references" element={<ReferenceManager />} />
           <Route path="/notifications" element={<NotificationPage />} />
           <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/integration" element={<IntegrationPage />} />
+          <Route path="/personal" element={<PersonalPage />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={
@@ -59,7 +67,7 @@ function App() {
           } />
           <Route path="/admin/notifications" element={
             <AdminLayout>
-              <NotificationSettings />
+              <AdminNotificationSettings />
             </AdminLayout>
           } />
           <Route path="/admin/reports" element={
@@ -101,7 +109,7 @@ function App() {
           } />
           
           {/* Fallback */}
-          <Route path="*" element={<Navigate to="/admin" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </div>
     </Router>

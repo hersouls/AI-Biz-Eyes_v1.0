@@ -110,7 +110,7 @@ export const PersonalSettingsSection: React.FC = () => {
   };
 
   const handleReset = () => {
-    if (confirm('모든 설정을 기본값으로 초기화하시겠습니까?')) {
+    if (window.confirm('모든 설정을 기본값으로 초기화하시겠습니까?')) {
       setSettings({
         timezone: 'Asia/Seoul',
         language: 'ko',

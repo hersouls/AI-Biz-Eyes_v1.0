@@ -6,7 +6,6 @@ import {
   ClockIcon,
   ShieldCheckIcon,
   ServerIcon,
-  DatabaseIcon,
   UserGroupIcon
 } from '@heroicons/react/24/outline';
 import { adminService } from '../../services/adminService';
@@ -208,7 +207,7 @@ const QualityDashboard: React.FC = () => {
         {/* 데이터 품질 */}
         <Card>
           <div className="flex items-center mb-4">
-            <DatabaseIcon className="h-6 w-6 text-blue-600 mr-2" />
+                            <ServerIcon className="h-6 w-6 text-blue-600 mr-2" />
             <h2 className="text-lg font-semibold text-gray-900">데이터 품질</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

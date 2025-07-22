@@ -48,7 +48,7 @@ const QualityReport: React.FC = () => {
 
   const getPriorityBadge = (priority: string) => {
     const priorityConfig = {
-      low: { color: 'blue', text: '낮음', icon: InformationCircleIcon },
+      low: { color: 'blue', text: '낮음', icon: ExclamationTriangleIcon },
       medium: { color: 'yellow', text: '보통', icon: ExclamationTriangleIcon },
       high: { color: 'orange', text: '높음', icon: ExclamationTriangleIcon },
       critical: { color: 'red', text: '위험', icon: XCircleIcon }
@@ -148,7 +148,7 @@ const QualityReport: React.FC = () => {
           <div className="flex items-center space-x-4">
             <Select
               value={period}
-              onChange={setPeriod}
+              onChange={value => setPeriod(String(value))}
               options={[
                 { value: 'day', label: '일간' },
                 { value: 'week', label: '주간' },
