@@ -18,7 +18,14 @@ import {
   getBackups,
   createBackup,
   downloadBackup,
-  exportData
+  exportData,
+  // 품질/감사 기능 추가
+  getQualityMetrics,
+  getAuditLogs,
+  getQualityReport,
+  getAuditSettings,
+  updateAuditSettings,
+  exportAuditLogs
 } from '../controllers/adminController';
 
 const router = express.Router();
@@ -62,5 +69,13 @@ router.get('/backups/:id/download', downloadBackup);
 
 // 데이터 내보내기
 router.get('/export', exportData);
+
+// 품질/감사 기능
+router.get('/quality/metrics', getQualityMetrics);
+router.get('/quality/audit-logs', getAuditLogs);
+router.get('/quality/report', getQualityReport);
+router.get('/quality/audit-settings', getAuditSettings);
+router.put('/quality/audit-settings', updateAuditSettings);
+router.get('/quality/export-audit-logs', exportAuditLogs);
 
 export default router;

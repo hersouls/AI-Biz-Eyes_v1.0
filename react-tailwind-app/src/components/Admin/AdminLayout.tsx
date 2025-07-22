@@ -8,7 +8,12 @@ import {
   ShieldCheckIcon,
   CloudArrowUpIcon,
   ExclamationTriangleIcon,
-  HomeIcon
+  HomeIcon,
+  // 품질/감사 기능 아이콘 추가
+  ChartPieIcon,
+  ClipboardDocumentListIcon,
+  DocumentChartBarIcon,
+  Cog6ToothIcon
 } from '@heroicons/react/24/outline';
 
 interface AdminLayoutProps {
@@ -28,6 +33,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: '리포트 설정', href: '/admin/reports', icon: ChartBarIcon },
     { name: '시스템 설정', href: '/admin/system', icon: CogIcon },
     { name: '백업 관리', href: '/admin/backups', icon: ShieldCheckIcon },
+    // 품질/감사 기능 메뉴 추가
+    { name: '품질 관리', href: '/admin/quality', icon: ChartPieIcon },
+    { name: '감사 로그', href: '/admin/audit-logs', icon: ClipboardDocumentListIcon },
+    { name: '품질 리포트', href: '/admin/quality-report', icon: DocumentChartBarIcon },
+    { name: '감사 설정', href: '/admin/audit-settings', icon: Cog6ToothIcon },
   ];
 
   const isActive = (href: string) => {
