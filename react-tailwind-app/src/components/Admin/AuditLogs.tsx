@@ -4,7 +4,6 @@ import {
   FunnelIcon,
   EyeIcon,
   ExclamationTriangleIcon,
-  InformationCircleIcon,
   XCircleIcon,
   DocumentArrowDownIcon,
   ClockIcon,
@@ -74,7 +73,7 @@ const AuditLogs: React.FC = () => {
 
   const getSeverityBadge = (severity: string) => {
     const severityConfig = {
-      low: { color: 'blue', text: '낮음', icon: InformationCircleIcon },
+      low: { color: 'blue', text: '낮음', icon: ExclamationTriangleIcon },
       medium: { color: 'yellow', text: '보통', icon: ExclamationTriangleIcon },
       high: { color: 'orange', text: '높음', icon: ShieldExclamationIcon },
       critical: { color: 'red', text: '위험', icon: XCircleIcon }

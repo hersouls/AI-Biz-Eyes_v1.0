@@ -355,8 +355,8 @@ const AuditSettingsComponent: React.FC = () => {
               <p className="text-sm text-gray-500 mb-2">감사에서 제외할 사용자 ID를 쉼표로 구분하여 입력</p>
               <Input
                 value={settings.excludedUsers.join(', ')}
-                onChange={(e) => {
-                  const userIds = e.target.value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+                onChange={(value) => {
+                  const userIds = value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
                   handleInputChange('excludedUsers', userIds);
                 }}
                 placeholder="1, 2, 3"
@@ -367,8 +367,8 @@ const AuditSettingsComponent: React.FC = () => {
               <p className="text-sm text-gray-500 mb-2">감사에서 제외할 액션을 쉼표로 구분하여 입력</p>
               <Input
                 value={settings.excludedActions.join(', ')}
-                onChange={(e) => {
-                  const actions = e.target.value.split(',').map(action => action.trim()).filter(action => action);
+                onChange={(value) => {
+                  const actions = value.split(',').map(action => action.trim()).filter(action => action);
                   handleInputChange('excludedActions', actions);
                 }}
                 placeholder="HEARTBEAT, HEALTH_CHECK"

@@ -17,7 +17,7 @@ import {
   UserManagement, 
   SystemLogs, 
   FetchLogs, 
-  NotificationSettings,
+  AdminNotificationSettings,
   ReportSettings,
   SystemSettings,
   BackupManagement,
@@ -67,7 +67,7 @@ function App() {
           } />
           <Route path="/admin/notifications" element={
             <AdminLayout>
-              <NotificationSettings />
+              <AdminNotificationSettings />
             </AdminLayout>
           } />
           <Route path="/admin/reports" element={
