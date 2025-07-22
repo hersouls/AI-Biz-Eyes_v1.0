@@ -54,6 +54,7 @@ module.exports = {
       },
       fontFamily: {
         'pretendard': ['Pretendard', 'sans-serif'],
+        'sans': ['Pretendard', 'sans-serif'],
       },
       fontSize: {
         'heading0': ['38px', { lineHeight: '150%', fontWeight: '700' }],
@@ -76,6 +77,13 @@ module.exports = {
       spacing: {
         '240': '240px',
         '260': '260px',
+      },
+      maxWidth: {
+        'screen-xl': '1920px',
+        'screen-lg': '1025px',
+      },
+      minWidth: {
+        'screen-lg': '1025px',
       }
     },
   },

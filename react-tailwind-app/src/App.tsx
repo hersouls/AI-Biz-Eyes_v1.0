@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 
 // Components
+import DashboardLayout from './components/Layout/DashboardLayout';
 import Dashboard from './components/Dashboard/Dashboard';
 import { BidList } from './components/BidList/BidList';
 import { BidDetail } from './components/BidDetail/BidDetail';
@@ -33,16 +34,48 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Main Routes */}
+          {/* Main Routes with DashboardLayout */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/bid-list" element={<BidList />} />
-          <Route path="/bid-detail/:bidNo" element={<BidDetail />} />
-          <Route path="/references" element={<ReferenceManager />} />
-          <Route path="/notifications" element={<NotificationPage />} />
-          <Route path="/statistics" element={<StatisticsPage />} />
-          <Route path="/integration" element={<IntegrationPage />} />
-          <Route path="/personal" element={<PersonalPage />} />
+          <Route path="/dashboard" element={
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
+          } />
+          <Route path="/bid-list" element={
+            <DashboardLayout>
+              <BidList />
+            </DashboardLayout>
+          } />
+          <Route path="/bid-detail/:bidNo" element={
+            <DashboardLayout>
+              <BidDetail />
+            </DashboardLayout>
+          } />
+          <Route path="/references" element={
+            <DashboardLayout>
+              <ReferenceManager />
+            </DashboardLayout>
+          } />
+          <Route path="/notifications" element={
+            <DashboardLayout>
+              <NotificationPage />
+            </DashboardLayout>
+          } />
+          <Route path="/statistics" element={
+            <DashboardLayout>
+              <StatisticsPage />
+            </DashboardLayout>
+          } />
+          <Route path="/integration" element={
+            <DashboardLayout>
+              <IntegrationPage />
+            </DashboardLayout>
+          } />
+          <Route path="/personal" element={
+            <DashboardLayout>
+              <PersonalPage />
+            </DashboardLayout>
+          } />
           
           {/* Admin Routes */}
           <Route path="/admin" element={

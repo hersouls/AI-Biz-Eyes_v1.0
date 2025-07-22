@@ -1,265 +1,254 @@
 import React from 'react';
-import Badge from './Badge';
+import clsx from 'clsx';
 
-// Table Types
-interface Column<T> {
-  key: string;
-  header: string;
-  render?: (value: any, row: T, index: number) => React.ReactNode;
-  width?: string;
-  align?: 'left' | 'center' | 'right';
-  sortable?: boolean;
-}
-
-interface TableProps<T> {
-  data: T[];
-  columns: Column<T>[];
+interface TableProps {
+  children: React.ReactNode;
   className?: string;
-  loading?: boolean;
-  emptyMessage?: string;
-  onRowClick?: (row: T, index: number) => void;
-  selectable?: boolean;
-  selectedRows?: string[];
-  onSelectionChange?: (selectedIds: string[]) => void;
-  rowKey?: keyof T | ((row: T) => string);
-  hover?: boolean;
   striped?: boolean;
+  hover?: boolean;
+  bordered?: boolean;
   compact?: boolean;
-  pagination?: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-  onPageChange?: (page: number) => void;
 }
 
-
-
-// Table Component
-function Table<T extends Record<string, any>>({
-  data,
-  columns,
-  className = '',
-  loading = false,
-  emptyMessage = '데이터가 없습니다.',
-  onRowClick,
-  selectable = false,
-  selectedRows = [],
-  onSelectionChange,
-  rowKey,
-  hover = true,
+const Table: React.FC<TableProps> = ({
+  children,
+  className,
   striped = false,
-  compact = false,
-  pagination,
-  onPageChange
-}: TableProps<T>) {
-  
-  const getRowKey = (row: T, index: number): string => {
-    if (typeof rowKey === 'function') {
-      return rowKey(row);
-    }
-    if (typeof rowKey === 'string') {
-      return String(row[rowKey]);
-    }
-    return String(index);
-  };
-
-  const handleRowSelection = (rowId: string) => {
-    if (!onSelectionChange) return;
-    
-    const newSelection = selectedRows.includes(rowId)
-      ? selectedRows.filter(id => id !== rowId)
-      : [...selectedRows, rowId];
-    
-    onSelectionChange(newSelection);
-  };
-
-  const handleSelectAll = () => {
-    if (!onSelectionChange) return;
-    
-    const allIds = data.map((row, index) => getRowKey(row, index));
-    const newSelection = selectedRows.length === data.length ? [] : allIds;
-    onSelectionChange(newSelection);
-  };
-
-  if (loading) {
-    return (
-      <div className={`bg-white border border-gray-200 rounded-5 shadow-sm ${className}`}>
-        <div className="animate-pulse">
-          <div className="h-12 bg-gray-200 rounded-t-5"></div>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-16 bg-gray-100 border-b border-gray-200"></div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`bg-white border border-gray-200 rounded-5 shadow-sm overflow-hidden ${className}`}>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              {selectable && (
-                <th className="px-4 py-3 text-left">
-                  <input
-                    type="checkbox"
-                    checked={selectedRows.length === data.length && data.length > 0}
-                    onChange={handleSelectAll}
-                    className="rounded border-gray-300 text-primary focus:ring-primary-500"
-                  />
-                </th>
-              )}
-              {columns.map((column) => (
-                <th
-                  key={column.key}
-                  className={`px-4 py-3 text-left text-body3 font-semibold text-gray-700 ${
-                    column.width ? `w-${column.width}` : ''
-                  } ${column.align === 'center' ? 'text-center' : column.align === 'right' ? 'text-right' : ''}`}
-                >
-                  {column.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={selectable ? columns.length + 1 : columns.length}
-                  className="px-4 py-8 text-center text-body3 text-gray-500"
-                >
-                  {emptyMessage}
-                </td>
-              </tr>
-            ) : (
-              data.map((row, index) => {
-                const rowId = getRowKey(row, index);
-                const isSelected = selectedRows.includes(rowId);
-                
-                return (
-                  <tr
-                    key={rowId}
-                    className={`
-                      ${hover ? 'hover:bg-gray-50' : ''}
-                      ${striped && index % 2 === 1 ? 'bg-gray-50' : ''}
-                      ${onRowClick ? 'cursor-pointer' : ''}
-                      ${compact ? 'h-12' : 'h-16'}
-                      transition-colors duration-150
-                    `}
-                    onClick={() => onRowClick?.(row, index)}
-                  >
-                    {selectable && (
-                      <td className="px-4 py-3">
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => handleRowSelection(rowId)}
-                          onClick={(e) => e.stopPropagation()}
-                          className="rounded border-gray-300 text-primary focus:ring-primary-500"
-                        />
-                      </td>
-                    )}
-                    {columns.map((column) => (
-                      <td
-                        key={column.key}
-                        className={`px-4 py-3 text-body3 text-gray-900 ${
-                          column.align === 'center' ? 'text-center' : column.align === 'right' ? 'text-right' : ''
-                        }`}
-                      >
-                        {column.render
-                          ? column.render(row[column.key], row, index)
-                          : row[column.key]}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
-      
-      {/* Pagination */}
-      {pagination && onPageChange && pagination.totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
-          <div className="text-sm text-gray-600">
-            {pagination.total}개 중 {(pagination.page - 1) * pagination.limit + 1}-
-            {Math.min(pagination.page * pagination.limit, pagination.total)}개
-          </div>
-          
-          <div className="flex space-x-2">
-            <button
-              onClick={() => onPageChange(pagination.page - 1)}
-              disabled={pagination.page === 1}
-              className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            >
-              이전
-            </button>
-            <span className="px-3 py-1 text-sm">
-              {pagination.page} / {pagination.totalPages}
-            </span>
-            <button
-              onClick={() => onPageChange(pagination.page + 1)}
-              disabled={pagination.page === pagination.totalPages}
-              className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            >
-              다음
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Table Header Component
-interface TableHeaderProps {
-  title: string;
-  subtitle?: string;
-  action?: React.ReactNode;
-  className?: string;
-}
-
-export const TableHeader: React.FC<TableHeaderProps> = ({
-  title,
-  subtitle,
-  action,
-  className = ''
+  hover = true,
+  bordered = false,
+  compact = false
 }) => {
+  const classes = clsx(
+    'min-w-full divide-y divide-gray-200',
+    bordered && 'border border-gray-200 rounded-5',
+    className
+  );
+
   return (
-    <div className={`flex items-center justify-between mb-4 ${className}`}>
-      <div>
-        <h3 className="text-subtitle1 text-gray-900 font-bold">{title}</h3>
-        {subtitle && (
-          <p className="text-body3 text-gray-600 mt-1">{subtitle}</p>
-        )}
-      </div>
-      {action && (
-        <div className="flex items-center gap-2">
-          {action}
-        </div>
-      )}
+    <div className="overflow-hidden">
+      <table className={classes}>
+        <tbody className={clsx(
+          'bg-white divide-y divide-gray-200',
+          striped && 'divide-y-0'
+        )}>
+          {React.Children.map(children, (child, index) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child, {
+                striped,
+                hover,
+                compact,
+                index
+              });
+            }
+            return child;
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-// Table Footer Component
-interface TableFooterProps {
+interface TableHeaderProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export const TableFooter: React.FC<TableFooterProps> = ({
+export const TableHeader: React.FC<TableHeaderProps> = ({
   children,
-  className = ''
+  className
 }) => {
   return (
-    <div className={`flex items-center justify-between mt-4 ${className}`}>
+    <thead className="bg-gray-50">
+      <tr className={clsx('', className)}>
+        {children}
+      </tr>
+    </thead>
+  );
+};
+
+interface TableHeaderCellProps {
+  children: React.ReactNode;
+  className?: string;
+  align?: 'left' | 'center' | 'right';
+  sortable?: boolean;
+  onSort?: () => void;
+  sortDirection?: 'asc' | 'desc' | null;
+}
+
+export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
+  children,
+  className,
+  align = 'left',
+  sortable = false,
+  onSort,
+  sortDirection
+}) => {
+  const alignClasses = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right'
+  };
+
+  const classes = clsx(
+    'px-6 py-3 text-body3 font-bold text-gray-700 uppercase tracking-wider',
+    alignClasses[align],
+    sortable && 'cursor-pointer hover:bg-gray-100',
+    className
+  );
+
+  return (
+    <th className={classes} onClick={sortable ? onSort : undefined}>
+      <div className="flex items-center justify-between">
+        <span>{children}</span>
+        {sortable && (
+          <div className="ml-2">
+            {sortDirection === 'asc' && (
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+              </svg>
+            )}
+            {sortDirection === 'desc' && (
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            )}
+            {!sortDirection && (
+              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            )}
+          </div>
+        )}
+      </div>
+    </th>
+  );
+};
+
+interface TableRowProps {
+  children: React.ReactNode;
+  className?: string;
+  striped?: boolean;
+  hover?: boolean;
+  compact?: boolean;
+  index?: number;
+  onClick?: () => void;
+  selected?: boolean;
+}
+
+export const TableRow: React.FC<TableRowProps> = ({
+  children,
+  className,
+  striped = false,
+  hover = true,
+  compact = false,
+  index = 0,
+  onClick,
+  selected = false
+}) => {
+  const classes = clsx(
+    compact ? 'px-4 py-2' : 'px-6 py-4',
+    striped && index % 2 === 1 && 'bg-gray-50',
+    hover && 'hover:bg-gray-50',
+    selected && 'bg-primary-50 border-l-4 border-primary',
+    onClick && 'cursor-pointer',
+    'transition-colors duration-150',
+    className
+  );
+
+  return (
+    <tr className={classes} onClick={onClick}>
       {children}
-    </div>
+    </tr>
+  );
+};
+
+interface TableCellProps {
+  children: React.ReactNode;
+  className?: string;
+  align?: 'left' | 'center' | 'right';
+  compact?: boolean;
+}
+
+export const TableCell: React.FC<TableCellProps> = ({
+  children,
+  className,
+  align = 'left',
+  compact = false
+}) => {
+  const alignClasses = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right'
+  };
+
+  const classes = clsx(
+    compact ? 'px-4 py-2' : 'px-6 py-4',
+    'text-body3 text-gray-900',
+    alignClasses[align],
+    'whitespace-nowrap',
+    className
+  );
+
+  return (
+    <td className={classes}>
+      {children}
+    </td>
+  );
+};
+
+interface TableEmptyProps {
+  message?: string;
+  icon?: React.ReactNode;
+  action?: React.ReactNode;
+}
+
+export const TableEmpty: React.FC<TableEmptyProps> = ({
+  message = '데이터가 없습니다.',
+  icon,
+  action
+}) => {
+  return (
+    <tr>
+      <td colSpan={100} className="px-6 py-12 text-center">
+        <div className="flex flex-col items-center">
+          {icon && (
+            <div className="w-12 h-12 text-gray-400 mb-4">
+              {icon}
+            </div>
+          )}
+          <p className="text-body2 text-gray-500 mb-4">{message}</p>
+          {action && (
+            <div>{action}</div>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+interface TableLoadingProps {
+  columns?: number;
+  rows?: number;
+}
+
+export const TableLoading: React.FC<TableLoadingProps> = ({
+  columns = 5,
+  rows = 3
+}) => {
+  return (
+    <>
+      {Array.from({ length: rows }).map((_, rowIndex) => (
+        <TableRow key={rowIndex}>
+          {Array.from({ length: columns }).map((_, colIndex) => (
+            <TableCell key={colIndex}>
+              <div className="animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              </div>
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
   );
 };
 
