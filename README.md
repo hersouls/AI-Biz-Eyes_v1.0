@@ -15,7 +15,7 @@ B2G 공모사업 자동화 관리 웹서비스 - 나라장터 공고 통합 관�
 2. **package.json 수정**
    - `homepage` 필드를 실제 GitHub 사용자명과 저장소명으로 수정:
    ```json
-   "homepage": "https://[YOUR_GITHUB_USERNAME].github.io/[YOUR_REPOSITORY_NAME]"
+   "homepage": "https://hersouls.github.io/B2G_v1.0"
    ```
 
 3. **자동 배포**
