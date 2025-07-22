@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Card from '../Card';
+import React, { useState } from 'react';
 import Button from '../Button';
 import Select from '../Select';
 import BidStatistics from './BidStatistics';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   UserIcon, 
   BellIcon, 
@@ -33,7 +33,6 @@ const tabs = [
 
 export const PersonalPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);

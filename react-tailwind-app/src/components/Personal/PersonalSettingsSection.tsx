@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { 
   CogIcon, 
-  GlobeAltIcon, 
   ClockIcon, 
   LanguageIcon,
   ComputerDesktopIcon,
   DevicePhoneMobileIcon,
-  SunIcon,
-  MoonIcon
+  SunIcon
 } from '@heroicons/react/24/outline';
 
 interface SettingOption {
@@ -123,7 +121,6 @@ export const PersonalSettingsSection: React.FC = () => {
   };
 
   const renderSettingControl = (option: SettingOption) => {
-    const Icon = option.icon;
     const currentValue = settings[option.id as keyof typeof settings];
 
     switch (option.type) {

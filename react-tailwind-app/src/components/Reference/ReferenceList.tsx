@@ -57,7 +57,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     };
 
     fetchReferences();
-  }, [filters, pagination.page]);
+  }, [filters, pagination.page, pagination.limit]);
 
   const handleSearch = (value: string) => {
     setFilters(prev => ({ ...prev, search: value }));

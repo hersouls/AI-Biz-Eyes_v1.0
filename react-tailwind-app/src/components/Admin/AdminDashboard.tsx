@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   UsersIcon, 
   DocumentTextIcon, 
@@ -20,11 +20,7 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [period, setPeriod] = useState('today');
 
-  useEffect(() => {
-    loadStatistics();
-  }, [period]);
-
-  const loadStatistics = async () => {
+  const loadStatistics = useCallback(async () => {
     try {
       setLoading(true);
       const response = await adminService.getSystemStatistics(period);
@@ -36,7 +32,11 @@ const AdminDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    loadStatistics();
+  }, [loadStatistics]);
 
   const StatCard = ({ 
     title, 

@@ -2,8 +2,6 @@ import {
   User,
   UserCreateRequest,
   UserUpdateRequest,
-  FetchLog,
-  SystemLog,
   NotificationConfig,
   ReportConfig,
   SystemStatistics,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ClockIcon, EyeIcon, HandThumbUpIcon, DocumentTextIcon, ChartBarIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
 import { UserActivity, UserPerformance } from '../../types/personal';
@@ -19,11 +19,7 @@ export const ActivitySection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    loadData();
-  }, [currentPage]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setIsLoading(true);
       const [activitiesResponse, performanceResponse] = await Promise.all([
@@ -44,7 +40,11 @@ export const ActivitySection: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('ko-KR');

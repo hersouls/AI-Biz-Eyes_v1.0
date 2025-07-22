@@ -80,10 +80,10 @@ const FieldMappingList: React.FC<FieldMappingListProps> = ({ className = '' }) =
     await fetchMappings(selectedSystem || undefined);
   };
 
-  const getSystemName = (systemId: string) => {
-    const system = systems.find(s => s.id === systemId);
-    return system?.name || systemId;
-  };
+  // const getSystemName = (systemId: string) => {
+  //   const system = systems.find(s => s.id === systemId);
+  //   return system?.name || systemId;
+  // };
 
   if (loading && mappings.length === 0) {
     return (

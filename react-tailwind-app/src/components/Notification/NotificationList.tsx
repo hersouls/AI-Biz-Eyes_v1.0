@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Notification, NotificationFilter, NotificationStats } from '../../types/notification';
 import { NotificationService } from '../../services/notificationService';
 import Card from '../Card';
 import Badge from '../Badge';
 import Button from '../Button';
 import Select from '../Select';
-import Input from '../Input';
 
 interface NotificationListProps {
   onNotificationClick?: (notification: Notification) => void;
@@ -28,12 +27,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   });
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  useEffect(() => {
-    loadNotifications();
-    loadStats();
-  }, [filter, pagination.page]);
-
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
     try {
       setLoading(true);
       const response = await NotificationService.getNotifications(
@@ -48,7 +42,12 @@ export const NotificationList: React.FC<NotificationListProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter, pagination.page, pagination.limit]);
+
+  useEffect(() => {
+    loadNotifications();
+    loadStats();
+  }, [loadNotifications]);
 
   const loadStats = async () => {
     try {

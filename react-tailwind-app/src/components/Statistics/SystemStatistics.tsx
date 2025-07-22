@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Card from '../Card';
-import Badge from '../Badge';
 import Button from '../Button';
 import {
   BarChart,
@@ -8,8 +7,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -22,7 +19,6 @@ import {
   DocumentTextIcon,
   BellIcon,
   ServerIcon,
-  CheckCircleIcon,
   ExclamationTriangleIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
@@ -55,18 +51,14 @@ interface SystemStats {
   };
 }
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
+// const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
 
 const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
   const [stats, setStats] = useState<SystemStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchSystemStatistics();
-  }, [period]);
-
-  const fetchSystemStatistics = async () => {
+  const fetchSystemStatistics = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
@@ -88,7 +80,11 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    fetchSystemStatistics();
+  }, [fetchSystemStatistics]);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('ko-KR').format(num);

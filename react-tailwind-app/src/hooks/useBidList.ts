@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { BidData, BidListFilters, BidListSort, BidListPagination } from '../types/bid';
+import { useState, useCallback } from 'react';
+import { BidData, BidListFilters } from '../types/bid';
 
 // 나라장터 OpenAPI 설정
 const API_CONFIG = {
@@ -9,20 +9,20 @@ const API_CONFIG = {
 };
 
 // API 응답 타입
-interface ApiResponse {
-  response: {
-    body: {
-      items: BidData[];
-      numOfRows: number;
-      pageNo: number;
-      totalCount: number;
-    };
-    header: {
-      resultCode: string;
-      resultMsg: string;
-    };
-  };
-}
+// interface ApiResponse {
+//   response: {
+//     body: {
+//       items: BidData[];
+//       numOfRows: number;
+//       pageNo: number;
+//       totalCount: number;
+//     };
+//     header: {
+//       resultCode: string;
+//       resultMsg: string;
+//     };
+//   };
+// }
 
 // 훅 반환 타입
 interface UseBidListReturn {
@@ -131,7 +131,7 @@ export const useBidList = (): UseBidListReturn => {
     } finally {
       setLoading(false);
     }
-  }, [buildApiUrl]);
+  }, []);
 
   // 데이터 내보내기
   const exportBids = useCallback(async (selectedBids: string[], format: 'excel' | 'csv') => {

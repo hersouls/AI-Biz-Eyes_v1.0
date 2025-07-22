@@ -8,8 +8,7 @@ import {
   XCircleIcon,
   ExclamationTriangleIcon,
   PlusIcon,
-  TrashIcon,
-  DocumentArrowDownIcon
+  TrashIcon
 } from '@heroicons/react/24/outline';
 import { BackupInfo } from '../../types/admin';
 import { adminService } from '../../services/adminService';

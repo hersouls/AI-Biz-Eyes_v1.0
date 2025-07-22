@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  MagnifyingGlassIcon,
-  FunnelIcon,
   EyeIcon,
   ExclamationTriangleIcon,
   XCircleIcon
@@ -31,11 +29,7 @@ const SystemLogs: React.FC = () => {
   const [selectedLog, setSelectedLog] = useState<SystemLog | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
-  useEffect(() => {
-    loadLogs();
-  }, [pagination.page, filters]);
-
-  const loadLogs = async () => {
+  const loadLogs = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -51,14 +45,16 @@ const SystemLogs: React.FC = () => {
         setLogs(response.data.logs);
         setPagination(response.data.pagination);
       }
-      setError(null);
     } catch (err) {
-      setError('시스템 로그를 불러오는데 실패했습니다.');
       console.error('Failed to load logs:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.page, pagination.limit, filters]);
+
+  useEffect(() => {
+    loadLogs();
+  }, [loadLogs]);
 
   const getLevelBadge = (level: string) => {
     const levelConfig = {

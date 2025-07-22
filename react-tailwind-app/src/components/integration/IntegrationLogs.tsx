@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { IntegrationLog, IntegrationSystem } from '../../types/integration';
 import { integrationService } from '../../services/integrationService';
 import { 
-  MagnifyingGlassIcon,
   FunnelIcon,
   ArrowPathIcon
 } from '@heroicons/react/24/outline';
@@ -33,7 +32,7 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
     totalPages: 0
   });
 
-  const fetchLogs = async () => {
+  const fetchLogs = useCallback(async () => {
     try {
       setLoading(true);
       const params: any = {
@@ -47,13 +46,12 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
       const response = await integrationService.getLogs(params);
       setLogs(response.logs);
       setPagination(response.pagination);
-      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '로그 조회에 실패했습니다.');
+      console.error('로그 조회에 실패했습니다:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters.page, filters.limit, filters.systemId, filters.type]);
 
   const fetchSystems = async () => {
     try {
@@ -70,7 +68,7 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
 
   useEffect(() => {
     fetchLogs();
-  }, [filters]);
+  }, [fetchLogs]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({

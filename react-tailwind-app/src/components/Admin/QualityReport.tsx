@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   ChartBarIcon,
   DocumentTextIcon,
@@ -25,11 +25,7 @@ const QualityReport: React.FC = () => {
   const [period, setPeriod] = useState('week');
   const [generatedAt, setGeneratedAt] = useState<string>('');
 
-  useEffect(() => {
-    loadQualityReport();
-  }, [period]);
-
-  const loadQualityReport = async () => {
+  const loadQualityReport = useCallback(async () => {
     try {
       setLoading(true);
       const response = await adminService.getQualityReport(period);
@@ -37,14 +33,16 @@ const QualityReport: React.FC = () => {
         setReport(response.data.report);
         setGeneratedAt(response.data.generatedAt);
       }
-      setError(null);
     } catch (err) {
-      setError('품질 리포트를 불러오는데 실패했습니다.');
       console.error('Failed to load quality report:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    loadQualityReport();
+  }, [loadQualityReport]);
 
   const getPriorityBadge = (priority: string) => {
     const priorityConfig = {
