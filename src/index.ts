@@ -13,6 +13,7 @@ import reportRoutes from './routes/reports';
 import adminRoutes from './routes/admin';
 import fileRoutes from './routes/files';
 import webhookRoutes from './routes/webhooks';
+import personalRoutes from './routes/personal';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -69,6 +70,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/files', fileRoutes);
 app.use('/api/webhooks', webhookRoutes);
+app.use('/api/personal', personalRoutes);
 
 // 404 핸들러
 app.use('*', (req, res) => {
