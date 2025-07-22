@@ -1,13 +1,6 @@
 import { useState, useCallback } from 'react';
 import { BidData, BidListFilters } from '../types/bid';
 
-// 나라장터 OpenAPI 설정
-const API_CONFIG = {
-  BASE_URL: 'https://openapi.g2b.go.kr:8090/openapi/service/rest/CpcpBidInfoService',
-  SERVICE_KEY: process.env.REACT_APP_G2B_SERVICE_KEY || 'YOUR_SERVICE_KEY_HERE',
-  DEFAULT_PAGE_SIZE: 20
-};
-
 // API 응답 타입
 // interface ApiResponse {
 //   response: {
