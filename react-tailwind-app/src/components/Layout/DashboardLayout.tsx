@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Dialog,
   DialogPanel,
@@ -27,8 +28,8 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 const navigation = [
-  { name: '대시보드', href: '/dashboard', icon: HomeIcon, current: true },
-  { name: '공고 리스트', href: '/bids', icon: ClipboardDocumentListIcon, current: false },
+  { name: '대시보드', href: '/', icon: HomeIcon, current: true },
+  { name: '공고 리스트', href: '/bid-list', icon: ClipboardDocumentListIcon, current: false },
   { name: '공고 상세', href: '/bid-detail', icon: DocumentDuplicateIcon, current: false },
   { name: '레퍼런스 관리', href: '/references', icon: FolderIcon, current: false },
   { name: '알림/리포트', href: '/notifications', icon: BellIcon, current: false },
@@ -53,6 +54,13 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  // 현재 경로에 따라 네비게이션 상태 업데이트
+  const updatedNavigation = navigation.map(item => ({
+    ...item,
+    current: location.pathname === item.href
+  }));
 
   return (
     <div className="h-full bg-white">
@@ -113,10 +121,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          {navigation.map((item) => (
+                          {updatedNavigation.map((item) => (
                             <li key={item.name}>
-                              <a
-                                href={item.href}
+                              <Link
+                                to={item.href}
                                 className={`${
                                   item.current
                                     ? 'bg-[#119891] text-white'
@@ -125,7 +133,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                               >
                                 <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
                                 {item.name}
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
