@@ -37,7 +37,7 @@ npm install
 ```bash
 npm start
 ```
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
+브라우저에서 [https://hersouls.github.io/AI-Biz-Eyes_v1.0](https://hersouls.github.io/AI-Biz-Eyes_v1.0)을 열어 확인하세요.
 
 ### 3. 빌드
 ```bash

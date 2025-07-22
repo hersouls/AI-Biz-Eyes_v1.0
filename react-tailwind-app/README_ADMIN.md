@@ -91,7 +91,7 @@ src/components/Admin/
 
 ### 1. 관리자 패널 접근
 ```
-http://localhost:3000/admin
+https://hersouls.github.io/AI-Biz-Eyes_v1.0/admin
 ```
 
 ### 2. 네비게이션

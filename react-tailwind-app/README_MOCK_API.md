@@ -43,8 +43,8 @@ API 호출 실패 시 자동으로 Mock 데이터로 fallback되며, 콘솔에 �
 
 ```env
 # API Configuration
-REACT_APP_API_URL=http://localhost:3001/api
-REACT_APP_API_BASE_URL=http://localhost:3001/api
+REACT_APP_API_URL=https://hersouls.github.io/AI-Biz-Eyes_v1.0/api
+REACT_APP_API_BASE_URL=https://hersouls.github.io/AI-Biz-Eyes_v1.0/api
 
 # Environment
 REACT_APP_ENV=development

@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:3002/api/integration';
+const BASE_URL = 'https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/integration';
 
 async function testIntegrationAPI() {
   console.log('🧪 Testing External System Integration Feature...\n');
@@ -38,11 +38,11 @@ async function testIntegrationAPI() {
     
     console.log('\n🎉 All API tests completed successfully!');
     console.log('\n📋 Frontend Access:');
-    console.log('   - Main App: http://localhost:3000');
-    console.log('   - Integration Page: http://localhost:3000/integration');
+    console.log('   - Main App: https://hersouls.github.io/AI-Biz-Eyes_v1.0');
+    console.log('   - Integration Page: https://hersouls.github.io/AI-Biz-Eyes_v1.0/integration');
     console.log('\n🔧 Backend API:');
-    console.log('   - Base URL: http://localhost:3002/api/integration');
-    console.log('   - Health Check: http://localhost:3002/health');
+    console.log('   - Base URL: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/integration');
+    console.log('   - Health Check: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health');
     
   } catch (error) {
     console.error('❌ Test failed:', error.message);

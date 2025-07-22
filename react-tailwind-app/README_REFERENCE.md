@@ -169,7 +169,7 @@ npm run build
 
 ### .env 파일 설정
 ```
-REACT_APP_API_BASE_URL=http://localhost:3001/api
+REACT_APP_API_BASE_URL=https://hersouls.github.io/AI-Biz-Eyes_v1.0/api
 ```
 
 ## 주요 특징

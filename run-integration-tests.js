@@ -36,7 +36,7 @@ async function checkServers() {
   
   try {
     // API 서버 확인
-    const apiCheck = await execAsync('curl -s http://localhost:3002/health');
+    const apiCheck = await execAsync('curl -s https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health');
     if (apiCheck.stdout.includes('"success":true')) {
       log('API 서버가 실행 중입니다', 'success');
     } else {
@@ -46,7 +46,7 @@ async function checkServers() {
     }
     
     // React 앱 확인
-    const frontendCheck = await execAsync('curl -s http://localhost:3000');
+    const frontendCheck = await execAsync('curl -s https://hersouls.github.io/AI-Biz-Eyes_v1.0');
     if (frontendCheck.stdout.includes('<!DOCTYPE html>') || frontendCheck.stdout.includes('<html')) {
       log('React 앱이 실행 중입니다', 'success');
     } else {
@@ -106,7 +106,7 @@ function printManualTestGuide() {
   console.log(`
 📋 수동 테스트 체크리스트:
 
-🌐 브라우저 테스트 (http://localhost:3000):
+  🌐 브라우저 테스트 (https://hersouls.github.io/AI-Biz-Eyes_v1.0):
 1. 페이지 로딩 확인
 2. 로그인 기능 테스트
    - 올바른 이메일/비밀번호로 로그인
@@ -124,7 +124,7 @@ function printManualTestGuide() {
    - 모바일/태블릿 뷰
    - 화면 크기 조정
 
-🔧 API 테스트 (http://localhost:3002):
+  🔧 API 테스트 (https://hersouls.github.io/AI-Biz-Eyes_v1.0/api):
 1. 헬스 체크: GET /health
 2. 로그인: POST /api/auth/login
 3. 입찰 목록: GET /api/bids
