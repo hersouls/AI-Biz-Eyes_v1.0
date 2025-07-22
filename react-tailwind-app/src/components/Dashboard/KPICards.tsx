@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ClipboardDocumentListIcon, 
   ClockIcon, 
@@ -8,6 +8,8 @@ import {
   ArrowDownIcon 
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+import { DashboardService } from '../../services/dashboardService';
+import { DashboardStats } from '../../types/dashboard';
 
 interface KPICardProps {
   title: string;
@@ -104,18 +106,66 @@ function KPICard({ title, value, icon: Icon, change, color, description }: KPICa
 }
 
 export default function KPICards() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await DashboardService.getDashboardStats();
+        setStats(data);
+      } catch (error) {
+        console.error('Failed to fetch dashboard stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="bg-white overflow-hidden shadow-md rounded-5 border border-gray-200 p-6">
+            <div className="animate-pulse">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-gray-200 rounded-5"></div>
+                <div className="ml-5 w-0 flex-1">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="h-8 bg-gray-200 rounded w-1/2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="bg-white overflow-hidden shadow-md rounded-5 border border-gray-200 p-6">
+          <div className="text-center text-gray-500">데이터를 불러올 수 없습니다.</div>
+        </div>
+      </div>
+    );
+  }
+
   const kpiData = [
     {
       title: '전체 공고',
-      value: '1,234',
+      value: stats.totalBids.toLocaleString(),
       icon: ClipboardDocumentListIcon,
-      change: { value: 12, type: 'increase' as const, period: '지난 달 대비' },
+      change: { value: stats.monthlyGrowth, type: 'increase' as const, period: '지난 달 대비' },
       color: 'primary' as const,
       description: '진행중인 공고 수'
     },
     {
       title: '진행중',
-      value: '89',
+      value: stats.activeBids.toLocaleString(),
       icon: ClockIcon,
       change: { value: 5, type: 'increase' as const, period: '지난 주 대비' },
       color: 'secondary' as const,
@@ -123,7 +173,7 @@ export default function KPICards() {
     },
     {
       title: '완료',
-      value: '1,145',
+      value: stats.completedBids.toLocaleString(),
       icon: CheckCircleIcon,
       change: { value: 8, type: 'increase' as const, period: '지난 달 대비' },
       color: 'success' as const,
@@ -131,7 +181,7 @@ export default function KPICards() {
     },
     {
       title: '긴급',
-      value: '12',
+      value: stats.urgentBids.toLocaleString(),
       icon: ExclamationTriangleIcon,
       change: { value: 3, type: 'decrease' as const, period: '지난 주 대비' },
       color: 'danger' as const,
