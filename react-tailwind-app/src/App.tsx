@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import UIComponents from './components/UIComponents';
+import { ReferenceManager } from './components/Reference';
 
 function App() {
   return (
     <div className="App">
-      <UIComponents />
+      <ReferenceManager />
     </div>
   );
 }
