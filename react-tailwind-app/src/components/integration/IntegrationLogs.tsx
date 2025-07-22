@@ -14,7 +14,6 @@ const IntegrationLogs: React.FC<IntegrationLogsProps> = ({ className = '' }) => 
   const [logs, setLogs] = useState<IntegrationLog[]>([]);
   const [systems, setSystems] = useState<IntegrationSystem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   
   // 필터 상태
   const [filters, setFilters] = useState({

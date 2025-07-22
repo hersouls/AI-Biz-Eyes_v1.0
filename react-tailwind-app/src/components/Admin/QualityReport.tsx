@@ -21,7 +21,6 @@ import Button from '../Button';
 const QualityReport: React.FC = () => {
   const [report, setReport] = useState<QualityReportType | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [period, setPeriod] = useState('week');
   const [generatedAt, setGeneratedAt] = useState<string>('');
 
