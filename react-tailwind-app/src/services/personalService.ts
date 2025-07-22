@@ -442,7 +442,7 @@ export class PersonalService {
     }
   }
 
-  static async downloadExport(exportId: number): Promise<string> {
+  static async downloadExport(exportId: number, format: 'excel' | 'csv' | 'json'): Promise<string> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/exports/${exportId}/download`);
       return response.data.downloadUrl;

@@ -52,7 +52,7 @@ function App() {
           } />
           <Route path="/admin/notifications" element={
             <AdminLayout>
-              <NotificationSettings />
+              <AdminNotificationSettings />
             </AdminLayout>
           } />
           <Route path="/admin/reports" element={

@@ -120,30 +120,30 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'urgent':
-        return 'red';
+        return 'danger';
       case 'high':
-        return 'orange';
+        return 'warning';
       case 'normal':
-        return 'blue';
+        return 'primary';
       case 'low':
-        return 'gray';
+        return 'default';
       default:
-        return 'gray';
+        return 'default';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'unread':
-        return 'blue';
+        return 'primary';
       case 'read':
-        return 'gray';
+        return 'default';
       case 'important':
-        return 'yellow';
+        return 'warning';
       case 'completed':
-        return 'green';
+        return 'success';
       default:
-        return 'gray';
+        return 'default';
     }
   };
 

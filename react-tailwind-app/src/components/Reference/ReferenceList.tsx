@@ -62,30 +62,30 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     setFilters(prev => ({ ...prev, search: value }));
   };
 
-  const handleFilterChange = (key: keyof ReferenceFilters, value: string) => {
+  const handleFilterChange = (key: keyof ReferenceFilters, value: string | number | undefined) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
   const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      success: { color: 'green', text: '성공' },
-      failure: { color: 'red', text: '실패' },
-      ongoing: { color: 'blue', text: '진행중' }
+    const statusConfig: Record<string, { color: 'success' | 'danger' | 'primary', text: string }> = {
+      success: { color: 'success', text: '성공' },
+      failure: { color: 'danger', text: '실패' },
+      ongoing: { color: 'primary', text: '진행중' }
     };
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge variant={config.color}>{config.text}</Badge>;
+    const config = statusConfig[status];
+    return <Badge variant={config?.color || 'default'}>{config?.text || status}</Badge>;
   };
 
   const getScoreBadge = (score: string) => {
-    const scoreConfig = {
-      'A+': { color: 'green', text: 'A+' },
-      'A': { color: 'green', text: 'A' },
-      'B': { color: 'yellow', text: 'B' },
-      'C': { color: 'orange', text: 'C' },
-      'D': { color: 'red', text: 'D' }
+    const scoreConfig: Record<string, { color: 'success' | 'warning' | 'danger', text: string }> = {
+      'A+': { color: 'success', text: 'A+' },
+      'A': { color: 'success', text: 'A' },
+      'B': { color: 'warning', text: 'B' },
+      'C': { color: 'warning', text: 'C' },
+      'D': { color: 'danger', text: 'D' }
     };
-    const config = scoreConfig[score as keyof typeof scoreConfig];
-    return <Badge variant={config.color}>{config.text}</Badge>;
+    const config = scoreConfig[score];
+    return <Badge variant={config?.color || 'default'}>{config?.text || score}</Badge>;
   };
 
   const formatAmount = (amount: number) => {
@@ -95,7 +95,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
   const tableColumns = [
     {
       key: 'projectName',
-      title: '사업명',
+      header: '사업명',
       render: (value: string, record: ReferenceData) => (
         <div className="text-left">
           <div className="font-medium text-gray-900">{value}</div>
@@ -107,39 +107,39 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     },
     {
       key: 'projectType',
-      title: '사업유형',
+      header: '사업유형',
       render: (value: string) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'organization',
-      title: '참여기관',
+      header: '참여기관',
       render: (value: string) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'participationYear',
-      title: '참여연도',
+      header: '참여연도',
       render: (value: number) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'contractAmount',
-      title: '계약금액',
+      header: '계약금액',
       render: (value: number) => (
         <span className="font-medium text-gray-900">{formatAmount(value)}</span>
       )
     },
     {
       key: 'status',
-      title: '성과상태',
+      header: '성과상태',
       render: (value: string) => getStatusBadge(value)
     },
     {
       key: 'score',
-      title: '평가등급',
+      header: '평가등급',
       render: (value: string) => getScoreBadge(value)
     },
     {
       key: 'actions',
-      title: '액션',
+      header: '액션',
       render: (_: any, record: ReferenceData) => (
         <div className="flex space-x-2">
           <Button

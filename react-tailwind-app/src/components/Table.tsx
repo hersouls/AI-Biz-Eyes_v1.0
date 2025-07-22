@@ -25,6 +25,13 @@ interface TableProps<T> {
   hover?: boolean;
   striped?: boolean;
   compact?: boolean;
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  onPageChange?: (page: number) => void;
 }
 
 
@@ -43,7 +50,9 @@ function Table<T extends Record<string, any>>({
   rowKey,
   hover = true,
   striped = false,
-  compact = false
+  compact = false,
+  pagination,
+  onPageChange
 }: TableProps<T>) {
   
   const getRowKey = (row: T, index: number): string => {
@@ -172,6 +181,36 @@ function Table<T extends Record<string, any>>({
           </tbody>
         </table>
       </div>
+      
+      {/* Pagination */}
+      {pagination && onPageChange && pagination.totalPages > 1 && (
+        <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+          <div className="text-sm text-gray-600">
+            {pagination.total}개 중 {(pagination.page - 1) * pagination.limit + 1}-
+            {Math.min(pagination.page * pagination.limit, pagination.total)}개
+          </div>
+          
+          <div className="flex space-x-2">
+            <button
+              onClick={() => onPageChange(pagination.page - 1)}
+              disabled={pagination.page === 1}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              이전
+            </button>
+            <span className="px-3 py-1 text-sm">
+              {pagination.page} / {pagination.totalPages}
+            </span>
+            <button
+              onClick={() => onPageChange(pagination.page + 1)}
+              disabled={pagination.page === pagination.totalPages}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              다음
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -21,6 +21,8 @@ interface InputProps {
   name?: string;
   id?: string;
   autoComplete?: string;
+  min?: string | number;
+  max?: string | number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -43,7 +45,9 @@ const Input: React.FC<InputProps> = ({
   className = '',
   name,
   id,
-  autoComplete
+  autoComplete,
+  min,
+  max
 }) => {
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-body3',
@@ -90,6 +94,8 @@ const Input: React.FC<InputProps> = ({
           readOnly={readOnly}
           required={required}
           autoComplete={autoComplete}
+          min={min}
+          max={max}
           className={`
             ${baseClasses} 
             ${stateClasses} 

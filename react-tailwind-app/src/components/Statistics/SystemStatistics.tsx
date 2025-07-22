@@ -418,10 +418,11 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
                   {stats.system.diskUsage}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge 
-                    variant={parseInt(stats.system.diskUsage) > 80 ? 'danger' : 'success'}
-                    text={parseInt(stats.system.diskUsage) > 80 ? '주의' : '정상'}
-                  />
+                                      <Badge 
+                      variant={parseInt(stats.system.diskUsage) > 80 ? 'danger' : 'success'}
+                    >
+                      {parseInt(stats.system.diskUsage) > 80 ? '주의' : '정상'}
+                    </Badge>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   &lt; 80%
@@ -435,10 +436,11 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
                   {stats.system.memoryUsage}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge 
-                    variant={parseInt(stats.system.memoryUsage) > 80 ? 'danger' : 'success'}
-                    text={parseInt(stats.system.memoryUsage) > 80 ? '주의' : '정상'}
-                  />
+                                      <Badge 
+                      variant={parseInt(stats.system.memoryUsage) > 80 ? 'danger' : 'success'}
+                    >
+                      {parseInt(stats.system.memoryUsage) > 80 ? '주의' : '정상'}
+                    </Badge>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   &lt; 80%
@@ -452,10 +454,11 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
                   {stats.bids.syncSuccess}%
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge 
-                    variant={stats.bids.syncSuccess < 95 ? 'danger' : 'success'}
-                    text={stats.bids.syncSuccess < 95 ? '주의' : '정상'}
-                  />
+                                      <Badge 
+                      variant={stats.bids.syncSuccess < 95 ? 'danger' : 'success'}
+                    >
+                      {stats.bids.syncSuccess < 95 ? '주의' : '정상'}
+                    </Badge>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   &gt; 95%
@@ -469,10 +472,11 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
                   {stats.users.total > 0 ? ((stats.users.active / stats.users.total) * 100).toFixed(1) : 0}%
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge 
-                    variant={stats.users.total > 0 && (stats.users.active / stats.users.total) < 0.5 ? 'danger' : 'success'}
-                    text={stats.users.total > 0 && (stats.users.active / stats.users.total) < 0.5 ? '주의' : '정상'}
-                  />
+                                      <Badge 
+                      variant={stats.users.total > 0 && (stats.users.active / stats.users.total) < 0.5 ? 'danger' : 'success'}
+                    >
+                      {stats.users.total > 0 && (stats.users.active / stats.users.total) < 0.5 ? '주의' : '정상'}
+                    </Badge>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   &gt; 50%
