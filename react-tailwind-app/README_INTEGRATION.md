@@ -1,6 +1,6 @@
 # 외부 시스템 연동 (Integration/External Systems)
 
-B2G(Business to Government) 공모사업 자동화 관리 시스템의 외부 시스템 연동 기능입니다. 나라장터 OpenAPI, ERP, 그룹웨어, Google Sheets 등 다양한 외부 서비스와의 데이터·알림·계정 연동을 통해 업무 효율과 자동화를 극대화합니다.
+AI Biz Eyes(Business to Government) 공모사업 자동화 관리 시스템의 외부 시스템 연동 기능입니다. 나라장터 OpenAPI, ERP, 그룹웨어, Google Sheets 등 다양한 외부 서비스와의 데이터·알림·계정 연동을 통해 업무 효율과 자동화를 극대화합니다.
 
 ## 🎯 핵심 목적
 

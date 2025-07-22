@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Pool } from 'pg';
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/b2g_db',
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ai_biz_eyes_db',
 });
 
 export class PersonalController {

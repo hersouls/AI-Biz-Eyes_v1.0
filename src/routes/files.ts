@@ -12,7 +12,7 @@ router.post('/upload', (req: Request, res: Response) => {
     const fileResponse: FileUploadResponse = {
       id: Math.floor(Math.random() * 1000) + 1,
       name: 'document.pdf',
-      url: 'https://s3.amazonaws.com/b2g-files/mock-document.pdf',
+      url: 'https://s3.amazonaws.com/ai-biz-eyes-files/mock-document.pdf',
       size: 2048576,
       mimeType: 'application/pdf',
       category: 'reference',

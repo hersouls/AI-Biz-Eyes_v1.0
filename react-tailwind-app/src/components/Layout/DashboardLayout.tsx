@@ -119,7 +119,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         src="https://tailwindui.com/img/logos/mark.svg?color=white"
                         alt="Your Company"
                       />
-                      <span className="ml-2 text-subtitle1 font-bold text-white">B2G 자동화</span>
+                      <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -187,7 +187,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               src="https://tailwindui.com/img/logos/mark.svg?color=white"
               alt="Your Company"
             />
-            <span className="ml-2 text-subtitle1 font-bold text-white">B2G 자동화</span>
+                            <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">

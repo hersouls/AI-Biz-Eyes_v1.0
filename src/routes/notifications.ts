@@ -6,7 +6,7 @@ const router = express.Router();
 
 // PostgreSQL 연결 설정
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/b2g_db',
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ai_biz_eyes_db',
 });
 
 // 알림 목록 조회

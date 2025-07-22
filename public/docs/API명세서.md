@@ -1,9 +1,9 @@
-# B2G 공모사업 자동화 관리 웹서비스 API 명세서
+# AI Biz Eyes 공모사업 자동화 관리 웹서비스 API 명세서
 
 ## 1. API 개요
 
 ### 1.1 기본 정보
-- **Base URL**: `https://api.b2g-automation.com/v1`
+- **Base URL**: `https://api.ai-biz-eyes.com/v1`
 - **Content-Type**: `application/json`
 - **인코딩**: UTF-8
 - **인증 방식**: JWT Bearer Token
@@ -872,7 +872,7 @@ category: reference
   "data": {
     "id": 1,
     "name": "document.pdf",
-    "url": "https://s3.amazonaws.com/b2g-files/...",
+            "url": "https://s3.amazonaws.com/ai-biz-eyes-files/...",
     "size": 2048576,
     "mimeType": "application/pdf",
     "category": "reference",
