@@ -126,8 +126,8 @@ const QualityDashboard: React.FC = () => {
                   {metrics.systemHealth.uptime}%
                 </p>
                 <Badge 
-                  variant={getUptimeStatus(metrics.systemHealth.uptime) === 'good' ? 'green' : 
-                          getUptimeStatus(metrics.systemHealth.uptime) === 'warning' ? 'yellow' : 'red'}
+                  variant={getUptimeStatus(metrics.systemHealth.uptime) === 'good' ? 'success' : 
+                          getUptimeStatus(metrics.systemHealth.uptime) === 'warning' ? 'warning' : 'danger'}
                   className="mt-1"
                 >
                   {getUptimeStatus(metrics.systemHealth.uptime) === 'good' ? '정상' :
@@ -148,8 +148,8 @@ const QualityDashboard: React.FC = () => {
                   {metrics.systemHealth.responseTime}ms
                 </p>
                 <Badge 
-                  variant={getHealthStatus(metrics.systemHealth.responseTime, 500) === 'good' ? 'green' : 
-                          getHealthStatus(metrics.systemHealth.responseTime, 500) === 'warning' ? 'yellow' : 'red'}
+                  variant={getHealthStatus(metrics.systemHealth.responseTime, 500) === 'good' ? 'success' : 
+                          getHealthStatus(metrics.systemHealth.responseTime, 500) === 'warning' ? 'warning' : 'danger'}
                   className="mt-1"
                 >
                   {getHealthStatus(metrics.systemHealth.responseTime, 500) === 'good' ? '빠름' :
@@ -170,8 +170,8 @@ const QualityDashboard: React.FC = () => {
                   {metrics.systemHealth.errorRate}%
                 </p>
                 <Badge 
-                  variant={getHealthStatus(100 - metrics.systemHealth.errorRate, 95) === 'good' ? 'green' : 
-                          getHealthStatus(100 - metrics.systemHealth.errorRate, 95) === 'warning' ? 'yellow' : 'red'}
+                  variant={getHealthStatus(100 - metrics.systemHealth.errorRate, 95) === 'good' ? 'success' : 
+                          getHealthStatus(100 - metrics.systemHealth.errorRate, 95) === 'warning' ? 'warning' : 'danger'}
                   className="mt-1"
                 >
                   {getHealthStatus(100 - metrics.systemHealth.errorRate, 95) === 'good' ? '낮음' :
@@ -192,8 +192,8 @@ const QualityDashboard: React.FC = () => {
                   {metrics.systemHealth.successRate}%
                 </p>
                 <Badge 
-                  variant={getHealthStatus(metrics.systemHealth.successRate, 95) === 'good' ? 'green' : 
-                          getHealthStatus(metrics.systemHealth.successRate, 95) === 'warning' ? 'yellow' : 'red'}
+                  variant={getHealthStatus(metrics.systemHealth.successRate, 95) === 'good' ? 'success' : 
+                          getHealthStatus(metrics.systemHealth.successRate, 95) === 'warning' ? 'warning' : 'danger'}
                   className="mt-1"
                 >
                   {getHealthStatus(metrics.systemHealth.successRate, 95) === 'good' ? '우수' :
