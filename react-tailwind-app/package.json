@@ -2,7 +2,7 @@
   "name": "react-tailwind-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hersouls.github.io/AI-Biz-Eyes_v1.0",
+  "homepage": "https://bizeyes.moonwave.kr",
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",

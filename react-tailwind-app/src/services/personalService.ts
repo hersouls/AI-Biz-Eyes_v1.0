@@ -18,7 +18,7 @@ import {
   SecuritySettingsUpdateRequest
 } from '../types/personal';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://hersouls.github.io/AI-Biz-Eyes_v1.0/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://bizeyes.moonwave.kr/api';
 
 // Mock data for development
 const mockUserProfile: UserProfile = {

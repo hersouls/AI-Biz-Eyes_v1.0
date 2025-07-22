@@ -23,7 +23,7 @@ const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3002;
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://hersouls.github.io'],
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://bizeyes.moonwave.kr'],
     credentials: true
 }));
 const limiter = (0, express_rate_limit_1.default)({
@@ -87,8 +87,8 @@ app.use((err, req, res, next) => {
 });
 app.listen(PORT, () => {
     console.log(`🚀 AI Biz Eyes Mock API Server is running on port ${PORT}`);
-      console.log(`📚 API Documentation: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api`);
-  console.log(`🏥 Health Check: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health`);
+      console.log(`📚 API Documentation: https://bizeyes.moonwave.kr/api`);
+console.log(`🏥 Health Check: https://bizeyes.moonwave.kr/api/health`);
     console.log(`\n📋 Available endpoints:`);
     console.log(`   POST /api/auth/login - 로그인`);
     console.log(`   POST /api/auth/logout - 로그아웃`);
