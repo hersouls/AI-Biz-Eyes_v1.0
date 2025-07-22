@@ -1,28 +1,87 @@
 // 나라장터 OpenAPI 공고 데이터 타입 정의
 export interface BidData {
-  id: number;
+  // 기본 식별 정보
+  id?: number;
   bidNtceNo: string;
+  bidNtceOrd?: number;
   bidNtceNm: string;
-  dminsttNm: string;
-  bidMethdNm: string;
-  presmptPrce: number;
-  bidPblancNmpr: number;
-  bidNtceDt: string;
-  bidClseDt: string;
-  opengDt: string;
-  status: 'active' | 'urgent' | 'completed' | 'cancelled';
-  category: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  description: string;
-  requirements: string[];
-  attachments: Array<{
+  bidNtceSttusNm: string;
+  bidNtceUrl?: string;
+  
+  // 기관 정보
+  ntceInsttNm: string;
+  dmndInsttNm?: string;
+  bsnsDivNm: string;
+  
+  // 예산 정보
+  asignBdgtAmt?: number;
+  presmptPrce?: number;
+  
+  // 일정 정보
+  bidNtceDate: string;
+  bidNtceBgn?: string;
+  bidClseDate: string;
+  bidClseTm?: string;
+  opengDate?: string;
+  opengTm?: string;
+  
+  // 입찰 조건
+  elctrnBidYn?: 'Y' | 'N';
+  intrntnlBidYn?: 'Y' | 'N';
+  cmmnCntrctYn?: 'Y' | 'N';
+  rgnLmtYn?: 'Y' | 'N';
+  indstrytyLmtYn?: 'Y' | 'N';
+  
+  // 계약 정보
+  cntrctCnclsSttusNm?: string;
+  cntrctCnclsMthdNm?: string;
+  bidwinrDcsnMthdNm?: string;
+  
+  // 제안 운영
+  presnatnOprtnYn?: 'Y' | 'N';
+  presnatnOprtnDate?: string;
+  presnatnOprtnTm?: string;
+  presnatnOprtnPlce?: string;
+  
+  // 담당자 정보
+  ntceInsttOfclDeptNm?: string;
+  ntceInsttOfclNm?: string;
+  ntceInsttOfclTel?: string;
+  ntceInsttOfclEmailAdrs?: string;
+  dmndInsttOfclDeptNm?: string;
+  dmndInsttOfclNm?: string;
+  dmndInsttOfclTel?: string;
+  dmndInsttOfclEmailAdrs?: string;
+  
+  // 내부 상태 및 우선순위
+  internalStatus?: string;
+  isUrgent?: boolean;
+  isDeadlineNear?: boolean;
+  isNew?: boolean;
+  participationStatus?: string;
+  referenceMatchCount?: number;
+  aiRecommendationScore?: number;
+  
+  // 기존 필드들 (하위 호환성을 위해 유지)
+  dminsttNm?: string;
+  bidMethdNm?: string;
+  bidPblancNmpr?: number;
+  bidNtceDt?: string;
+  bidClseDt?: string;
+  opengDt?: string;
+  status?: 'active' | 'urgent' | 'completed' | 'cancelled';
+  category?: string;
+  priority?: 'low' | 'medium' | 'high' | 'urgent';
+  description?: string;
+  requirements?: string[];
+  attachments?: Array<{
     id: number;
     name: string;
     url: string;
     size: number;
   }>;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface BidFilters {
