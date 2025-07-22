@@ -1,95 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BidData } from '../../types/bid';
+import { BidService } from '../../services/bidService';
+import { formatCurrency, formatDateTime, getStatusBadge, getBusinessTypeBadge, getUrgentBadge, getDeadlineNearBadge, getNewBadge, getParticipationStatusBadge } from '../../utils/formatters';
 import Card from '../Card';
 import Button from '../Button';
-import { formatCurrency, formatDateTime, getStatusBadge, getBusinessTypeBadge, getUrgentBadge, getDeadlineNearBadge, getNewBadge, getParticipationStatusBadge } from '../../utils/formatters';
+import Badge from '../Badge';
 
 interface BidDetailProps {}
 
 export const BidDetail: React.FC<BidDetailProps> = () => {
-  const { bidNtceNo } = useParams<{ bidNtceNo: string }>();
+  const { bidNo } = useParams<{ bidNo: string }>();
   const navigate = useNavigate();
   const [bidData, setBidData] = useState<BidData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (bidNtceNo) {
-      fetchBidDetail(bidNtceNo);
+    if (bidNo) {
+      fetchBidDetail(bidNo);
     }
-  }, [bidNtceNo]);
+  }, [bidNo]);
 
   const fetchBidDetail = async (bidNo: string) => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch(`/api/bid-detail/${bidNo}`);
-      // const data = await response.json();
-      
-      // Mock data for development
-      const mockData: BidData = {
-        bidNtceNo: bidNo,
-        bidNtceOrd: 1,
-        bidNtceNm: "스마트공장 구축 사업 입찰공고",
-        bidNtceSttusNm: "일반공고",
-        bsnsDivNm: "용역",
-        ntceInsttNm: "조달청",
-        dmndInsttNm: "한국테크노파크",
-        asignBdgtAmt: 500000000,
-        presmptPrce: 450000000,
-        bidNtceDate: "2024-07-15",
-        bidNtceBgn: "10:00",
-        bidClseDate: "2024-08-15",
-        bidClseTm: "18:00",
-        opengDate: "2024-08-16",
-        opengTm: "10:00",
-        elctrnBidYn: "Y",
-        intrntnlBidYn: "N",
-        cmmnCntrctYn: "N",
-        cntrctCnclsSttusNm: "계약체결",
-        cntrctCnclsMthdNm: "일반계약",
-        bidwinrDcsnMthdNm: "최저가낙찰",
-        rgnLmtYn: "N",
-        indstrytyLmtYn: "N",
-        presnatnOprtnYn: "Y",
-        presnatnOprtnDate: "2024-07-25",
-        presnatnOprtnTm: "14:00",
-        presnatnOprtnPlce: "한국테크노파크 본사",
-        ntceInsttOfclDeptNm: "조달정책과",
-        ntceInsttOfclNm: "김철수",
-        ntceInsttOfclTel: "02-1234-5678",
-        ntceInsttOfclEmailAdrs: "kim@pps.go.kr",
-        dmndInsttOfclDeptNm: "사업기획팀",
-        dmndInsttOfclNm: "이영희",
-        dmndInsttOfclTel: "031-9876-5432",
-        dmndInsttOfclEmailAdrs: "lee@ktech.or.kr",
-        bidNtceUrl: "https://www.g2b.go.kr:8101/ep/main/main.do",
-        internalStatus: "검토중",
-        isUrgent: false,
-        isDeadlineNear: true,
-        isNew: true,
-        participationStatus: "미정",
-        referenceMatchCount: 3,
-        aiRecommendationScore: 85
-      };
-      
-      setBidData(mockData);
+      const response = await BidService.getBidDetail(parseInt(bidNo));
+      setBidData(response.data);
     } catch (err) {
-      setError('공고 상세 정보를 불러오는데 실패했습니다.');
+      setError(err instanceof Error ? err.message : '공고 정보를 불러오는데 실패했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
   const getPriorityBadges = (bid: BidData) => {
-    return (
-      <>
-        {getUrgentBadge(bid.isUrgent || false)}
-        {getDeadlineNearBadge(bid.isDeadlineNear || false)}
-        {getNewBadge(bid.isNew || false)}
-      </>
-    );
+    const badges = [];
+    
+    if (bid.isUrgent) {
+      const urgentBadge = getUrgentBadge(true);
+      if (urgentBadge) {
+        badges.push(<Badge key="urgent" variant={urgentBadge.color}>{urgentBadge.text}</Badge>);
+      }
+    }
+    
+    if (bid.isDeadlineNear) {
+      const deadlineBadge = getDeadlineNearBadge(bid.bidClseDate);
+      if (deadlineBadge) {
+        badges.push(<Badge key="deadline" variant={deadlineBadge.color}>{deadlineBadge.text}</Badge>);
+      }
+    }
+    
+    if (bid.isNew) {
+      const newBadge = getNewBadge(bid.bidNtceDate);
+      if (newBadge) {
+        badges.push(<Badge key="new" variant={newBadge.color}>{newBadge.text}</Badge>);
+      }
+    }
+    
+    return badges;
+  };
+
+  const renderStatusBadge = (status: string) => {
+    const statusConfig = getStatusBadge(status);
+    return <Badge variant={statusConfig.color}>{statusConfig.text}</Badge>;
+  };
+
+  const renderBusinessTypeBadge = (businessType: string) => {
+    const typeConfig = getBusinessTypeBadge(businessType);
+    return <Badge variant={typeConfig.color}>{typeConfig.text}</Badge>;
+  };
+
+  const renderParticipationStatusBadge = (status: string | undefined) => {
+    const statusConfig = getParticipationStatusBadge(status);
+    return <Badge variant={statusConfig.color}>{statusConfig.text}</Badge>;
   };
 
   if (loading) {
@@ -118,7 +102,7 @@ export const BidDetail: React.FC<BidDetailProps> = () => {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{bidData.bidNtceNm}</h1>
           <div className="flex items-center space-x-2">
-            {getStatusBadge(bidData.bidNtceSttusNm)}
+            {renderStatusBadge(bidData.bidNtceSttusNm)}
             {getPriorityBadges(bidData)}
             <span className="text-sm text-gray-500">공고번호: {bidData.bidNtceNo}</span>
           </div>
@@ -142,7 +126,7 @@ export const BidDetail: React.FC<BidDetailProps> = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">업무구분</label>
-                <div className="mt-1">{getBusinessTypeBadge(bidData.bsnsDivNm)}</div>
+                <div className="mt-1">{renderBusinessTypeBadge(bidData.bsnsDivNm)}</div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">공고차수</label>
@@ -283,7 +267,7 @@ export const BidDetail: React.FC<BidDetailProps> = () => {
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700">참여 상태</label>
-                <div className="mt-1">{getParticipationStatusBadge(bidData.participationStatus)}</div>
+                <div className="mt-1">{renderParticipationStatusBadge(bidData.participationStatus)}</div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">레퍼런스 매칭</label>
