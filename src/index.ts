@@ -15,9 +15,10 @@ import fileRoutes from './routes/files';
 import webhookRoutes from './routes/webhooks';
 import personalRoutes from './routes/personal';
 import statisticsRoutes from './routes/statistics';
+import integrationRoutes from './routes/integration';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 // 보안 미들웨어
 app.use(helmet());
@@ -63,16 +64,17 @@ app.get('/health', (req, res) => {
 });
 
 // API 라우트
-app.use('/api/auth', authRoutes);
-app.use('/api/bids', bidRoutes);
-app.use('/api/references', referenceRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/reports', reportRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/files', fileRoutes);
-app.use('/api/webhooks', webhookRoutes);
-app.use('/api/personal', personalRoutes);
-app.use('/api/statistics', statisticsRoutes);
+// app.use('/api/auth', authRoutes);
+// app.use('/api/bids', bidRoutes);
+// app.use('/api/references', referenceRoutes);
+// app.use('/api/notifications', notificationRoutes);
+// app.use('/api/reports', reportRoutes);
+// app.use('/api/admin', adminRoutes);
+// app.use('/api/files', fileRoutes);
+// app.use('/api/webhooks', webhookRoutes);
+// app.use('/api/personal', personalRoutes);
+// app.use('/api/statistics', statisticsRoutes);
+app.use('/api/integration', integrationRoutes);
 
 // 404 핸들러
 app.use('*', (req, res) => {

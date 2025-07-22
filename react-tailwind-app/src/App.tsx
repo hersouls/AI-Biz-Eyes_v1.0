@@ -6,6 +6,7 @@ import './App.css';
 import { ReferenceManager } from './components/Reference';
 import { NotificationPage } from './components/Notification';
 import { StatisticsPage } from './components/Statistics';
+import IntegrationPage from './components/integration/IntegrationPage';
 import { 
   AdminLayout,
   AdminDashboard, 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/references" element={<ReferenceManager />} />
           <Route path="/notifications" element={<NotificationPage />} />
           <Route path="/statistics" element={<StatisticsPage />} />
+          <Route path="/integration" element={<IntegrationPage />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={

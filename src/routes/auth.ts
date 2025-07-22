@@ -67,13 +67,13 @@ router.post('/login', [
       refreshToken
     }, '로그인에 성공했습니다.');
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -81,13 +81,13 @@ router.post('/login', [
 router.post('/logout', (req: Request, res: Response) => {
   try {
     const response = createSuccessResponse(null, '로그아웃되었습니다.');
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -126,13 +126,13 @@ router.post('/refresh', [
       refreshToken: newRefreshToken
     }, '토큰이 갱신되었습니다.');
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
@@ -153,13 +153,13 @@ router.get('/me', (req: Request, res: Response) => {
       createdAt: user.createdAt
     });
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
       'INTERNAL_SERVER_ERROR',
       '서버 오류가 발생했습니다.'
     );
-    res.status(500).json(errorResponse);
+    return res.status(500).json(errorResponse);
   }
 });
 
