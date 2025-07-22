@@ -16,21 +16,17 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api
 const mockIntegrationStats: IntegrationStats = {
   totalSystems: 5,
   activeSystems: 4,
-  failedSystems: 1,
+  errorSystems: 1,
   totalLogs: 1250,
   successRate: 95.2,
-  averageResponseTime: 850,
-  lastSync: '2024-07-22T10:30:00Z',
-  dailySyncs: 48,
-  weeklySyncs: 336,
-  monthlySyncs: 1440
+  last24HoursLogs: 48
 };
 
 const mockIntegrationSystems: IntegrationSystem[] = [
   {
     id: '1',
     name: '공공데이터포털',
-    type: 'api',
+    type: 'OpenAPI',
     status: 'active',
     description: '공공데이터포털 API 연동',
     config: {
@@ -38,15 +34,15 @@ const mockIntegrationSystems: IntegrationSystem[] = [
       apiKey: '***',
       timeout: 30000
     },
-    lastSync: '2024-07-22T10:30:00Z',
-    syncInterval: 3600,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-07-22T10:30:00Z'
+    lastSync: new Date('2024-07-22T10:30:00Z'),
+    syncInterval: '3600',
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T10:30:00Z')
   },
   {
     id: '2',
     name: '나라장터',
-    type: 'web',
+    type: 'OpenAPI',
     status: 'active',
     description: '나라장터 웹 스크래핑',
     config: {
@@ -56,26 +52,26 @@ const mockIntegrationSystems: IntegrationSystem[] = [
         bidDetail: '.bid-detail'
       }
     },
-    lastSync: '2024-07-22T09:15:00Z',
-    syncInterval: 1800,
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-07-22T09:15:00Z'
+    lastSync: new Date('2024-07-22T09:15:00Z'),
+    syncInterval: '1800',
+    createdAt: new Date('2024-01-15T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T09:15:00Z')
   },
   {
     id: '3',
     name: '기업정보 API',
-    type: 'api',
-    status: 'failed',
+    type: 'OpenAPI',
+    status: 'error',
     description: '기업정보 조회 API',
     config: {
       baseUrl: 'https://api.business.go.kr',
       apiKey: '***',
       timeout: 15000
     },
-    lastSync: '2024-07-22T08:45:00Z',
-    syncInterval: 7200,
-    createdAt: '2024-02-01T00:00:00Z',
-    updatedAt: '2024-07-22T08:45:00Z'
+    lastSync: new Date('2024-07-22T08:45:00Z'),
+    syncInterval: '7200',
+    createdAt: new Date('2024-02-01T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T08:45:00Z')
   }
 ];
 

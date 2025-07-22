@@ -80,7 +80,7 @@ const mockRecentActivity: RecentActivity[] = [
     organization: '스타트업A',
     budget: 150000000,
     deadline: '2024-07-20',
-    priority: 'normal',
+    priority: 'medium',
     timestamp: '2024-07-21T16:45:00Z',
     status: 'completed'
   },
@@ -136,7 +136,7 @@ const mockTimelineEvents: TimelineEvent[] = [
     description: '평가 결과 발표',
     date: '2024-07-30',
     time: '10:00',
-    priority: 'normal',
+    priority: 'medium',
     organization: '한국정보통신기술협회'
   }
 ];

@@ -491,7 +491,7 @@ export class BidService {
     }
     if (filters.organization) {
       filteredBids = filteredBids.filter(bid => 
-        bid.dminsttNm.toLowerCase().includes(filters.organization!.toLowerCase())
+        bid.dminsttNm?.toLowerCase().includes(filters.organization!.toLowerCase())
       );
     }
     if (filters.title) {
@@ -500,10 +500,10 @@ export class BidService {
       );
     }
     if (filters.minBudget) {
-      filteredBids = filteredBids.filter(bid => bid.presmptPrce >= filters.minBudget!);
+      filteredBids = filteredBids.filter(bid => (bid.presmptPrce || 0) >= filters.minBudget!);
     }
     if (filters.maxBudget) {
-      filteredBids = filteredBids.filter(bid => bid.presmptPrce <= filters.maxBudget!);
+      filteredBids = filteredBids.filter(bid => (bid.presmptPrce || 0) <= filters.maxBudget!);
     }
     
     const startIndex = (page - 1) * limit;

@@ -33,7 +33,7 @@ const mockNotifications: Notification[] = [
     type: 'achievement',
     title: '입찰 성과 달성',
     message: '이번 달 목표 입찰 건수를 달성했습니다.',
-    priority: 'normal',
+    priority: 'medium',
     status: 'read',
     assignedTo: 1,
     createdAt: '2024-07-21T16:45:00Z',
