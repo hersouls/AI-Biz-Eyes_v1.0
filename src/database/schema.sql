@@ -41,13 +41,118 @@ CREATE INDEX IF NOT EXISTS idx_reports_generated_at ON reports(generated_at);
 -- 사용자 알림 설정 테이블
 CREATE TABLE IF NOT EXISTS user_notification_settings (
     user_id INTEGER PRIMARY KEY REFERENCES users(id),
-    settings JSONB NOT NULL,
+    email_notifications BOOLEAN DEFAULT true,
+    web_notifications BOOLEAN DEFAULT true,
+    push_notifications BOOLEAN DEFAULT false,
+    new_bid_notifications BOOLEAN DEFAULT true,
+    urgent_notifications BOOLEAN DEFAULT true,
+    deadline_notifications BOOLEAN DEFAULT true,
+    performance_notifications BOOLEAN DEFAULT true,
+    daily_report BOOLEAN DEFAULT false,
+    weekly_report BOOLEAN DEFAULT true,
+    monthly_report BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 알림 설정 인덱스
 CREATE INDEX IF NOT EXISTS idx_user_notification_settings_user_id ON user_notification_settings(user_id);
+
+-- 사용자 리포트 설정 테이블
+CREATE TABLE IF NOT EXISTS user_report_settings (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id),
+    daily_report BOOLEAN DEFAULT false,
+    weekly_report BOOLEAN DEFAULT true,
+    monthly_report BOOLEAN DEFAULT true,
+    performance_report BOOLEAN DEFAULT true,
+    activity_report BOOLEAN DEFAULT true,
+    format VARCHAR(10) DEFAULT 'excel' CHECK (format IN ('excel', 'csv', 'json', 'pdf')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 리포트 설정 인덱스
+CREATE INDEX IF NOT EXISTS idx_user_report_settings_user_id ON user_report_settings(user_id);
+
+-- 사용자 대시보드 설정 테이블
+CREATE TABLE IF NOT EXISTS user_dashboard_settings (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id),
+    default_filters JSONB DEFAULT '{}',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 대시보드 설정 인덱스
+CREATE INDEX IF NOT EXISTS idx_user_dashboard_settings_user_id ON user_dashboard_settings(user_id);
+
+-- 대시보드 위젯 테이블
+CREATE TABLE IF NOT EXISTS dashboard_widgets (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    type VARCHAR(50) NOT NULL CHECK (type IN ('overview', 'trend', 'calendar', 'recommendations', 'notifications', 'references', 'reports')),
+    order_num INTEGER NOT NULL,
+    is_visible BOOLEAN DEFAULT true,
+    settings JSONB DEFAULT '{}',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 대시보드 위젯 인덱스
+CREATE INDEX IF NOT EXISTS idx_dashboard_widgets_user_id ON dashboard_widgets(user_id);
+CREATE INDEX IF NOT EXISTS idx_dashboard_widgets_type ON dashboard_widgets(type);
+CREATE INDEX IF NOT EXISTS idx_dashboard_widgets_order ON dashboard_widgets(order_num);
+
+-- 사용자 환경설정 테이블
+CREATE TABLE IF NOT EXISTS user_personal_settings (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id),
+    timezone VARCHAR(50) DEFAULT 'Asia/Seoul',
+    language VARCHAR(10) DEFAULT 'ko' CHECK (language IN ('ko', 'en', 'ja')),
+    theme VARCHAR(10) DEFAULT 'light' CHECK (theme IN ('light', 'dark', 'auto')),
+    auto_refresh BOOLEAN DEFAULT false,
+    desktop_notifications BOOLEAN DEFAULT true,
+    mobile_optimization BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 환경설정 인덱스
+CREATE INDEX IF NOT EXISTS idx_user_personal_settings_user_id ON user_personal_settings(user_id);
+
+-- 사용자 활동 내역 테이블
+CREATE TABLE IF NOT EXISTS user_activities (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    action VARCHAR(100) NOT NULL,
+    target_id INTEGER,
+    target_type VARCHAR(50),
+    details JSONB DEFAULT '{}',
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 사용자 활동 인덱스
+CREATE INDEX IF NOT EXISTS idx_user_activities_user_id ON user_activities(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_activities_action ON user_activities(action);
+CREATE INDEX IF NOT EXISTS idx_user_activities_created_at ON user_activities(created_at);
+
+-- 데이터 내보내기 테이블
+CREATE TABLE IF NOT EXISTS data_exports (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    types JSONB NOT NULL,
+    date_range JSONB,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
+    file_path VARCHAR(500),
+    file_size BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP
+);
+
+-- 데이터 내보내기 인덱스
+CREATE INDEX IF NOT EXISTS idx_data_exports_user_id ON data_exports(user_id);
+CREATE INDEX IF NOT EXISTS idx_data_exports_status ON data_exports(status);
+CREATE INDEX IF NOT EXISTS idx_data_exports_created_at ON data_exports(created_at);
 
 -- 알림 생성 트리거 함수
 CREATE OR REPLACE FUNCTION create_deadline_notification()
@@ -98,5 +203,39 @@ INSERT INTO reports (type, title, summary, charts, period_start, period_end, gen
  '2024-07-16', '2024-07-22', 1);
 
 -- 샘플 사용자 알림 설정
-INSERT INTO user_notification_settings (user_id, settings) VALUES
-(1, '{"emailNotifications": {"enabled": true, "types": ["urgent", "deadline"], "frequency": "immediate"}, "webNotifications": {"enabled": true, "types": ["urgent", "deadline", "missing", "duplicate"]}, "pushNotifications": {"enabled": false}}');
+INSERT INTO user_notification_settings (user_id, email_notifications, web_notifications, push_notifications, new_bid_notifications, urgent_notifications, deadline_notifications, performance_notifications, daily_report, weekly_report, monthly_report) VALUES
+(1, true, true, false, true, true, true, true, false, true, true);
+
+-- 샘플 사용자 리포트 설정
+INSERT INTO user_report_settings (user_id, daily_report, weekly_report, monthly_report, performance_report, activity_report, format) VALUES
+(1, false, true, true, true, true, 'excel');
+
+-- 샘플 사용자 대시보드 설정
+INSERT INTO user_dashboard_settings (user_id, default_filters) VALUES
+(1, '{"organization": [], "businessType": [], "budgetRange": {"min": 0, "max": 1000000000}, "dateRange": {"start": "", "end": ""}, "status": []}');
+
+-- 샘플 대시보드 위젯
+INSERT INTO dashboard_widgets (user_id, type, order_num, is_visible, settings) VALUES
+(1, 'overview', 1, true, '{}'),
+(1, 'trend', 2, true, '{}'),
+(1, 'calendar', 3, true, '{}'),
+(1, 'recommendations', 4, true, '{}'),
+(1, 'notifications', 5, true, '{}'),
+(1, 'references', 6, false, '{}'),
+(1, 'reports', 7, false, '{}');
+
+-- 샘플 사용자 환경설정
+INSERT INTO user_personal_settings (user_id, timezone, language, theme, auto_refresh, desktop_notifications, mobile_optimization) VALUES
+(1, 'Asia/Seoul', 'ko', 'light', false, true, true);
+
+-- 샘플 사용자 활동 내역
+INSERT INTO user_activities (user_id, action, target_id, target_type, details, ip_address, user_agent) VALUES
+(1, 'view_bid', 123, 'bid', '{"bidId": 123, "title": "스마트공장 구축 사업"}', '192.168.1.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'),
+(1, 'participate_bid', 124, 'bid', '{"bidId": 124, "title": "AI 플랫폼 개발 사업"}', '192.168.1.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'),
+(1, 'add_reference', 1, 'reference', '{"referenceId": 1, "projectName": "스마트시티 구축 사업"}', '192.168.1.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'),
+(1, 'update_settings', NULL, 'notification', '{"settingType": "notification", "changes": {"emailNotifications": true}}', '192.168.1.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+
+-- 샘플 데이터 내보내기
+INSERT INTO data_exports (user_id, types, date_range, status, file_path, file_size, completed_at) VALUES
+(1, '["work_history", "activity_log"]', '{"startDate": "2024-01-01", "endDate": "2024-07-22"}', 'completed', '/exports/1.xlsx', 1024000, '2024-07-22 10:30:00'),
+(1, '["personal_settings"]', NULL, 'completed', '/exports/2.json', 5120, '2024-07-21 15:45:00');
