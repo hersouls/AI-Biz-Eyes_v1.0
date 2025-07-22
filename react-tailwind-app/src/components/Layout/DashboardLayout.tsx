@@ -6,8 +6,7 @@ import {
   MenuButton,
   MenuItem,
   MenuItems,
-  TransitionChild,
-  TransitionRoot,
+  Transition,
 } from '@headlessui/react';
 import {
   Bars3Icon,
@@ -57,22 +56,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="h-full bg-white">
-      <TransitionRoot show={sidebarOpen} as={React.Fragment}>
-        <Dialog className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
-          <TransitionChild
-            as={React.Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-900/80" />
-          </TransitionChild>
+      <Dialog className="relative z-50 lg:hidden" open={sidebarOpen} onClose={setSidebarOpen}>
+        <Transition
+          as={React.Fragment}
+          enter="transition-opacity ease-linear duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity ease-linear duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-900/80" />
+        </Transition>
 
           <div className="fixed inset-0 flex">
-            <TransitionChild
+            <Transition
               as={React.Fragment}
               enter="transition ease-in-out duration-300 transform"
               enterFrom="-translate-x-full"
@@ -82,7 +80,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               leaveTo="-translate-x-full"
             >
               <DialogPanel className="relative mr-16 flex w-full max-w-xs flex-1">
-                <TransitionChild
+                <Transition
                   as={React.Fragment}
                   enter="ease-in-out duration-300"
                   enterFrom="opacity-0"
@@ -97,9 +95,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                     </button>
                   </div>
-                </TransitionChild>
+                </Transition>
 
-                {/* Sidebar component */}
+                {/* Sidebar component */
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#031B4B] px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
                     <div className="flex items-center space-x-3">
@@ -165,10 +163,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   </nav>
                 </div>
               </DialogPanel>
-            </TransitionChild>
+            </Transition>
           </div>
         </Dialog>
-      </TransitionRoot>
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
