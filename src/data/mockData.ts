@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker/locale/ko';
+import { faker } from '@faker-js/faker';
 import { 
   User, 
   Bid, 
@@ -58,18 +58,18 @@ export const generateMockBids = (count: number): Bid[] => {
     const bid: Bid = {
       id: i,
       bidNtceNo: `2024${String(i).padStart(5, '0')}`,
-      bidNtceNm: faker.commerce.productName() + ' 구축 사업',
-      ntceInsttNm: faker.helpers.arrayElement(institutions),
-      dmndInsttNm: faker.helpers.arrayElement(institutions),
-      bsnsDivNm: faker.helpers.arrayElement(types),
-      bidNtceSttusNm: faker.helpers.arrayElement(statuses),
-      asignBdgtAmt: faker.number.int({ min: 10000000, max: 1000000000 }),
-      presmptPrce: faker.number.int({ min: 9000000, max: 900000000 }),
-      bidNtceDate: faker.date.recent({ days: 30 }).toISOString().split('T')[0],
-      bidClseDate: faker.date.future({ years: 1 }).toISOString().split('T')[0],
-      bidNtceUrl: faker.internet.url(),
-      createdAt: faker.date.recent({ days: 30 }).toISOString(),
-      updatedAt: faker.date.recent({ days: 30 }).toISOString()
+          bidNtceNm: faker.commerce.productName() + ' 구축 사업',
+    ntceInsttNm: faker.helpers.arrayElement(institutions),
+    dmndInsttNm: faker.helpers.arrayElement(institutions),
+    bsnsDivNm: faker.helpers.arrayElement(types),
+    bidNtceSttusNm: faker.helpers.arrayElement(statuses),
+    asignBdgtAmt: faker.number.int({ min: 10000000, max: 1000000000 }),
+    presmptPrce: faker.number.int({ min: 9000000, max: 900000000 }),
+    bidNtceDate: faker.date.recent({ days: 30 }).toISOString().split('T')[0],
+    bidClseDate: faker.date.future({ years: 1 }).toISOString().split('T')[0],
+    bidNtceUrl: faker.internet.url(),
+    createdAt: faker.date.recent({ days: 30 }).toISOString(),
+    updatedAt: faker.date.recent({ days: 30 }).toISOString()
     };
     bids.push(bid);
   }
