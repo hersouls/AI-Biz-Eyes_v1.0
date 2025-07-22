@@ -1,0 +1,30 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const auth_1 = require("../middleware/auth");
+const personalController_1 = require("../controllers/personalController");
+const router = express_1.default.Router();
+router.use(auth_1.authenticateToken);
+router.get('/profile', personalController_1.PersonalController.getProfile);
+router.put('/profile', personalController_1.PersonalController.updateProfile);
+router.get('/notifications/settings', personalController_1.PersonalController.getNotificationSettings);
+router.put('/notifications/settings', personalController_1.PersonalController.updateNotificationSettings);
+router.get('/reports/settings', personalController_1.PersonalController.getReportSettings);
+router.put('/reports/settings', personalController_1.PersonalController.updateReportSettings);
+router.get('/dashboard/settings', personalController_1.PersonalController.getDashboardSettings);
+router.put('/dashboard/settings', personalController_1.PersonalController.updateDashboardSettings);
+router.get('/settings', personalController_1.PersonalController.getPersonalSettings);
+router.put('/settings', personalController_1.PersonalController.updatePersonalSettings);
+router.get('/activity', personalController_1.PersonalController.getActivityHistory);
+router.get('/activity/:id', personalController_1.PersonalController.getActivityDetail);
+router.post('/export', personalController_1.PersonalController.exportData);
+router.get('/export/history', personalController_1.PersonalController.getExportHistory);
+router.get('/export/:id/download', personalController_1.PersonalController.downloadExport);
+router.get('/security', personalController_1.PersonalController.getSecuritySettings);
+router.put('/security/password', personalController_1.PersonalController.updatePassword);
+router.put('/security/two-factor', personalController_1.PersonalController.updateTwoFactor);
+exports.default = router;
+//# sourceMappingURL=personal.js.map

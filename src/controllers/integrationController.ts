@@ -151,7 +151,7 @@ export const getIntegrationSystem = (req: Request, res: Response) => {
       message: '연동 시스템 정보를 성공적으로 조회했습니다.'
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '연동 시스템 조회 중 오류가 발생했습니다.',
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -218,7 +218,7 @@ export const updateIntegrationSystem = (req: Request, res: Response) => {
       message: '연동 시스템이 성공적으로 수정되었습니다.'
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '연동 시스템 수정 중 오류가 발생했습니다.',
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -246,7 +246,7 @@ export const deleteIntegrationSystem = (req: Request, res: Response) => {
       message: '연동 시스템이 성공적으로 삭제되었습니다.'
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '연동 시스템 삭제 중 오류가 발생했습니다.',
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -418,7 +418,7 @@ export const testIntegrationSystem = (req: Request, res: Response) => {
       message: '연동 테스트가 성공적으로 완료되었습니다.'
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '연동 테스트 중 오류가 발생했습니다.',
       error: error instanceof Error ? error.message : 'Unknown error'

@@ -1,13 +1,54 @@
 import express from 'express';
-import { Pool } from 'pg';
 import { authenticateToken } from '../middleware/auth';
+import { createSuccessResponse, createErrorResponse } from '../utils/response';
 
 const router = express.Router();
 
-// PostgreSQL 연결 설정
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/ai_biz_eyes_db',
-});
+// Mock 리포트 데이터
+const mockReports = [
+  {
+    id: 1,
+    type: 'daily',
+    title: '일간 리포트 (2024-07-22)',
+    summary: {
+      newBids: 45,
+      deadlineBids: 12,
+      missingBids: 3,
+      duplicateBids: 2,
+      successRate: 85
+    },
+    generatedAt: '2024-07-22T10:00:00Z',
+    generatedBy: 1
+  },
+  {
+    id: 2,
+    type: 'weekly',
+    title: '주간 리포트 (2024-07-15 ~ 2024-07-21)',
+    summary: {
+      newBids: 280,
+      deadlineBids: 65,
+      missingBids: 15,
+      duplicateBids: 8,
+      successRate: 82
+    },
+    generatedAt: '2024-07-21T18:00:00Z',
+    generatedBy: 1
+  },
+  {
+    id: 3,
+    type: 'monthly',
+    title: '월간 리포트 (2024-07-01 ~ 2024-07-31)',
+    summary: {
+      newBids: 1250,
+      deadlineBids: 320,
+      missingBids: 45,
+      duplicateBids: 25,
+      successRate: 88
+    },
+    generatedAt: '2024-07-31T23:59:00Z',
+    generatedBy: 1
+  }
+];
 
 // 리포트 목록 조회
 router.get('/', authenticateToken, async (req, res) => {
@@ -18,52 +59,35 @@ router.get('/', authenticateToken, async (req, res) => {
       type
     } = req.query;
 
-    const offset = (Number(page) - 1) * Number(limit);
-    
-    let whereConditions = ['1=1'];
-    let params: any[] = [];
-    let paramIndex = 1;
+    let filteredReports = [...mockReports];
 
+    // 타입 필터링
     if (type) {
-      whereConditions.push(`type = $${paramIndex++}`);
-      params.push(type);
+      filteredReports = filteredReports.filter(r => r.type === type);
     }
 
-    // 전체 개수 조회
-    const countQuery = `
-      SELECT COUNT(*) as total 
-      FROM reports 
-      WHERE ${whereConditions.join(' AND ')}
-    `;
-    const countResult = await pool.query(countQuery, params);
-    const total = parseInt(countResult.rows[0].total);
+    // 정렬 (최신순)
+    filteredReports.sort((a, b) => new Date(b.generatedAt).getTime() - new Date(a.generatedAt).getTime());
 
-    // 리포트 목록 조회
-    const query = `
-      SELECT * FROM reports 
-      WHERE ${whereConditions.join(' AND ')}
-      ORDER BY generated_at DESC 
-      LIMIT $${paramIndex++} OFFSET $${paramIndex++}
-    `;
-    params.push(Number(limit), offset);
+    // 페이지네이션
+    const startIndex = (Number(page) - 1) * Number(limit);
+    const endIndex = startIndex + Number(limit);
+    const paginatedReports = filteredReports.slice(startIndex, endIndex);
 
-    const result = await pool.query(query, params);
-
-    res.json({
-      success: true,
-      data: {
-        reports: result.rows,
-        pagination: {
-          page: Number(page),
-          limit: Number(limit),
-          total,
-          totalPages: Math.ceil(total / Number(limit))
-        }
+    const response = createSuccessResponse({
+      reports: paginatedReports,
+      pagination: {
+        page: Number(page),
+        limit: Number(limit),
+        total: filteredReports.length,
+        totalPages: Math.ceil(filteredReports.length / Number(limit))
       }
     });
+
+    return res.json(response);
   } catch (error) {
     console.error('리포트 목록 조회 실패:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '리포트 목록을 불러오는데 실패했습니다.'
     });
@@ -74,37 +98,27 @@ router.get('/', authenticateToken, async (req, res) => {
 router.post('/generate', authenticateToken, async (req, res) => {
   try {
     const { type, startDate, endDate } = req.body;
-    const userId = (req as any).user.id;
+    const userId = (req as any).user?.id || 1;
 
-    // 리포트 데이터 생성 로직
-    const reportData = await generateReportData(type, startDate, endDate);
+    // Mock 리포트 데이터 생성
+    const reportData = generateReportData(type, startDate, endDate);
 
-    // 리포트 저장
-    const insertQuery = `
-      INSERT INTO reports (
-        type, title, summary, charts, period_start, period_end, 
-        generated_by, generated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
-      RETURNING *
-    `;
-
-    const result = await pool.query(insertQuery, [
+    const newReport = {
+      id: mockReports.length + 1,
       type,
-      reportData.title,
-      JSON.stringify(reportData.summary),
-      JSON.stringify(reportData.charts),
-      startDate,
-      endDate,
-      userId
-    ]);
+      title: reportData.title,
+      summary: reportData.summary,
+      generatedAt: new Date().toISOString(),
+      generatedBy: userId
+    };
 
-    res.json({
-      success: true,
-      data: result.rows[0]
-    });
+    mockReports.push(newReport);
+
+    const response = createSuccessResponse(newReport, '리포트가 생성되었습니다.');
+    return res.status(201).json(response);
   } catch (error) {
     console.error('리포트 생성 실패:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '리포트 생성에 실패했습니다.'
     });
@@ -117,22 +131,16 @@ router.get('/:id/download', authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { format = 'pdf' } = req.query;
 
-    // 리포트 데이터 조회
-    const query = `
-      SELECT * FROM reports WHERE id = $1
-    `;
-    const result = await pool.query(query, [id]);
+    const report = mockReports.find(r => r.id === Number(id));
 
-    if (result.rows.length === 0) {
+    if (!report) {
       return res.status(404).json({
         success: false,
         message: '리포트를 찾을 수 없습니다.'
       });
     }
 
-    const report = result.rows[0];
-
-    // 파일 생성 로직 (실제 구현에서는 PDF/Excel/CSV 생성 라이브러리 사용)
+    // Mock 파일 생성
     let content = '';
     let filename = `report-${id}.${format}`;
     let contentType = '';
@@ -159,10 +167,10 @@ router.get('/:id/download', authenticateToken, async (req, res) => {
 
     res.setHeader('Content-Type', contentType);
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.send(content);
+    return res.send(content);
   } catch (error) {
     console.error('리포트 다운로드 실패:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: '리포트 다운로드에 실패했습니다.'
     });
@@ -170,8 +178,7 @@ router.get('/:id/download', authenticateToken, async (req, res) => {
 });
 
 // 리포트 데이터 생성 함수
-async function generateReportData(type: string, startDate: string, endDate: string) {
-  // 실제 구현에서는 데이터베이스에서 통계 데이터를 조회
+function generateReportData(type: string, startDate: string, endDate: string) {
   const mockData = {
     title: `${getReportTypeLabel(type)} 리포트 (${startDate} ~ ${endDate})`,
     summary: {
@@ -180,41 +187,10 @@ async function generateReportData(type: string, startDate: string, endDate: stri
       missingBids: Math.floor(Math.random() * 20) + 1,
       duplicateBids: Math.floor(Math.random() * 10),
       successRate: Math.floor(Math.random() * 30) + 70
-    },
-    charts: {
-      bidTypeDistribution: [
-        { type: '공사', count: Math.floor(Math.random() * 50) + 10 },
-        { type: '용역', count: Math.floor(Math.random() * 30) + 5 },
-        { type: '물품', count: Math.floor(Math.random() * 20) + 3 }
-      ],
-      statusDistribution: [
-        { status: '진행중', count: Math.floor(Math.random() * 40) + 10 },
-        { status: '완료', count: Math.floor(Math.random() * 30) + 5 },
-        { status: '취소', count: Math.floor(Math.random() * 10) }
-      ],
-      weeklyTrend: generateWeeklyTrend(startDate, endDate)
     }
   };
 
   return mockData;
-}
-
-// 주간 트렌드 데이터 생성
-function generateWeeklyTrend(startDate: string, endDate: string) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const weeks = [];
-  
-  let current = new Date(start);
-  while (current <= end) {
-    weeks.push({
-      date: current.toISOString().split('T')[0],
-      count: Math.floor(Math.random() * 20) + 5
-    });
-    current.setDate(current.getDate() + 7);
-  }
-  
-  return weeks;
 }
 
 // 리포트 유형 라벨
@@ -231,12 +207,12 @@ function getReportTypeLabel(type: string) {
   }
 }
 
-// PDF 콘텐츠 생성 (실제 구현에서는 PDF 라이브러리 사용)
+// PDF 콘텐츠 생성 (Mock)
 function generatePDFContent(report: any) {
   return `PDF Report Content for ${report.title}`;
 }
 
-// Excel 콘텐츠 생성 (실제 구현에서는 Excel 라이브러리 사용)
+// Excel 콘텐츠 생성 (Mock)
 function generateExcelContent(report: any) {
   return `Excel Report Content for ${report.title}`;
 }
