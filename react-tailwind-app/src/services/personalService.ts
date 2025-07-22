@@ -104,7 +104,7 @@ const mockUserActivities: UserActivity[] = [
   {
     id: 2,
     userId: 1,
-    action: 'create_reference',
+    action: 'add_reference',
     targetId: 456,
     targetType: 'reference',
     ipAddress: '192.168.1.1',
@@ -115,7 +115,7 @@ const mockUserActivities: UserActivity[] = [
   {
     id: 3,
     userId: 1,
-    action: 'download_report',
+    action: 'view_report',
     targetId: 789,
     targetType: 'report',
     ipAddress: '192.168.1.1',
@@ -127,16 +127,14 @@ const mockUserActivities: UserActivity[] = [
 
 const mockUserPerformance: UserPerformance = {
   userId: 1,
-  period: '2024-07',
   totalBidsViewed: 45,
-  totalBidsAnalyzed: 28,
-  totalReferencesCreated: 12,
-  totalReportsGenerated: 8,
-  averageSessionDuration: 45,
-  totalSessions: 25,
-  successRate: 85.5,
-  efficiencyScore: 92.3,
-  createdAt: '2024-07-22T00:00:00Z'
+  totalBidsParticipated: 20,
+  totalReferencesAdded: 12,
+  totalReportsViewed: 8,
+  averageResponseTime: 30,
+  lastMonthActivity: 15,
+  thisMonthActivity: 10,
+  successRate: 87
 };
 
 const mockPersonalSettings: PersonalSettings = {
@@ -145,25 +143,20 @@ const mockPersonalSettings: PersonalSettings = {
   language: 'ko',
   timezone: 'Asia/Seoul',
   dateFormat: 'YYYY-MM-DD',
-  timeFormat: '24h',
+  numberFormat: '1,234.56',
+  keyboardShortcuts: true,
   theme: 'light',
   autoSave: true,
-  autoSaveInterval: 300,
-  createdAt: '2024-01-01T00:00:00Z'
+  createdAt: '2024-07-01T00:00:00Z'
 };
 
 const mockSecuritySettings: SecuritySettings = {
   id: 1,
   userId: 1,
   twoFactorEnabled: false,
-  loginNotifications: true,
   sessionTimeout: 3600,
-  maxLoginAttempts: 5,
-  passwordExpiryDays: 90,
-  lastPasswordChange: '2024-06-01T00:00:00Z',
-  ipWhitelist: [],
-  deviceWhitelist: [],
-  createdAt: '2024-01-01T00:00:00Z'
+  loginHistory: [],
+  createdAt: '2024-07-01T00:00:00Z'
 };
 
 const mockDataExports: DataExport[] = [
@@ -173,23 +166,9 @@ const mockDataExports: DataExport[] = [
     type: 'work_history',
     format: 'excel',
     status: 'completed',
-    fileName: 'work_history_2024-07-22.xlsx',
     fileSize: 2048576,
-    downloadUrl: '/exports/work_history_2024-07-22.xlsx',
     createdAt: '2024-07-22T10:00:00Z',
     completedAt: '2024-07-22T10:05:00Z'
-  },
-  {
-    id: 2,
-    userId: 1,
-    type: 'settings',
-    format: 'json',
-    status: 'processing',
-    fileName: null,
-    fileSize: null,
-    downloadUrl: null,
-    createdAt: '2024-07-22T11:00:00Z',
-    completedAt: null
   }
 ];
 
@@ -486,11 +465,9 @@ export class PersonalService {
         type,
         format,
         status: 'processing',
-        fileName: null,
-        fileSize: null,
-        downloadUrl: null,
+        fileSize: undefined,
         createdAt: new Date().toISOString(),
-        completedAt: null
+        completedAt: undefined
       };
       
       mockDataExports.push(newExport);
@@ -516,7 +493,7 @@ export class PersonalService {
         throw new Error('내보내기 항목을 찾을 수 없습니다.');
       }
       
-      return `/mock-exports/${exportItem.fileName || `export_${exportId}.${format}`}`;
+      return `/mock-exports/export_${exportId}.${format}`;
     }
   }
 

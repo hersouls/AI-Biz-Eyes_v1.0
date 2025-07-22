@@ -10,6 +10,7 @@ export interface Notification {
   readAt?: string;
   createdAt: string;
   updatedAt: string;
+  metadata?: any;
 }
 
 export interface NotificationSettings {

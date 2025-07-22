@@ -61,7 +61,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
 
   const handleStatusChange = async (id: number, status: string) => {
     try {
-      await NotificationService.updateNotificationStatus(id, status);
+      await NotificationService.updateNotificationStatus(id, status as 'unread' | 'read' | 'important' | 'completed');
       loadNotifications();
       onRefresh?.();
     } catch (error) {

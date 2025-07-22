@@ -300,8 +300,8 @@ const FieldMappingForm: React.FC<FieldMappingFormProps> = ({
 
       const data = {
         systemId,
-        internalField: formData.internalField,
-        externalField: formData.externalField,
+        sourceField: formData.internalField,
+        targetField: formData.externalField,
         description: formData.description,
         isRequired: formData.isRequired
       };
