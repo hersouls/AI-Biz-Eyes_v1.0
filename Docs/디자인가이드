@@ -1,0 +1,71 @@
+# B2G 공모사업 자동화 관리 웹서비스 디자인 가이드  
+(Tailwind UI Kit + Heroicons/Lucide/Radix 아이콘 + Typography/컴포넌트 상세 통합본)
+
+---
+
+## 📌 Foundation
+
+### 🎨 Color  
+(*Tailwind Custom Color 적용/확장*)
+
+- **Primary**: #031B4B (tailwind: `bg-[#031B4B]`, `text-[#031B4B]`)
+- **Secondary**: #119891 (`bg-[#119891]`)
+- **Grayscale/Border/BG**: 기존값 Tailwind 확장(`bg-[#edeff5]` 등)
+- **State**: Red(#EC193A), Violet(#6d8be1)  
+  → Tailwind config 확장/alias 활용
+
+---
+
+### ✏️ Typography (Pretendard, Tailwind 적용)
+
+- Pretendard 폰트(기본), Tailwind 폰트 스타일(`font-bold`, `font-medium`, `font-normal`)
+- text-[size] (예: `text-[38px]`, `text-[24px]` 등), line-height 커스텀
+- Tailwind UI 텍스트 컴포넌트 적극 활용
+
+| 스타일      | 크기 | 굵기       | 행간   | 사용처             |
+|-------------|-----|----------|------|------------------|
+| Heading0    | 38  | Bold     | 150% | FO 타이틀          |
+| Heading1    | 30  | Bold     | 150% | 페이지 타이틀       |
+| Heading2    | 26  | Bold     | 150% | 페이지 타이틀       |
+| Heading3    | 24  | Bold     | 150% | 페이지 타이틀       |
+| Sub Title1  | 20  | Bold     | 150% | 서브 타이틀        |
+| Sub Title2  | 18  | Bold     | 150% | 서브 타이틀        |
+| Body1       | 16  | Bold/Reg | 150% | 주요 본문          |
+| Body2       | 15  | Bold/Reg | 150% | 주요 본문/구성요소   |
+| Body3       | 14  | Bold/Reg | 150% | 주요 본문/구성요소   |
+| Detail1     | 13  | Regular  | 150% | 부가 설명          |
+| Detail2     | 12  | Regular  | 150% | 부가 설명          |
+
+---
+
+### 📐 Layout
+
+- 전체 화면: 1025px ~ 1920px 기준 반응형
+- LNB(좌측 메뉴) 너비: 240~260px (Tailwind: `w-[240px]`~`w-[260px]`)
+- Container/grid/flex 조합, 카드/테이블 등 섹션별 분할 구조
+
+---
+
+### 🔳 Radius
+
+- 기본: 0px (직선, `rounded-none`)
+- 주요 구역: 3px, 5px, 최대 12px (`rounded-[3px]`, `rounded-[5px]`, `rounded-[12px]`)
+- Badge: 50% (`rounded-full`)
+
+---
+
+### 🖼️ Iconography
+
+#### **공식 아이콘 패키지 조합**
+- **Heroicons** (`@heroicons/react`): Tailwind 공식, 심플/직관/Outline/Fill
+- **Lucide** (`lucide-react`): Heroicons 확장, 1800+ 아이콘, 감성/현대적
+- **Radix Icons** (`@radix-ui/react-icons`): 액션성/UX/상태 보조용
+- 크기: 기본 24px, 필요시 16/20/32px  
+- Line 형태(필요시 Fill), `w-6 h-6 text-[#031B4B]` 등 유틸리티 적극 활용
+- 모든 아이콘 MIT 라이선스(상업, 사내, 외부 OK)
+
+#### **실전 Import 예시**
+```js
+import { CheckIcon } from "@heroicons/react/24/outline";
+import { Bell, User } from "lucide-react";
+import { ReloadIcon } from "@radix-ui/react-icons";
