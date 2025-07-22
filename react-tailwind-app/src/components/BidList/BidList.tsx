@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { MagnifyingGlassIcon, FunnelIcon, ArrowDownTrayIcon, EyeIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
+import React, { useState, useEffect, useCallback } from 'react';
+import { MagnifyingGlassIcon, FunnelIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { BidListTable } from './BidListTable';
 import { BidListFilter } from './BidListFilter';
 import { BidListStats } from './BidListStats';
 import { BidListPagination } from './BidListPagination';
 import { useBidList } from '../../hooks/useBidList';
-import { BidData } from '../../types/bid';
 
 export const BidList: React.FC = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -43,7 +42,7 @@ export const BidList: React.FC = () => {
       sortBy,
       sortOrder
     });
-  }, [currentPage, pageSize, searchKeyword, filters, sortBy, sortOrder]);
+  }, [currentPage, pageSize, searchKeyword, filters, sortBy, sortOrder, fetchBids]);
 
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);

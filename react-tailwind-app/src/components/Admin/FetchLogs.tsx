@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   ArrowPathIcon,
   EyeIcon,
-  ExclamationTriangleIcon,
   CheckCircleIcon,
   ClockIcon,
   XCircleIcon
@@ -31,11 +30,7 @@ const FetchLogs: React.FC = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [retrying, setRetrying] = useState<number | null>(null);
 
-  useEffect(() => {
-    loadLogs();
-  }, [pagination.page, filters]);
-
-  const loadLogs = async () => {
+  const loadLogs = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -48,14 +43,16 @@ const FetchLogs: React.FC = () => {
         setLogs(response.data.logs);
         setPagination(response.data.pagination);
       }
-      setError(null);
     } catch (err) {
-      setError('수집 이력을 불러오는데 실패했습니다.');
       console.error('Failed to load fetch logs:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.page, pagination.limit, filters]);
+
+  useEffect(() => {
+    loadLogs();
+  }, [loadLogs]);
 
   const handleRetry = async (logId: number) => {
     try {

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Card from '../Card';
-import Badge from '../Badge';
 import Button from '../Button';
 import {
   BarChart,
@@ -8,8 +7,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -19,11 +16,8 @@ import {
 } from 'recharts';
 import { 
   DocumentTextIcon, 
-  CheckCircleIcon,
   XCircleIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  BuildingOfficeIcon
+  ClockIcon
 } from '@heroicons/react/24/outline';
 
 interface ReferenceStatisticsProps {
@@ -58,18 +52,14 @@ interface ReferenceStats {
   }>;
 }
 
-const COLORS = ['#10B981', '#EF4444', '#F59E0B'];
+// const COLORS = ['#10B981', '#EF4444', '#F59E0B'];
 
 const ReferenceStatistics: React.FC<ReferenceStatisticsProps> = ({ period }) => {
   const [stats, setStats] = useState<ReferenceStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchReferenceStatistics();
-  }, [period]);
-
-  const fetchReferenceStatistics = async () => {
+  const fetchReferenceStatistics = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
@@ -91,7 +81,11 @@ const ReferenceStatistics: React.FC<ReferenceStatisticsProps> = ({ period }) => 
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    fetchReferenceStatistics();
+  }, [fetchReferenceStatistics]);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('ko-KR').format(num);

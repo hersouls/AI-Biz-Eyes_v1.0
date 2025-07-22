@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Card from '../Card';
-import Badge from '../Badge';
 import Button from '../Button';
 import {
   BarChart,
@@ -8,8 +7,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -20,8 +17,6 @@ import {
 import { 
   BellIcon, 
   ExclamationTriangleIcon,
-  CheckCircleIcon,
-  ClockIcon,
   EyeIcon,
   EyeSlashIcon
 } from '@heroicons/react/24/outline';
@@ -58,11 +53,7 @@ const NotificationStatistics: React.FC<NotificationStatisticsProps> = ({ period 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchNotificationStatistics();
-  }, [period]);
-
-  const fetchNotificationStatistics = async () => {
+  const fetchNotificationStatistics = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
@@ -84,7 +75,11 @@ const NotificationStatistics: React.FC<NotificationStatisticsProps> = ({ period 
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    fetchNotificationStatistics();
+  }, [fetchNotificationStatistics]);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('ko-KR').format(num);

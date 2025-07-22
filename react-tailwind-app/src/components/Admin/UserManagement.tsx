@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   PlusIcon, 
   PencilIcon, 
   TrashIcon, 
-  EyeIcon,
-  MagnifyingGlassIcon,
-  FunnelIcon
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import { adminService } from '../../services/adminService';
 import { User, UserCreateRequest, UserUpdateRequest } from '../../types/admin';
@@ -39,11 +37,7 @@ const UserManagement: React.FC = () => {
     role: 'user'
   });
 
-  useEffect(() => {
-    loadUsers();
-  }, [pagination.page, filters]);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -59,14 +53,16 @@ const UserManagement: React.FC = () => {
         setUsers(response.data.users);
         setPagination(response.data.pagination);
       }
-      setError(null);
     } catch (err) {
-      setError('사용자 목록을 불러오는데 실패했습니다.');
       console.error('Failed to load users:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.page, pagination.limit, filters]);
+
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();

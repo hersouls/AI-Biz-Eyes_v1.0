@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  MagnifyingGlassIcon,
   FunnelIcon,
   EyeIcon,
   ExclamationTriangleIcon,
   XCircleIcon,
   DocumentArrowDownIcon,
-  ClockIcon,
   UserIcon,
   ShieldExclamationIcon
 } from '@heroicons/react/24/outline';
@@ -22,7 +20,6 @@ import Button from '../Button';
 const AuditLogs: React.FC = () => {
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 50,
@@ -42,11 +39,7 @@ const AuditLogs: React.FC = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [exporting, setExporting] = useState(false);
 
-  useEffect(() => {
-    loadAuditLogs();
-  }, [pagination.page, filters]);
-
-  const loadAuditLogs = async () => {
+  const loadAuditLogs = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -62,14 +55,16 @@ const AuditLogs: React.FC = () => {
         setLogs(response.data.logs);
         setPagination(response.data.pagination);
       }
-      setError(null);
     } catch (err) {
-      setError('감사 로그를 불러오는데 실패했습니다.');
       console.error('Failed to load audit logs:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.page, pagination.limit, filters]);
+
+  useEffect(() => {
+    loadAuditLogs();
+  }, [loadAuditLogs]);
 
   const getSeverityBadge = (severity: string) => {
     const severityConfig = {

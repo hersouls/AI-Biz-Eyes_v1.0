@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Card from '../Card';
-import Badge from '../Badge';
 import Button from '../Button';
 import {
   BarChart,
@@ -8,8 +7,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -21,9 +18,7 @@ import {
   ChartBarIcon, 
   DocumentTextIcon, 
   ExclamationTriangleIcon,
-  ClockIcon,
-  BuildingOfficeIcon,
-  CurrencyDollarIcon
+  ClockIcon
 } from '@heroicons/react/24/outline';
 
 interface BidStatisticsProps {
@@ -54,18 +49,14 @@ interface BidStats {
   };
 }
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
+// const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
 
 const BidStatistics: React.FC<BidStatisticsProps> = ({ period }) => {
   const [stats, setStats] = useState<BidStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchBidStatistics();
-  }, [period]);
-
-  const fetchBidStatistics = async () => {
+  const fetchBidStatistics = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
@@ -87,19 +78,23 @@ const BidStatistics: React.FC<BidStatisticsProps> = ({ period }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [period]);
+
+  useEffect(() => {
+    fetchBidStatistics();
+  }, [fetchBidStatistics]);
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('ko-KR').format(num);
   };
 
-  const formatCurrency = (num: number) => {
-    return new Intl.NumberFormat('ko-KR', {
-      style: 'currency',
-      currency: 'KRW',
-      notation: 'compact'
-    }).format(num);
-  };
+  // const formatCurrency = (num: number) => {
+  //   return new Intl.NumberFormat('ko-KR', {
+  //     style: 'currency',
+  //     currency: 'KRW',
+  //     notation: 'compact'
+  //   }).format(num);
+  // };
 
   if (loading) {
     return (

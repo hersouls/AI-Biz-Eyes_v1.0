@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BellIcon, EnvelopeIcon, DevicePhoneMobileIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, DevicePhoneMobileIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
-import { NotificationSettings, NotificationSettingsUpdateRequest } from '../../types/personal';
+import { NotificationSettings } from '../../types/personal';
 import Button from '../Button';
 
 export const NotificationSettingsSection: React.FC = () => {

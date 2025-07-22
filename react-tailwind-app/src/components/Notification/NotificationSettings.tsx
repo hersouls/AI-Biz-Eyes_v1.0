@@ -95,18 +95,18 @@ export const NotificationSettings: React.FC = () => {
     }
   };
 
-  const getFrequencyLabel = (frequency: string) => {
-    switch (frequency) {
-      case 'immediate':
-        return '즉시';
-      case 'daily':
-        return '일간';
-      case 'weekly':
-        return '주간';
-      default:
-        return frequency;
-    }
-  };
+  // const getFrequencyLabel = (frequency: string) => {
+  //   switch (frequency) {
+  //     case 'immediate':
+  //       return '즉시';
+  //     case 'daily':
+  //       return '일간';
+  //     case 'weekly':
+  //       return '주간';
+  //     default:
+  //       return frequency;
+  //   }
+  // };
 
   if (loading) {
     return (

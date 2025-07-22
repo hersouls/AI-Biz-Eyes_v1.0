@@ -12,18 +12,10 @@ import {
 import {
   Bars3Icon,
   BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
   ClipboardDocumentListIcon,
-  ExclamationTriangleIcon,
-  ChartBarIcon,
-  CogIcon,
   BookOpenIcon,
   BellAlertIcon,
   ChartPieIcon as ChartPieIconSolid,
@@ -122,9 +114,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
                     </div>
                     <nav className="flex flex-1 flex-col">
-                      <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                      <ul className="flex flex-1 flex-col gap-y-7">
                         <li>
-                          <ul role="list" className="-mx-2 space-y-1">
+                          <ul className="-mx-2 space-y-1">
                             {updatedNavigation.map((item) => (
                               <li key={item.name}>
                                 <Link
@@ -146,7 +138,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         </li>
                         <li>
                           <div className="text-xs font-semibold leading-6 text-primary-200">팀</div>
-                          <ul role="list" className="-mx-2 mt-2 space-y-1">
+                          <ul className="-mx-2 mt-2 space-y-1">
                             {teams.map((team) => (
                               <li key={team.name}>
                                 <a
@@ -190,9 +182,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                             <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
           </div>
           <nav className="flex flex-1 flex-col">
-            <ul role="list" className="flex flex-1 flex-col gap-y-7">
+            <ul className="flex flex-1 flex-col gap-y-7">
               <li>
-                <ul role="list" className="-mx-2 space-y-1">
+                <ul className="-mx-2 space-y-1">
                   {updatedNavigation.map((item) => (
                     <li key={item.name}>
                       <Link
@@ -214,7 +206,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </li>
               <li>
                 <div className="text-xs font-semibold leading-6 text-primary-200">팀</div>
-                <ul role="list" className="-mx-2 mt-2 space-y-1">
+                <ul className="-mx-2 mt-2 space-y-1">
                   {teams.map((team) => (
                     <li key={team.name}>
                       <a

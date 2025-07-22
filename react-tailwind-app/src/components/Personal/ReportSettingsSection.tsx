@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DocumentTextIcon, EnvelopeIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
 import { ReportSettings } from '../../types/personal';
 import Button from '../Button';

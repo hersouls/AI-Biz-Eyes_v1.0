@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheckIcon, KeyIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { ClockIcon } from '@heroicons/react/24/outline';
 import { PersonalService } from '../../services/personalService';
-import { SecuritySettings, SecuritySettingsUpdateRequest } from '../../types/personal';
+import { SecuritySettings } from '../../types/personal';
 import Button from '../Button';
 import Input from '../Input';
 

@@ -49,7 +49,7 @@ const statusData = [
   { name: '대기', value: 5, color: '#EF4444' }
 ];
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
+// const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
 
 export default function ChartsSection() {
   return (

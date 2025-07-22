@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Report } from '../../types/notification';
 import { NotificationService } from '../../services/notificationService';
 import Card from '../Card';
@@ -30,11 +30,7 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportClick }) => {
     endDate: ''
   });
 
-  useEffect(() => {
-    loadReports();
-  }, [selectedType, pagination.page]);
-
-  const loadReports = async () => {
+  const loadReports = useCallback(async () => {
     try {
       setLoading(true);
       const response = await NotificationService.getReports(
@@ -49,7 +45,11 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportClick }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedType, pagination.page, pagination.limit]);
+
+  useEffect(() => {
+    loadReports();
+  }, [loadReports]);
 
   const handleCreateReport = async () => {
     if (!createForm.startDate || !createForm.endDate) {
