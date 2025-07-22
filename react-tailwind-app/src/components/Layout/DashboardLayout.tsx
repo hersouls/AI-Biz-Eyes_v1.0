@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Dialog,
-  DialogPanel,
   Menu,
   MenuButton,
   MenuItem,
@@ -53,6 +51,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
+  // 사이드바 상태 변경 시 로그 출력
+  useEffect(() => {
+    console.log('사이드바 상태 변경:', sidebarOpen);
+  }, [sidebarOpen]);
+
   // 현재 경로에 따라 네비게이션 상태 업데이트
   const updatedNavigation = navigation.map(item => ({
     ...item,
@@ -61,114 +64,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="h-full bg-background-light font-pretendard">
-      <Dialog className="relative z-50 lg:hidden" open={sidebarOpen} onClose={setSidebarOpen}>
-        <>
-          <Transition
-            as={React.Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-900/80" />
-          </Transition>
-
-          <div className="fixed inset-0 flex">
-            <Transition
-              as={React.Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <DialogPanel className="relative mr-16 flex w-full max-w-xs flex-1">
-                <>
-                  <Transition
-                    as={React.Fragment}
-                    enter="ease-in-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in-out duration-300"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
-                        <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </Transition>
-                  {/* Sidebar component for mobile */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
-                    <div className="flex h-16 shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                        alt="Your Company"
-                      />
-                      <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
-                    </div>
-                    <nav className="flex flex-1 flex-col">
-                      <ul className="flex flex-1 flex-col gap-y-7">
-                        <li>
-                          <ul className="-mx-2 space-y-1">
-                            {updatedNavigation.map((item) => (
-                              <li key={item.name}>
-                                <Link
-                                  to={item.href}
-                                  className={`
-                                    group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6
-                                    ${item.current
-                                      ? 'bg-primary-700 text-white'
-                                      : 'text-primary-200 hover:bg-primary-700 hover:text-white'
-                                    }
-                                  `}
-                                >
-                                  <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
-                                  {item.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                        <li>
-                          <div className="text-xs font-semibold leading-6 text-primary-200">팀</div>
-                          <ul className="-mx-2 mt-2 space-y-1">
-                            {teams.map((team) => (
-                              <li key={team.name}>
-                                <a
-                                  href={team.href}
-                                  className={`
-                                    group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6
-                                    ${team.current
-                                      ? 'bg-primary-700 text-white'
-                                      : 'text-primary-200 hover:bg-primary-700 hover:text-white'
-                                    }
-                                  `}
-                                >
-                                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-500 text-body3 font-medium text-white">
-                                    {team.initial}
-                                  </span>
-                                  <span className="truncate">{team.name}</span>
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </>
-              </DialogPanel>
-            </Transition>
-          </div>
-        </>
-      </Dialog>
+      {/* 기존 Dialog 구조 제거 - 새로운 모바일 사이드바로 대체됨 */}
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-240 lg:flex-col">
@@ -179,7 +75,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               src="https://tailwindui.com/img/logos/mark.svg?color=white"
               alt="Your Company"
             />
-                            <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
+            <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul className="flex flex-1 flex-col gap-y-7">
@@ -233,9 +129,95 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </div>
 
+      {/* 모바일 사이드바 오버레이 - z-index 증가 */}
+      <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
+        <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-primary">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
+            <div className="flex h-16 shrink-0 items-center justify-between">
+              <div className="flex items-center">
+                <img
+                  className="h-8 w-auto"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                  alt="Your Company"
+                />
+                <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
+              </div>
+              <button
+                type="button"
+                className="-m-2.5 p-2.5 text-white hover:text-gray-300"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span className="sr-only">Close sidebar</span>
+                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+            <nav className="flex flex-1 flex-col">
+              <ul className="flex flex-1 flex-col gap-y-7">
+                <li>
+                  <ul className="-mx-2 space-y-1">
+                    {updatedNavigation.map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          to={item.href}
+                          className={`
+                            group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6
+                            ${item.current
+                              ? 'bg-primary-700 text-white'
+                              : 'text-primary-200 hover:bg-primary-700 hover:text-white'
+                            }
+                          `}
+                          onClick={() => setSidebarOpen(false)}
+                        >
+                          <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <div className="text-xs font-semibold leading-6 text-primary-200">팀</div>
+                  <ul className="-mx-2 mt-2 space-y-1">
+                    {teams.map((team) => (
+                      <li key={team.name}>
+                        <a
+                          href={team.href}
+                          className={`
+                            group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6
+                            ${team.current
+                              ? 'bg-primary-700 text-white'
+                              : 'text-primary-200 hover:bg-primary-700 hover:text-white'
+                            }
+                          `}
+                        >
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-500 text-body3 font-medium text-white">
+                            {team.initial}
+                          </span>
+                          <span className="truncate">{team.name}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
       <div className="lg:pl-240">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-          <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
+          {/* 햄버거 메뉴 버튼 - 모든 화면에서 보이도록 수정 */}
+          <button 
+            type="button" 
+            className="-m-2.5 p-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200" 
+            onClick={() => {
+              console.log('햄버거 메뉴 클릭됨, 현재 상태:', sidebarOpen);
+              setSidebarOpen(true);
+              console.log('사이드바 열기 완료');
+            }}
+          >
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
