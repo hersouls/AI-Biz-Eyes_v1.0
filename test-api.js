@@ -1,12 +1,12 @@
 const axios = require('axios');
 
-const BASE_URL = 'https://hersouls.github.io/AI-Biz-Eyes_v1.0/api';
+const BASE_URL = 'https://bizeyes.moonwave.kr/api';
 
 // 테스트 함수들
 async function testHealthCheck() {
   try {
     console.log('🏥 Testing Health Check...');
-    const response = await axios.get('https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health');
+    const response = await axios.get('https://bizeyes.moonwave.kr/api/health');
     console.log('✅ Health Check:', response.data);
   } catch (error) {
     console.error('❌ Health Check failed:', error.message);

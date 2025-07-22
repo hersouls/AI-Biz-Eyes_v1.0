@@ -91,7 +91,7 @@ src/components/Admin/
 
 ### 1. 관리자 패널 접근
 ```
-https://hersouls.github.io/AI-Biz-Eyes_v1.0/admin
+https://bizeyes.moonwave.kr/admin
 ```
 
 ### 2. 네비게이션

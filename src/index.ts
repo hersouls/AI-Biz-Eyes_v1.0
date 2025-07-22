@@ -25,7 +25,7 @@ app.use(helmet());
 
 // CORS 설정
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://hersouls.github.io'],
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://bizeyes.moonwave.kr'],
   credentials: true
 }));
 
@@ -106,8 +106,8 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 // 서버 시작
 app.listen(PORT, () => {
   console.log(`🚀 AI Biz Eyes Mock API Server is running on port ${PORT}`);
-  console.log(`📚 API Documentation: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api`);
-  console.log(`🏥 Health Check: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health`);
+  console.log(`📚 API Documentation: https://bizeyes.moonwave.kr/api`);
+console.log(`🏥 Health Check: https://bizeyes.moonwave.kr/api/health`);
   console.log(`\n📋 Available endpoints:`);
   console.log(`   POST /api/auth/login - 로그인`);
   console.log(`   POST /api/auth/logout - 로그아웃`);

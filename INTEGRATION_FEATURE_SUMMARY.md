@@ -84,7 +84,7 @@ npm run dev
 npx ts-node src/index.ts
 ```
 - 포트: 3002
-- API 엔드포인트: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/integration
+- API 엔드포인트: https://bizeyes.moonwave.kr/api/integration
 
 ### 프론트엔드 서버
 ```bash
@@ -92,7 +92,7 @@ cd /workspace/react-tailwind-app
 npm start
 ```
 - 포트: 3000
-- 웹 페이지: https://hersouls.github.io/AI-Biz-Eyes_v1.0/integration
+- 웹 페이지: https://bizeyes.moonwave.kr/integration
 
 ## 📊 API 엔드포인트
 
@@ -166,4 +166,4 @@ npm start
 
 Public/docs 개발문서의 요구사항을 모두 충족하는 외부시스템연동 기능을 성공적으로 구현했습니다. 백엔드 API와 프론트엔드 UI가 모두 정상적으로 작동하며, 확장 가능한 구조로 설계되어 향후 기능 추가가 용이합니다.
 
-**접속 URL**: https://hersouls.github.io/AI-Biz-Eyes_v1.0/integration
+**접속 URL**: https://bizeyes.moonwave.kr/integration

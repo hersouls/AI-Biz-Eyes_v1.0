@@ -44,8 +44,8 @@ npm run dev
 # 또는
 npm start
 ```
-- 서버는 https://hersouls.github.io/AI-Biz-Eyes_v1.0/api 에서 실행됩니다
-- API 엔드포인트: https://hersouls.github.io/AI-Biz-Eyes_v1.0/api
+- 서버는 https://bizeyes.moonwave.kr/api 에서 실행됩니다
+- API 엔드포인트: https://bizeyes.moonwave.kr/api
 
 ### 2.2 React 앱 시작
 ```bash
@@ -53,7 +53,7 @@ npm start
 cd react-tailwind-app
 npm start
 ```
-- 프론트엔드는 https://hersouls.github.io/AI-Biz-Eyes_v1.0 에서 실행됩니다
+- 프론트엔드는 https://bizeyes.moonwave.kr 에서 실행됩니다
 
 ## 🚀 Step 3: API 서버 테스트
 
@@ -66,10 +66,10 @@ node test-api.js
 ### 3.2 개별 API 엔드포인트 테스트
 ```bash
 # 헬스 체크
-curl https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health
+curl https://bizeyes.moonwave.kr/api/health
 
 # 로그인 테스트
-curl -X POST https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/auth/login \
+curl -X POST https://bizeyes.moonwave.kr/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"user@example.com","password":"password123"}'
 ```
@@ -77,7 +77,7 @@ curl -X POST https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/auth/login \
 ## 🚀 Step 4: 프론트엔드 통합 테스트
 
 ### 4.1 브라우저에서 수동 테스트
-1. https://hersouls.github.io/AI-Biz-Eyes_v1.0 접속
+1. https://bizeyes.moonwave.kr 접속
 2. 로그인 기능 테스트
 3. 각 페이지별 기능 테스트:
    - 대시보드
@@ -129,7 +129,7 @@ npm start
 ### 7.1 API 응답 시간 테스트
 ```bash
 # Apache Bench 사용
-ab -n 100 -c 10 https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/health
+ab -n 100 -c 10 https://bizeyes.moonwave.kr/api/health
 ```
 
 ### 7.2 프론트엔드 성능 테스트

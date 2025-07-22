@@ -37,7 +37,7 @@ npm install
 ```bash
 npm start
 ```
-브라우저에서 [https://hersouls.github.io/AI-Biz-Eyes_v1.0](https://hersouls.github.io/AI-Biz-Eyes_v1.0)을 열어 확인하세요.
+브라우저에서 [https://bizeyes.moonwave.kr](https://bizeyes.moonwave.kr)을 열어 확인하세요.
 
 ### 3. 빌드
 ```bash
