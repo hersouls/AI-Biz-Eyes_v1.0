@@ -66,7 +66,7 @@ const Card: React.FC<CardProps> = ({
 };
 
 interface CardHeaderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   title?: string;
   subtitle?: string;
