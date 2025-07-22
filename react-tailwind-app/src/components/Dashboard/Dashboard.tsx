@@ -17,7 +17,7 @@ export default function Dashboard() {
       <div className="md:flex md:items-center md:justify-between">
         <div className="min-w-0 flex-1">
           <h1 className="text-heading1 text-primary font-bold leading-tight">
-            B2G 공모사업 자동화 대시보드
+            AI Biz Eyes 공모사업 자동화 대시보드
           </h1>
           <p className="mt-2 text-body2 text-gray-600">
             실시간 공고 현황 및 참여 관리 통합 플랫폼

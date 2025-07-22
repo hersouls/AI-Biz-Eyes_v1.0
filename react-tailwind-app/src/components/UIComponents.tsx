@@ -143,7 +143,7 @@ const UIComponents: React.FC = () => {
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-heading1 text-gray-900 mb-2">B2G 공모사업 자동화 관리 시스템</h1>
+          <h1 className="text-heading1 text-gray-900 mb-2">AI Biz Eyes 공모사업 자동화 관리 시스템</h1>
           <p className="text-body2 text-gray-600">UI 컴포넌트 라이브러리</p>
         </div>
 

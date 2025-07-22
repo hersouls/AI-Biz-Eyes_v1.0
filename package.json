@@ -1,7 +1,7 @@
 {
-  "name": "b2g-mock-api-server",
+  "name": "ai-biz-eyes-mock-api-server",
   "version": "1.0.0",
-  "description": "B2G 공모사업 자동화 관리 웹서비스 Mock API 서버",
+  "description": "AI Biz Eyes 공모사업 자동화 관리 웹서비스 Mock API 서버",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
@@ -11,7 +11,7 @@
   },
   "keywords": [
     "mock-api",
-    "b2g",
+    "ai-biz-eyes",
     "government-bidding"
   ],
   "author": "Development Team",
