@@ -4,17 +4,23 @@ import bcrypt from 'bcryptjs';
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
-export const generateToken = (payload: any): string => {
-  return jwt.sign(payload, JWT_SECRET as jwt.Secret, { expiresIn: '7d' });
+interface JWTPayload {
+  id: number;
+  email: string;
+  role?: string;
+}
+
+export const generateToken = (payload: JWTPayload): string => {
+  return jwt.sign(payload, JWT_SECRET as jwt.Secret, { expiresIn: JWT_EXPIRES_IN });
 };
 
-export const generateRefreshToken = (payload: any): string => {
+export const generateRefreshToken = (payload: JWTPayload): string => {
   return jwt.sign(payload, JWT_SECRET as jwt.Secret, { expiresIn: '30d' });
 };
 
-export const verifyToken = (token: string): any => {
+export const verifyToken = (token: string): JWTPayload => {
   try {
-    return jwt.verify(token, JWT_SECRET as jwt.Secret);
+    return jwt.verify(token, JWT_SECRET as jwt.Secret) as JWTPayload;
   } catch (error) {
     throw new Error('Invalid token');
   }
