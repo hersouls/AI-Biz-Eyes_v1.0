@@ -97,8 +97,8 @@ interface BidData {
   dmndInsttNm?: string;        // 수요기관명
   
   // 금액 정보
-  asignBdgtAmt?: string;       // 예산금액
-  presmptPrce?: string;        // 추정가격
+  asignBdgtAmt?: number;       // 예산금액
+  presmptPrce?: number;        // 추정가격
   
   // 날짜 정보
   bidNtceDate: string;         // 공고일자

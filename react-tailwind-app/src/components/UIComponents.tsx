@@ -16,7 +16,7 @@ const sampleData = [
     ntceInsttNm: '조달청',
     bsnsDivNm: '용역',
     bidNtceSttusNm: '일반공고',
-    asignBdgtAmt: '234,594,800',
+    asignBdgtAmt: 234594800,
     bidClseDate: '2024-02-15',
     status: '진행중'
   },
@@ -27,7 +27,7 @@ const sampleData = [
     ntceInsttNm: '과학기술정보통신부',
     bsnsDivNm: '용역',
     bidNtceSttusNm: '긴급공고',
-    asignBdgtAmt: '156,789,000',
+    asignBdgtAmt: 156789000,
     bidClseDate: '2024-02-10',
     status: '마감임박'
   },
@@ -38,7 +38,7 @@ const sampleData = [
     ntceInsttNm: '정보통신산업진흥원',
     bsnsDivNm: '공사',
     bidNtceSttusNm: '일반공고',
-    asignBdgtAmt: '456,123,000',
+    asignBdgtAmt: 456123000,
     bidClseDate: '2024-02-20',
     status: '신규'
   }

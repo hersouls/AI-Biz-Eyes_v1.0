@@ -166,8 +166,8 @@ export const useBidList = (): UseBidListReturn => {
         bid.bidNtceSttusNm,
         bid.bidNtceDate,
         bid.bidClseDate,
-        bid.asignBdgtAmt || '',
-        bid.presmptPrce || ''
+        bid.asignBdgtAmt?.toString() || '',
+        bid.presmptPrce?.toString() || ''
       ].join(','))
     ].join('\n');
 
@@ -228,8 +228,8 @@ const generateMockBids = (page: number, pageSize: number) => {
       bsnsDivNm: businessType,
       ntceInsttNm: institution,
       dmndInsttNm: Math.random() > 0.7 ? `${institution} 하부기관` : undefined,
-      asignBdgtAmt: budget.toString(),
-      presmptPrce: Math.floor(budget * 0.9).toString(),
+      asignBdgtAmt: budget,
+      presmptPrce: Math.floor(budget * 0.9),
       bidNtceDate: bidDate.toISOString().split('T')[0],
       bidNtceBgn: '09:00',
       bidClseDate: closeDate.toISOString().split('T')[0],
