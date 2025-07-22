@@ -13,3 +13,6 @@ export { default as UIComponents } from './UIComponents';
 
 // Reference Components
 export * from './Reference';
+
+// Notification Components
+export * from './Notification';

@@ -1,34 +1,17 @@
-import { Router, Request, Response } from 'express';
-import { query, param, body, validationResult } from 'express-validator';
-import { createSuccessResponse, createErrorResponse } from '../utils/response';
-import { 
-  initialMockNotifications 
-} from '../data/mockData';
-import { 
-  NotificationQueryParams, 
-  NotificationUpdateRequest,
-  NotificationSettings 
-} from '../types';
+import express from 'express';
+import { Pool } from 'pg';
+import { authenticateToken } from '../middleware/auth';
 
-const router = Router();
+const router = express.Router();
+
+// PostgreSQL 연결 설정
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/b2g_db',
+});
 
 // 알림 목록 조회
-router.get('/', [
-  query('page').optional().isInt({ min: 1 }).withMessage('페이지는 1 이상이어야 합니다.'),
-  query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('페이지당 항목 수는 1-100 사이여야 합니다.'),
-  query('sortOrder').optional().isIn(['asc', 'desc']).withMessage('정렬 순서는 asc 또는 desc여야 합니다.')
-], (req: Request, res: Response) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorResponse = createErrorResponse(
-        'VALIDATION_ERROR',
-        '입력값이 올바르지 않습니다.',
-        { errors: errors.array() }
-      );
-      return res.status(422).json(errorResponse);
-    }
-
     const {
       page = 1,
       limit = 20,
@@ -37,175 +20,252 @@ router.get('/', [
       priority,
       startDate,
       endDate,
-      sortBy = 'createdAt',
-      sortOrder = 'desc'
-    }: NotificationQueryParams = req.query;
+      assignedTo
+    } = req.query;
 
-    let filteredNotifications = [...initialMockNotifications];
+    const offset = (Number(page) - 1) * Number(limit);
+    
+    let whereConditions = ['1=1'];
+    let params: any[] = [];
+    let paramIndex = 1;
 
-    // 타입 필터링
     if (type) {
-      filteredNotifications = filteredNotifications.filter(notification => notification.type === type);
+      whereConditions.push(`type = $${paramIndex++}`);
+      params.push(type);
     }
 
-    // 상태 필터링
     if (status) {
-      filteredNotifications = filteredNotifications.filter(notification => notification.status === status);
+      whereConditions.push(`status = $${paramIndex++}`);
+      params.push(status);
     }
 
-    // 우선순위 필터링
     if (priority) {
-      filteredNotifications = filteredNotifications.filter(notification => notification.priority === priority);
+      whereConditions.push(`priority = $${paramIndex++}`);
+      params.push(priority);
     }
 
-    // 날짜 필터링
     if (startDate) {
-      filteredNotifications = filteredNotifications.filter(notification => notification.createdAt >= startDate);
+      whereConditions.push(`created_at >= $${paramIndex++}`);
+      params.push(startDate);
     }
+
     if (endDate) {
-      filteredNotifications = filteredNotifications.filter(notification => notification.createdAt <= endDate);
+      whereConditions.push(`created_at <= $${paramIndex++}`);
+      params.push(endDate);
     }
 
-    // 정렬
-    filteredNotifications.sort((a, b) => {
-      let aValue: any = a[sortBy as keyof typeof a];
-      let bValue: any = b[sortBy as keyof typeof b];
+    if (assignedTo) {
+      whereConditions.push(`assigned_to = $${paramIndex++}`);
+      params.push(assignedTo);
+    }
 
-      if (sortBy === 'createdAt' || sortBy === 'updatedAt') {
-        aValue = new Date(aValue).getTime();
-        bValue = new Date(bValue).getTime();
-      }
+    // 전체 개수 조회
+    const countQuery = `
+      SELECT COUNT(*) as total 
+      FROM notifications 
+      WHERE ${whereConditions.join(' AND ')}
+    `;
+    const countResult = await pool.query(countQuery, params);
+    const total = parseInt(countResult.rows[0].total);
 
-      if (sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
+    // 알림 목록 조회
+    const query = `
+      SELECT * FROM notifications 
+      WHERE ${whereConditions.join(' AND ')}
+      ORDER BY created_at DESC 
+      LIMIT $${paramIndex++} OFFSET $${paramIndex++}
+    `;
+    params.push(Number(limit), offset);
+
+    const result = await pool.query(query, params);
+
+    res.json({
+      success: true,
+      data: {
+        notifications: result.rows,
+        pagination: {
+          page: Number(page),
+          limit: Number(limit),
+          total,
+          totalPages: Math.ceil(total / Number(limit))
+        }
       }
     });
-
-    // 페이지네이션
-    const startIndex = (Number(page) - 1) * Number(limit);
-    const endIndex = startIndex + Number(limit);
-    const paginatedNotifications = filteredNotifications.slice(startIndex, endIndex);
-
-    const response = createSuccessResponse({
-      notifications: paginatedNotifications,
-      pagination: {
-        page: Number(page),
-        limit: Number(limit),
-        total: filteredNotifications.length,
-        totalPages: Math.ceil(filteredNotifications.length / Number(limit))
-      }
-    });
-
-    res.json(response);
   } catch (error) {
-    const errorResponse = createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    );
-    res.status(500).json(errorResponse);
+    console.error('알림 목록 조회 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '알림 목록을 불러오는데 실패했습니다.'
+    });
   }
 });
 
 // 알림 상태 변경
-router.put('/:id', [
-  param('id').isInt({ min: 1 }).withMessage('유효한 알림 ID를 입력해주세요.'),
-  body('status').isIn(['read', 'important', 'completed']).withMessage('상태는 read, important, completed 중 하나여야 합니다.')
-], (req: Request, res: Response) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorResponse = createErrorResponse(
-        'VALIDATION_ERROR',
-        '입력값이 올바르지 않습니다.',
-        { errors: errors.array() }
-      );
-      return res.status(422).json(errorResponse);
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const query = `
+      UPDATE notifications 
+      SET status = $1, read_at = CASE WHEN $1 = 'read' THEN NOW() ELSE read_at END, updated_at = NOW()
+      WHERE id = $2 
+      RETURNING *
+    `;
+    
+    const result = await pool.query(query, [status, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: '알림을 찾을 수 없습니다.'
+      });
     }
 
-    const notificationId = Number(req.params.id);
-    const { status }: NotificationUpdateRequest = req.body;
-
-    const notificationIndex = initialMockNotifications.findIndex(notification => notification.id === notificationId);
-    if (notificationIndex === -1) {
-      const errorResponse = createErrorResponse(
-        'RESOURCE_NOT_FOUND',
-        '알림을 찾을 수 없습니다.'
-      );
-      return res.status(404).json(errorResponse);
-    }
-
-    // Mock 알림 상태 업데이트
-    const updatedNotification = {
-      ...initialMockNotifications[notificationIndex],
-      status,
-      readAt: status === 'read' ? new Date().toISOString() : undefined,
-      updatedAt: new Date().toISOString()
-    };
-
-    const response = createSuccessResponse({
-      id: updatedNotification.id,
-      status: updatedNotification.status,
-      readAt: updatedNotification.readAt
-    }, '알림 상태가 변경되었습니다.');
-
-    res.json(response);
+    res.json({
+      success: true,
+      data: result.rows[0],
+      message: '알림 상태가 변경되었습니다.'
+    });
   } catch (error) {
-    const errorResponse = createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    );
-    res.status(500).json(errorResponse);
+    console.error('알림 상태 변경 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '알림 상태 변경에 실패했습니다.'
+    });
   }
 });
 
-// 알림 설정
-router.post('/settings', [
-  body('emailNotifications.enabled').optional().isBoolean().withMessage('이메일 알림 활성화는 boolean 값이어야 합니다.'),
-  body('webNotifications.enabled').optional().isBoolean().withMessage('웹 알림 활성화는 boolean 값이어야 합니다.'),
-  body('pushNotifications.enabled').optional().isBoolean().withMessage('푸시 알림 활성화는 boolean 값이어야 합니다.')
-], (req: Request, res: Response) => {
+// 알림 일괄 처리
+router.put('/bulk', authenticateToken, async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorResponse = createErrorResponse(
-        'VALIDATION_ERROR',
-        '입력값이 올바르지 않습니다.',
-        { errors: errors.array() }
-      );
-      return res.status(422).json(errorResponse);
+    const { ids, status } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: '처리할 알림을 선택해주세요.'
+      });
     }
 
-    const settings: NotificationSettings = req.body;
+    const query = `
+      UPDATE notifications 
+      SET status = $1, read_at = CASE WHEN $1 = 'read' THEN NOW() ELSE read_at END, updated_at = NOW()
+      WHERE id = ANY($2)
+    `;
+    
+    await pool.query(query, [status, ids]);
 
-    // Mock 알림 설정 저장
-    const savedSettings = {
+    res.json({
+      success: true,
+      message: `${ids.length}개의 알림이 처리되었습니다.`
+    });
+  } catch (error) {
+    console.error('알림 일괄 처리 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '알림 일괄 처리에 실패했습니다.'
+    });
+  }
+});
+
+// 알림 통계 조회
+router.get('/stats', authenticateToken, async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        COUNT(*) as total,
+        COUNT(CASE WHEN status = 'unread' THEN 1 END) as unread,
+        COUNT(CASE WHEN priority = 'urgent' THEN 1 END) as urgent,
+        COUNT(CASE WHEN priority = 'high' THEN 1 END) as high,
+        COUNT(CASE WHEN priority = 'normal' THEN 1 END) as normal,
+        COUNT(CASE WHEN priority = 'low' THEN 1 END) as low
+      FROM notifications
+    `;
+    
+    const result = await pool.query(query);
+
+    res.json({
+      success: true,
+      data: result.rows[0]
+    });
+  } catch (error) {
+    console.error('알림 통계 조회 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '알림 통계를 불러오는데 실패했습니다.'
+    });
+  }
+});
+
+// 알림 설정 조회
+router.get('/settings', authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    
+    const query = `
+      SELECT settings FROM user_notification_settings 
+      WHERE user_id = $1
+    `;
+    
+    const result = await pool.query(query, [userId]);
+
+    const defaultSettings = {
       emailNotifications: {
-        enabled: settings.emailNotifications?.enabled ?? true,
-        types: settings.emailNotifications?.types ?? ['urgent', 'deadline', 'new'],
-        frequency: settings.emailNotifications?.frequency ?? 'immediate'
+        enabled: true,
+        types: ['urgent', 'deadline'],
+        frequency: 'immediate'
       },
       webNotifications: {
-        enabled: settings.webNotifications?.enabled ?? true,
-        types: settings.webNotifications?.types ?? ['urgent', 'deadline', 'missing', 'duplicate']
+        enabled: true,
+        types: ['urgent', 'deadline', 'missing', 'duplicate']
       },
       pushNotifications: {
-        enabled: settings.pushNotifications?.enabled ?? false
+        enabled: false
       }
     };
 
-    const response = createSuccessResponse({
-      settings: savedSettings
-    }, '알림 설정이 저장되었습니다.');
-
-    res.json(response);
+    res.json({
+      success: true,
+      data: {
+        settings: result.rows[0]?.settings || defaultSettings
+      }
+    });
   } catch (error) {
-    const errorResponse = createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    );
-    res.status(500).json(errorResponse);
+    console.error('알림 설정 조회 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '알림 설정을 불러오는데 실패했습니다.'
+    });
+  }
+});
+
+// 알림 설정 저장
+router.post('/settings', authenticateToken, async (req, res) => {
+  try {
+    const userId = (req as any).user.id;
+    const { settings } = req.body;
+
+    const query = `
+      INSERT INTO user_notification_settings (user_id, settings, updated_at)
+      VALUES ($1, $2, NOW())
+      ON CONFLICT (user_id) 
+      DO UPDATE SET settings = $2, updated_at = NOW()
+    `;
+    
+    await pool.query(query, [userId, JSON.stringify(settings)]);
+
+    res.json({
+      success: true,
+      data: { settings },
+      message: '알림 설정이 저장되었습니다.'
+    });
+  } catch (error) {
+    console.error('알림 설정 저장 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '알림 설정 저장에 실패했습니다.'
+    });
   }
 });
 
