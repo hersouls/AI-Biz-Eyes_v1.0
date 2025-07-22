@@ -2,7 +2,7 @@
   "name": "react-tailwind-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://[YOUR_GITHUB_USERNAME].github.io/[YOUR_REPOSITORY_NAME]",
+  "homepage": "https://hersouls.github.io/B2G_v1.0",
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
