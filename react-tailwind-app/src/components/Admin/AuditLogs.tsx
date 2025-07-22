@@ -294,13 +294,13 @@ const AuditLogs: React.FC = () => {
               label="사용자 ID"
               type="number"
               value={filters.userId}
-              onChange={(value) => handleFilterChange('userId', value)}
+              onChange={(e) => handleFilterChange('userId', e.target.value)}
               placeholder="사용자 ID 입력"
             />
             <Input
               label="액션"
               value={filters.action}
-              onChange={(value) => handleFilterChange('action', value)}
+              onChange={(e) => handleFilterChange('action', e.target.value)}
               placeholder="액션 검색"
             />
           </div>
@@ -309,13 +309,13 @@ const AuditLogs: React.FC = () => {
               label="시작일"
               type="date"
               value={filters.startDate}
-              onChange={(value) => handleFilterChange('startDate', value)}
+              onChange={(e) => handleFilterChange('startDate', e.target.value)}
             />
             <Input
               label="종료일"
               type="date"
               value={filters.endDate}
-              onChange={(value) => handleFilterChange('endDate', value)}
+              onChange={(e) => handleFilterChange('endDate', e.target.value)}
             />
           </div>
           <div className="flex justify-end mt-4 space-x-2">
