@@ -1,29 +1,207 @@
 import React from 'react';
 import clsx from 'clsx';
+import Button from './Button';
 
-interface TableProps {
-  children: React.ReactNode;
+interface Column<T = any> {
+  key: string;
+  header: string;
+  render?: (value: any, record: T) => React.ReactNode;
+  align?: 'left' | 'center' | 'right';
+  sortable?: boolean;
+  onSort?: () => void;
+  sortDirection?: 'asc' | 'desc' | null;
+}
+
+interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+interface TableProps<T = any> {
+  children?: React.ReactNode;
   className?: string;
   striped?: boolean;
   hover?: boolean;
   bordered?: boolean;
   compact?: boolean;
+  // 데이터 기반 테이블을 위한 props
+  columns?: Column<T>[];
+  data?: T[];
+  loading?: boolean;
+  pagination?: Pagination;
+  onPageChange?: (page: number) => void;
+  emptyMessage?: string;
+  // 선택 기능을 위한 props
+  selectable?: boolean;
+  selectedRows?: (string | number)[];
+  onSelectionChange?: (selectedRows: (string | number)[]) => void;
+  rowKey?: keyof T | ((record: T) => string | number);
 }
 
-const Table: React.FC<TableProps> = ({
+const Table = <T extends Record<string, any> = any>({
   children,
   className,
   striped = false,
   hover = true,
   bordered = false,
-  compact = false
-}) => {
+  compact = false,
+  columns,
+  data,
+  loading = false,
+  pagination,
+  onPageChange,
+  emptyMessage = '데이터가 없습니다.',
+  selectable = false,
+  selectedRows = [],
+  onSelectionChange,
+  rowKey = 'id'
+}: TableProps<T>) => {
   const classes = clsx(
     'min-w-full divide-y divide-gray-200',
     bordered && 'border border-gray-200 rounded-5',
     className
   );
 
+  // 데이터 기반 테이블 렌더링
+  if (columns && data) {
+    const getRowKey = (record: T, index: number): string | number => {
+      if (typeof rowKey === 'function') {
+        return rowKey(record);
+      }
+      return record[rowKey as keyof T] || index;
+    };
+
+    const handleRowSelection = (record: T, index: number) => {
+      if (!selectable || !onSelectionChange) return;
+      
+      const key = getRowKey(record, index);
+      const newSelectedRows = selectedRows.includes(key)
+        ? selectedRows.filter(id => id !== key)
+        : [...selectedRows, key];
+      
+      onSelectionChange(newSelectedRows);
+    };
+
+    return (
+      <div className="overflow-hidden">
+        <table className={classes}>
+          <TableHeader>
+            {selectable && (
+              <TableHeaderCell>
+                <input
+                  type="checkbox"
+                  checked={selectedRows.length === data.length && data.length > 0}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      onSelectionChange?.(data.map((record, index) => getRowKey(record, index)));
+                    } else {
+                      onSelectionChange?.([]);
+                    }
+                  }}
+                  className="rounded border-gray-300 text-primary focus:ring-primary"
+                />
+              </TableHeaderCell>
+            )}
+            {columns.map((column, index) => (
+              <TableHeaderCell
+                key={column.key || index}
+                align={column.align}
+                sortable={column.sortable}
+                onSort={column.onSort}
+                sortDirection={column.sortDirection}
+              >
+                {column.header}
+              </TableHeaderCell>
+            ))}
+          </TableHeader>
+          <tbody className={clsx(
+            'bg-white divide-y divide-gray-200',
+            striped && 'divide-y-0'
+          )}>
+            {loading ? (
+              <TableLoading columns={columns.length} rows={3} />
+            ) : data.length === 0 ? (
+              <TableEmpty message={emptyMessage} />
+            ) : (
+              data.map((record, rowIndex) => {
+                const key = getRowKey(record, rowIndex);
+                const isSelected = selectedRows.includes(key);
+                
+                return (
+                  <TableRow
+                    key={key}
+                    striped={striped}
+                    hover={hover}
+                    compact={compact}
+                    index={rowIndex}
+                    selected={isSelected}
+                  >
+                    {selectable && (
+                      <TableCell compact={compact}>
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleRowSelection(record, rowIndex)}
+                          className="rounded border-gray-300 text-primary focus:ring-primary"
+                        />
+                      </TableCell>
+                    )}
+                    {columns.map((column, colIndex) => (
+                      <TableCell
+                        key={column.key || colIndex}
+                        align={column.align}
+                        compact={compact}
+                      >
+                        {column.render
+                          ? column.render(record[column.key], record)
+                          : record[column.key]
+                        }
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+        
+        {/* 페이지네이션 */}
+        {pagination && onPageChange && pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200">
+            <div className="text-sm text-gray-700">
+              총 {pagination.total}개 중 {(pagination.page - 1) * pagination.limit + 1}-
+              {Math.min(pagination.page * pagination.limit, pagination.total)}개
+            </div>
+            <div className="flex space-x-2">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pagination.page === 1}
+                onClick={() => onPageChange(pagination.page - 1)}
+              >
+                이전
+              </Button>
+              <span className="px-3 py-1 text-sm text-gray-700">
+                {pagination.page} / {pagination.totalPages}
+              </span>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pagination.page === pagination.totalPages}
+                onClick={() => onPageChange(pagination.page + 1)}
+              >
+                다음
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // 기존 children 기반 테이블 렌더링
   return (
     <div className="overflow-hidden">
       <table className={classes}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import Card, { CardHeader, CardContent, CardFooter } from './Card';
-import Table, { TableHeader, TableFooter } from './Table';
+import Table, { TableHeader } from './Table';
 import Badge from './Badge';
 import Input from './Input';
 import Select from './Select';
@@ -127,7 +127,7 @@ const columns = [
 ];
 
 const UIComponents: React.FC = () => {
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<(string | number)[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [selectValue, setSelectValue] = useState('');
 
