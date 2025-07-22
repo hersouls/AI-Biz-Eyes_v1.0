@@ -137,13 +137,13 @@ export const NotificationList: React.FC<NotificationListProps> = ({
       case 'unread':
         return 'primary';
       case 'read':
-        return 'default';
+        return 'gray';
       case 'important':
         return 'warning';
       case 'completed':
         return 'success';
       default:
-        return 'default';
+        return 'gray';
     }
   };
 

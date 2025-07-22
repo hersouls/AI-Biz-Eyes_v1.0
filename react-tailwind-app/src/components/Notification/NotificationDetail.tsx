@@ -75,13 +75,13 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
       case 'unread':
         return 'primary';
       case 'read':
-        return 'default';
+        return 'gray';
       case 'important':
         return 'warning';
       case 'completed':
         return 'success';
       default:
-        return 'default';
+        return 'gray';
     }
   };
 
