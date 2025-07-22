@@ -211,12 +211,13 @@ const Table = <T extends Record<string, any> = any>({
         )}>
           {React.Children.map(children, (child, index) => {
             if (React.isValidElement(child)) {
+              // TableComponentProps를 구현하는 컴포넌트에만 해당 props 전달
               return React.cloneElement(child, {
                 striped,
                 hover,
                 compact,
                 index
-              });
+              } as React.ComponentProps<any>);
             }
             return child;
           })}
@@ -302,13 +303,17 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
   );
 };
 
-interface TableRowProps {
-  children: React.ReactNode;
-  className?: string;
+// 테이블 컴포넌트들이 공통으로 받을 수 있는 props
+interface TableComponentProps {
   striped?: boolean;
   hover?: boolean;
   compact?: boolean;
   index?: number;
+}
+
+interface TableRowProps extends TableComponentProps {
+  children: React.ReactNode;
+  className?: string;
   onClick?: () => void;
   selected?: boolean;
 }
@@ -340,18 +345,20 @@ export const TableRow: React.FC<TableRowProps> = ({
   );
 };
 
-interface TableCellProps {
+interface TableCellProps extends TableComponentProps {
   children: React.ReactNode;
   className?: string;
   align?: 'left' | 'center' | 'right';
-  compact?: boolean;
 }
 
 export const TableCell: React.FC<TableCellProps> = ({
   children,
   className,
   align = 'left',
-  compact = false
+  compact = false,
+  striped,
+  hover,
+  index
 }) => {
   const alignClasses = {
     left: 'text-left',
