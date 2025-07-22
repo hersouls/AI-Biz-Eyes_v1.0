@@ -104,7 +104,7 @@ JWT_SECRET=your-secret-key
 JWT_EXPIRES_IN=7d
 
 # CORS 설정
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
+ALLOWED_ORIGINS=https://hersouls.github.io
 ```
 
 ## 📊 Mock 데이터
@@ -121,7 +121,7 @@ ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
 
 ### 로그인
 ```bash
-curl -X POST http://localhost:3001/api/auth/login \
+curl -X POST https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -131,13 +131,13 @@ curl -X POST http://localhost:3001/api/auth/login \
 
 ### 공고 목록 조회
 ```bash
-curl -X GET "http://localhost:3001/api/bids?page=1&limit=10" \
+curl -X GET "https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/bids?page=1&limit=10" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
 ### 레퍼런스 등록
 ```bash
-curl -X POST http://localhost:3001/api/references \
+curl -X POST https://hersouls.github.io/AI-Biz-Eyes_v1.0/api/references \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{

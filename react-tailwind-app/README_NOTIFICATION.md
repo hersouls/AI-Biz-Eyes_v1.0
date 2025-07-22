@@ -261,7 +261,7 @@ npm install
 ### 2. 환경 변수 설정
 ```bash
 # .env 파일 생성
-REACT_APP_API_URL=http://localhost:3001/api
+REACT_APP_API_URL=https://hersouls.github.io/AI-Biz-Eyes_v1.0/api
 ```
 
 ### 3. 개발 서버 실행

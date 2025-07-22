@@ -2,8 +2,8 @@ const puppeteer = require('puppeteer');
 const axios = require('axios');
 
 // 설정
-const FRONTEND_URL = 'http://localhost:3000';
-const API_BASE_URL = 'http://localhost:3002';
+const FRONTEND_URL = 'https://hersouls.github.io/AI-Biz-Eyes_v1.0';
+const API_BASE_URL = 'https://hersouls.github.io/AI-Biz-Eyes_v1.0/api';
 
 // 테스트 결과
 const browserTestResults = {

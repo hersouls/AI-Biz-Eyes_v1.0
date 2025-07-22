@@ -1,6 +1,6 @@
 import { DashboardData, DashboardStats, RecentActivity, ChartData, TimelineEvent } from '../types/dashboard';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://hersouls.github.io/AI-Biz-Eyes_v1.0/api';
 
 // Mock data for development
 const mockDashboardStats: DashboardStats = {
