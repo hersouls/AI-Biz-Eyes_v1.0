@@ -131,6 +131,10 @@ const UIComponents: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [selectValue, setSelectValue] = useState('');
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
   const selectOptions = [
     { value: '', label: '선택해주세요' },
     { value: '공사', label: '공사' },
@@ -243,7 +247,7 @@ const UIComponents: React.FC = () => {
                   <BadgeComponent variant="warning">Warning</BadgeComponent>
                   <BadgeComponent variant="danger">Danger</BadgeComponent>
                   <BadgeComponent variant="info">Info</BadgeComponent>
-                  <BadgeComponent variant="default">Default</BadgeComponent>
+                  <BadgeComponent variant="gray">Default</BadgeComponent>
                 </div>
               </div>
 
@@ -278,7 +282,7 @@ const UIComponents: React.FC = () => {
                   label="공고명"
                   placeholder="공고명을 입력하세요"
                   value={inputValue}
-                  onChange={setInputValue}
+                  onChange={handleInputChange}
                   required
                 />
                 <Input

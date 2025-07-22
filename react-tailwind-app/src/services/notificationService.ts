@@ -6,14 +6,15 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api
 const mockNotifications: Notification[] = [
   {
     id: 1,
-    type: 'bid',
+    type: 'new',
     title: '새로운 입찰 공고',
     message: '2024년도 IT 시스템 구축 사업 입찰이 등록되었습니다.',
     priority: 'high',
     status: 'unread',
     assignedTo: 1,
     createdAt: '2024-07-22T10:30:00Z',
-    readAt: null,
+    updatedAt: '2024-07-22T10:30:00Z',
+    readAt: undefined,
     metadata: { bidId: 123, bidNo: '2024001' }
   },
   {
@@ -25,57 +26,47 @@ const mockNotifications: Notification[] = [
     status: 'unread',
     assignedTo: 1,
     createdAt: '2024-07-22T09:15:00Z',
-    readAt: null,
+    updatedAt: '2024-07-22T09:15:00Z',
+    readAt: undefined,
     metadata: { bidId: 124, bidNo: '2024002', deadline: '2024-07-25T18:00:00Z' }
   },
   {
     id: 3,
-    type: 'achievement',
+    type: 'update',
     title: '입찰 성과 달성',
     message: '이번 달 목표 입찰 건수를 달성했습니다.',
     priority: 'normal',
     status: 'read',
     assignedTo: 1,
     createdAt: '2024-07-21T16:45:00Z',
+    updatedAt: '2024-07-21T16:45:00Z',
     readAt: '2024-07-21T17:00:00Z',
     metadata: { achievement: 'monthly_goal', count: 15 }
   }
 ];
 
 const mockNotificationSettings: NotificationSettings = {
-  id: 1,
-  userId: 1,
-  newBid: true,
-  urgent: true,
-  deadline: true,
-  achievement: false,
-  webNotification: true,
-  emailNotification: true,
-  pushNotification: false,
-  immediateNotification: true,
-  dailyNotification: true,
-  weeklyNotification: false,
-  createdAt: '2024-01-01T00:00:00Z'
+  emailNotifications: {
+    enabled: true,
+    types: ['new', 'urgent', 'deadline', 'update'],
+    frequency: 'immediate'
+  },
+  webNotifications: {
+    enabled: true,
+    types: ['new', 'urgent', 'deadline', 'update']
+  },
+  pushNotifications: {
+    enabled: false
+  }
 };
 
 const mockNotificationStats: NotificationStats = {
   total: 45,
   unread: 12,
-  read: 33,
-  byType: {
-    bid: 20,
-    deadline: 15,
-    achievement: 10
-  },
-  byPriority: {
-    urgent: 8,
-    high: 15,
-    normal: 22
-  },
-  byStatus: {
-    unread: 12,
-    read: 33
-  }
+  urgent: 8,
+  high: 15,
+  normal: 22,
+  low: 0
 };
 
 const mockReports: Report[] = [
@@ -83,26 +74,22 @@ const mockReports: Report[] = [
     id: '1',
     type: 'daily',
     title: '일일 입찰 현황 보고서',
-    status: 'completed',
-    createdAt: '2024-07-22T00:00:00Z',
-    completedAt: '2024-07-22T06:00:00Z',
-    downloadUrl: '/reports/daily-2024-07-22.pdf',
-    metadata: {
-      totalBids: 25,
+    summary: {
       newBids: 8,
-      closingBids: 3
-    }
-  },
-  {
-    id: '2',
-    type: 'weekly',
-    title: '주간 입찰 분석 보고서',
-    status: 'processing',
-    createdAt: '2024-07-21T00:00:00Z',
-    completedAt: null,
-    downloadUrl: null,
-    metadata: {
-      period: '2024-07-15 ~ 2024-07-21'
+      deadlineBids: 3,
+      missingBids: 1,
+      duplicateBids: 0,
+      successRate: 92
+    },
+    charts: {
+      bidTypeDistribution: [{ type: '공사', count: 5 }, { type: '용역', count: 3 }],
+      statusDistribution: [{ status: 'active', count: 6 }, { status: 'completed', count: 2 }],
+      weeklyTrend: [{ date: '2024-07-21', count: 2 }, { date: '2024-07-22', count: 6 }]
+    },
+    generatedAt: '2024-07-22T06:00:00Z',
+    period: {
+      startDate: '2024-07-21',
+      endDate: '2024-07-22'
     }
   }
 ];
@@ -171,36 +158,14 @@ export class NotificationService {
   }
 
   // 알림 상태 변경
-  static async updateNotificationStatus(id: number, status: string): Promise<Notification> {
-    try {
-      const response = await fetch(`${API_BASE_URL}/notifications/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({ status }),
-      });
-      if (response.ok) {
-        return response.json();
-      }
-    } catch (error) {
-      console.log('API not available, using mock data');
-    }
-
-    // Fallback to mock data
-    await delay(300);
-    
+  static async updateNotificationStatus(id: number, status: 'unread' | 'read' | 'important' | 'completed'): Promise<Notification> {
+    await delay(100);
     const notification = mockNotifications.find(n => n.id === id);
-    if (!notification) {
-      throw new Error('알림을 찾을 수 없습니다.');
-    }
-    
-    notification.status = status;
+    if (!notification) throw new Error('Notification not found');
+    notification.status = status as 'unread' | 'read' | 'important' | 'completed';
     if (status === 'read') {
       notification.readAt = new Date().toISOString();
     }
-    
     return notification;
   }
 
@@ -339,23 +304,28 @@ export class NotificationService {
     // Fallback to mock data
     await delay(1000);
     
-    const newReport: Report = {
+    return {
       id: Date.now().toString(),
       type,
       title: `${type === 'daily' ? '일일' : type === 'weekly' ? '주간' : '월간'} 입찰 보고서`,
-      status: 'processing',
-      createdAt: new Date().toISOString(),
-      completedAt: null,
-      downloadUrl: null,
-      metadata: {
+      summary: {
+        newBids: 0,
+        deadlineBids: 0,
+        missingBids: 0,
+        duplicateBids: 0,
+        successRate: 0
+      },
+      charts: {
+        bidTypeDistribution: [],
+        statusDistribution: [],
+        weeklyTrend: []
+      },
+      generatedAt: new Date().toISOString(),
+      period: {
         startDate,
-        endDate,
-        period: `${startDate} ~ ${endDate}`
+        endDate
       }
     };
-    
-    mockReports.push(newReport);
-    return newReport;
   }
 
   // 리포트 다운로드
@@ -405,7 +375,7 @@ export class NotificationService {
     ids.forEach(id => {
       const notification = mockNotifications.find(n => n.id === id);
       if (notification) {
-        notification.status = status;
+        notification.status = status as 'unread' | 'read' | 'important' | 'completed';
         if (status === 'read') {
           notification.readAt = new Date().toISOString();
         }

@@ -25,7 +25,7 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
   const handleStatusChange = async (status: string) => {
     try {
       setUpdating(true);
-      await NotificationService.updateNotificationStatus(notification.id, status);
+      await NotificationService.updateNotificationStatus(notification.id, status as 'unread' | 'read' | 'important' | 'completed');
       onStatusChange?.(notification.id, status);
       onClose();
     } catch (error) {

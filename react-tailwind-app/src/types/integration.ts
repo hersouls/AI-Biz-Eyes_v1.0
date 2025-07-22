@@ -12,6 +12,8 @@ export interface IntegrationSystem {
   errorMessage?: string;
   createdAt: Date;
   updatedAt: Date;
+  description?: string;
+  config?: any;
 }
 
 export interface IntegrationLog {
@@ -51,6 +53,8 @@ export interface CreateIntegrationRequest {
   apiKey?: string;
   url?: string;
   syncInterval: string;
+  description?: string;
+  config?: any;
 }
 
 export interface UpdateIntegrationRequest {
@@ -63,8 +67,10 @@ export interface UpdateIntegrationRequest {
 
 export interface CreateFieldMappingRequest {
   systemId: string;
-  internalField: string;
-  externalField: string;
+  sourceField: string;
+  targetField: string;
+  internalField?: string;
+  externalField?: string;
   description?: string;
   isRequired: boolean;
 }

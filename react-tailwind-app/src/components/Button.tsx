@@ -7,6 +7,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   fullWidth?: boolean;
 }
 
@@ -17,6 +19,8 @@ const Button: React.FC<ButtonProps> = ({
   loading = false,
   icon,
   iconPosition = 'left',
+  leftIcon,
+  rightIcon,
   fullWidth = false,
   className,
   disabled,
@@ -49,6 +53,12 @@ const Button: React.FC<ButtonProps> = ({
     className
   );
 
+  // Determine which icon to show based on props
+  const showLeftIcon = leftIcon || (icon && iconPosition === 'left');
+  const showRightIcon = rightIcon || (icon && iconPosition === 'right');
+  const leftIconToShow = leftIcon || icon;
+  const rightIconToShow = rightIcon || icon;
+
   return (
     <button
       className={classes}
@@ -78,14 +88,14 @@ const Button: React.FC<ButtonProps> = ({
         </svg>
       )}
       
-      {!loading && icon && iconPosition === 'left' && (
-        <span className="mr-2">{icon}</span>
+      {!loading && showLeftIcon && (
+        <span className="mr-2">{leftIconToShow}</span>
       )}
       
       {children}
       
-      {!loading && icon && iconPosition === 'right' && (
-        <span className="ml-2">{icon}</span>
+      {!loading && showRightIcon && (
+        <span className="ml-2">{rightIconToShow}</span>
       )}
     </button>
   );

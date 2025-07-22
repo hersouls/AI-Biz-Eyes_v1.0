@@ -22,7 +22,7 @@ const mockReferences: ReferenceData[] = [
     budget: 500000000,
     startDate: '2023-03-01',
     endDate: '2023-12-31',
-    status: 'completed',
+    status: 'success',
     successRate: 95,
     tags: ['IT', '시스템구축', '성공사례'],
     attachments: [
@@ -59,7 +59,7 @@ const mockReferences: ReferenceData[] = [
     budget: 300000000,
     startDate: '2023-09-01',
     endDate: '2024-02-29',
-    status: 'completed',
+    status: 'success',
     successRate: 90,
     tags: ['모바일', '크로스플랫폼', '앱개발'],
     attachments: [
@@ -445,7 +445,7 @@ export const getMockReferences = (): ReferenceData[] => [
     budget: 500000000,
     startDate: '2023-03-01',
     endDate: '2023-12-31',
-    status: 'completed',
+    status: 'success',
     successRate: 95,
     tags: ['IT', '시스템구축', '성공사례'],
     attachments: [
@@ -482,7 +482,7 @@ export const getMockReferences = (): ReferenceData[] => [
     budget: 300000000,
     startDate: '2023-09-01',
     endDate: '2024-02-29',
-    status: 'completed',
+    status: 'success',
     successRate: 90,
     tags: ['모바일', '크로스플랫폼', '앱개발'],
     attachments: [

@@ -30,7 +30,10 @@ export interface BidData {
   intrntnlBidYn?: 'Y' | 'N';
   cmmnCntrctYn?: 'Y' | 'N';
   rgnLmtYn?: 'Y' | 'N';
+  prtcptPsblRgnNm?: string;
   indstrytyLmtYn?: 'Y' | 'N';
+  bidprcPsblIndstrytyNm?: string;
+  rsrvtnPrceDcsnMthdNm?: string;
   
   // 계약 정보
   cntrctCnclsSttusNm?: string;
@@ -69,6 +72,7 @@ export interface BidData {
   bidNtceDt?: string;
   bidClseDt?: string;
   opengDt?: string;
+  refNtceNo?: string;
   status?: 'active' | 'urgent' | 'completed' | 'cancelled';
   category?: string;
   priority?: 'low' | 'medium' | 'high' | 'urgent';
@@ -93,6 +97,35 @@ export interface BidFilters {
   maxBudget?: number;
   startDate?: string;
   endDate?: string;
+}
+
+export interface BidListFilters {
+  businessType?: string;
+  status?: string;
+  institution?: string;
+  region?: string;
+  contractType?: string;
+  biddingType?: string;
+  dateRange: {
+    start?: string;
+    end?: string;
+  };
+  budgetRange: {
+    min?: string;
+    max?: string;
+  };
+}
+
+export interface BidListSort {
+  field: string;
+  order: 'asc' | 'desc';
+}
+
+export interface BidListPagination {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
 }
 
 export interface BidListResponse {

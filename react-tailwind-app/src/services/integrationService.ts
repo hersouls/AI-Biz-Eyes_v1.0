@@ -16,21 +16,17 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api
 const mockIntegrationStats: IntegrationStats = {
   totalSystems: 5,
   activeSystems: 4,
-  failedSystems: 1,
+  errorSystems: 1,
   totalLogs: 1250,
   successRate: 95.2,
-  averageResponseTime: 850,
-  lastSync: '2024-07-22T10:30:00Z',
-  dailySyncs: 48,
-  weeklySyncs: 336,
-  monthlySyncs: 1440
+  last24HoursLogs: 48
 };
 
 const mockIntegrationSystems: IntegrationSystem[] = [
   {
     id: '1',
     name: '공공데이터포털',
-    type: 'api',
+    type: 'OpenAPI',
     status: 'active',
     description: '공공데이터포털 API 연동',
     config: {
@@ -38,15 +34,15 @@ const mockIntegrationSystems: IntegrationSystem[] = [
       apiKey: '***',
       timeout: 30000
     },
-    lastSync: '2024-07-22T10:30:00Z',
-    syncInterval: 3600,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-07-22T10:30:00Z'
+    lastSyncAt: new Date('2024-07-22T10:30:00Z'),
+    syncInterval: '3600',
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T10:30:00Z')
   },
   {
     id: '2',
     name: '나라장터',
-    type: 'web',
+    type: 'OpenAPI',
     status: 'active',
     description: '나라장터 웹 스크래핑',
     config: {
@@ -56,26 +52,26 @@ const mockIntegrationSystems: IntegrationSystem[] = [
         bidDetail: '.bid-detail'
       }
     },
-    lastSync: '2024-07-22T09:15:00Z',
-    syncInterval: 1800,
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-07-22T09:15:00Z'
+    lastSyncAt: new Date('2024-07-22T09:15:00Z'),
+    syncInterval: '1800',
+    createdAt: new Date('2024-01-15T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T09:15:00Z')
   },
   {
     id: '3',
     name: '기업정보 API',
-    type: 'api',
-    status: 'failed',
+    type: 'OpenAPI',
+    status: 'error',
     description: '기업정보 조회 API',
     config: {
       baseUrl: 'https://api.business.go.kr',
       apiKey: '***',
       timeout: 15000
     },
-    lastSync: '2024-07-22T08:45:00Z',
-    syncInterval: 7200,
-    createdAt: '2024-02-01T00:00:00Z',
-    updatedAt: '2024-07-22T08:45:00Z'
+    lastSyncAt: new Date('2024-07-22T08:45:00Z'),
+    syncInterval: '7200',
+    createdAt: new Date('2024-02-01T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T08:45:00Z')
   }
 ];
 
@@ -83,42 +79,26 @@ const mockIntegrationLogs: IntegrationLog[] = [
   {
     id: '1',
     systemId: '1',
-    type: 'sync',
-    status: 'success',
+    type: 'success',
     message: '데이터 동기화 완료',
-    details: {
-      recordsProcessed: 45,
-      recordsCreated: 12,
-      recordsUpdated: 33
-    },
     duration: 2500,
-    createdAt: '2024-07-22T10:30:00Z'
+    createdAt: new Date('2024-07-22T10:30:00Z')
   },
   {
     id: '2',
     systemId: '2',
-    type: 'sync',
-    status: 'success',
+    type: 'success',
     message: '웹 스크래핑 완료',
-    details: {
-      pagesScraped: 10,
-      recordsFound: 28
-    },
     duration: 1800,
-    createdAt: '2024-07-22T09:15:00Z'
+    createdAt: new Date('2024-07-22T09:15:00Z')
   },
   {
     id: '3',
     systemId: '3',
-    type: 'sync',
-    status: 'failed',
-    message: 'API 호출 실패',
-    details: {
-      error: 'Connection timeout',
-      retryCount: 3
-    },
-    duration: 15000,
-    createdAt: '2024-07-22T08:45:00Z'
+    type: 'error',
+    message: 'API 연결 실패',
+    duration: 500,
+    createdAt: new Date('2024-07-22T08:45:00Z')
   }
 ];
 
@@ -126,32 +106,22 @@ const mockFieldMappings: FieldMapping[] = [
   {
     id: '1',
     systemId: '1',
-    sourceField: 'bidNtceNo',
-    targetField: 'bidNumber',
-    transformation: 'none',
+    internalField: 'bidNtceNo',
+    externalField: '공고번호',
     isRequired: true,
     description: '입찰공고번호',
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T10:30:00Z')
   },
   {
     id: '2',
     systemId: '1',
-    sourceField: 'bidNtceNm',
-    targetField: 'bidTitle',
-    transformation: 'none',
+    internalField: 'bidNtceNm',
+    externalField: '공고명',
     isRequired: true,
     description: '입찰공고명',
-    createdAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '3',
-    systemId: '2',
-    sourceField: 'dminsttNm',
-    targetField: 'organization',
-    transformation: 'none',
-    isRequired: true,
-    description: '수요기관명',
-    createdAt: '2024-01-15T00:00:00Z'
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-07-22T10:30:00Z')
   }
 ];
 
@@ -247,10 +217,10 @@ class IntegrationService {
         status: 'active',
         description: data.description || '',
         config: data.config,
-        lastSync: null,
-        syncInterval: data.syncInterval || 3600,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        lastSyncAt: undefined,
+        syncInterval: data.syncInterval || '3600',
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
       mockIntegrationSystems.push(newSystem);
       return newSystem;
@@ -373,12 +343,12 @@ class IntegrationService {
       const paginatedLogs = filteredLogs.slice(startIndex, endIndex);
       
       return {
-        data: paginatedLogs,
+        logs: paginatedLogs,
         pagination: {
           page,
           limit,
-          total: filteredLogs.length,
-          totalPages: Math.ceil(filteredLogs.length / limit)
+          total: mockIntegrationLogs.length,
+          totalPages: Math.ceil(mockIntegrationLogs.length / limit)
         }
       };
     }
@@ -425,12 +395,12 @@ class IntegrationService {
       const newMapping: FieldMapping = {
         id: Date.now().toString(),
         systemId: data.systemId,
-        sourceField: data.sourceField,
-        targetField: data.targetField,
-        transformation: data.transformation || 'none',
+        internalField: data.sourceField,
+        externalField: data.targetField,
         isRequired: data.isRequired || false,
         description: data.description || '',
-        createdAt: new Date().toISOString()
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
       
       mockFieldMappings.push(newMapping);
