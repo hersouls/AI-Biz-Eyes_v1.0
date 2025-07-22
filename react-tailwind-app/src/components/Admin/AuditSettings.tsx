@@ -236,7 +236,7 @@ const AuditSettingsComponent: React.FC = () => {
                   <p className="text-xs text-gray-500">이 카테고리의 활동을 감사합니다</p>
                 </div>
                 <Badge
-                  variant={settings.categories.includes(category) ? 'green' : 'gray'}
+                  variant={settings.categories.includes(category) ? 'success' : 'gray'}
                   className="flex items-center"
                 >
                   {settings.categories.includes(category) ? (
