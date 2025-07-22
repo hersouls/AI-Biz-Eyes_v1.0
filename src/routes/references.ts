@@ -73,21 +73,10 @@ router.get('/', [
     }
 
     // 정렬
-    filteredReferences.sort((a, b) => {
-      let aValue: any = a[sortBy as keyof typeof a];
-      let bValue: any = b[sortBy as keyof typeof b];
-
-      if (sortBy === 'createdAt' || sortBy === 'updatedAt') {
-        aValue = new Date(aValue).getTime();
-        bValue = new Date(bValue).getTime();
-      }
-
-      if (sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
+    if (sortBy && sortOrder) {
+      const { sortArray } = require('../utils/sortUtils');
+      filteredReferences = sortArray(filteredReferences, sortBy as keyof Reference, sortOrder);
+    }
 
     // 페이지네이션
     const startIndex = (Number(page) - 1) * Number(limit);

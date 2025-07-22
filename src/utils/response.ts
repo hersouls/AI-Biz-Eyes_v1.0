@@ -1,35 +1,40 @@
-import { ApiResponse, ErrorResponse, ApiError } from '../types';
+import { ApiResponse, ApiErrorResponse, PaginatedResponse } from '../types';
 
-export const createSuccessResponse = (data: any, message?: string) => {
+export const createSuccessResponse = <T>(data: T, message = 'Success'): ApiResponse<T> => {
   return {
     success: true,
-    data,
     message,
+    data,
     timestamp: new Date().toISOString()
   };
 };
 
-export const createErrorResponse = (code: string, message: string, details?: any) => {
+export const createErrorResponse = (
+  code: string, 
+  message: string, 
+  details?: Record<string, unknown>
+): ApiErrorResponse => {
   return {
     success: false,
     error: {
       code,
       message,
-      ...(details && { details })
+      details
     },
     timestamp: new Date().toISOString()
   };
 };
 
-export const createPaginatedResponse = (
-  data: any[],
+export const createPaginatedResponse = <T>(
+  data: T[],
   total: number,
   page: number,
   limit: number,
-  message?: string
-) => {
+  message = 'Success'
+): PaginatedResponse<T> => {
   return {
     success: true,
+    message,
     data,
     pagination: {
       total,
@@ -37,7 +42,6 @@ export const createPaginatedResponse = (
       limit,
       totalPages: Math.ceil(total / limit)
     },
-    message,
     timestamp: new Date().toISOString()
   };
 };

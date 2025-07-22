@@ -18,7 +18,9 @@ import statisticsRoutes from './routes/statistics';
 import integrationRoutes from './routes/integration';
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+import { config } from './config/env';
+
+const PORT = config.PORT;
 
 // 보안 미들웨어
 app.use(helmet());
@@ -89,18 +91,45 @@ app.use('*', (req, res) => {
 });
 
 // 전역 에러 핸들러
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Global error handler:', err);
-
-  res.status(err.status || 500).json({
-    success: false,
-    error: {
-      code: err.code || 'INTERNAL_SERVER_ERROR',
-      message: err.message || '서버 오류가 발생했습니다.',
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-    },
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Global error handler:', {
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
     timestamp: new Date().toISOString()
   });
+
+  // JWT 토큰 에러
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json(createErrorResponse(
+      'INVALID_TOKEN',
+      '유효하지 않은 토큰입니다.'
+    ));
+  }
+
+  // 토큰 만료 에러
+  if (err.name === 'TokenExpiredError') {
+    return res.status(401).json(createErrorResponse(
+      'TOKEN_EXPIRED',
+      '토큰이 만료되었습니다.'
+    ));
+  }
+
+  // 검증 에러
+  if (err.name === 'ValidationError') {
+    return res.status(422).json(createErrorResponse(
+      'VALIDATION_ERROR',
+      '입력값이 올바르지 않습니다.',
+      { details: err.message }
+    ));
+  }
+
+  // 기본 서버 에러
+  return res.status(500).json(createErrorResponse(
+    'INTERNAL_SERVER_ERROR',
+    '서버 오류가 발생했습니다.'
+  ));
 });
 
 // 서버 시작

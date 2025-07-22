@@ -1,22 +1,46 @@
 // 기본 응답 형식
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
-  data?: T;
-  message?: string;
-  timestamp: string;
-}
-
-export interface ApiError {
-  code: string;
   message: string;
-  details?: any;
-}
-
-export interface ErrorResponse {
-  success: false;
-  error: ApiError;
+  data: T;
   timestamp: string;
 }
+
+export interface ApiErrorResponse {
+  success: false;
+  error: {
+    code: string;
+    message: string;
+    details?: Record<string, unknown>;
+  };
+  timestamp: string;
+}
+
+export interface PaginatedResponse<T> {
+  success: boolean;
+  message: string;
+  data: T[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  timestamp: string;
+}
+
+// Generic Filter Interface
+export interface FilterOptions {
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
+  [key: string]: unknown;
+}
+
+// Generic Sort Function Type
+export type SortFunction<T> = (a: T, b: T, sortBy: keyof T, sortOrder: 'asc' | 'desc') => number;
 
 // 사용자 관련 타입
 export interface User {

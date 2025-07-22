@@ -158,7 +158,7 @@ const AuditLogs: React.FC = () => {
   const columns = [
     {
       key: 'timestamp',
-      header: '시간',
+      title: '시간',
       render: (log: AuditLog) => (
         <div className="text-sm">
           <div className="font-medium text-gray-900">
@@ -172,7 +172,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'userName',
-      header: '사용자',
+      title: '사용자',
       render: (log: AuditLog) => (
         <div className="flex items-center">
           <UserIcon className="h-4 w-4 text-gray-400 mr-2" />
@@ -184,7 +184,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'action',
-      header: '액션',
+      title: '액션',
       render: (log: AuditLog) => (
         <span className="text-sm font-medium text-gray-900">
           {truncateText(log.action, 30)}
@@ -193,7 +193,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'resource',
-      header: '리소스',
+      title: '리소스',
       render: (log: AuditLog) => (
         <span className="text-sm text-gray-600">
           {log.resource}
@@ -202,17 +202,17 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'severity',
-      header: '심각도',
+      title: '심각도',
       render: (log: AuditLog) => getSeverityBadge(log.severity)
     },
     {
       key: 'category',
-      header: '카테고리',
+      title: '카테고리',
       render: (log: AuditLog) => getCategoryBadge(log.category)
     },
     {
       key: 'ipAddress',
-      header: 'IP 주소',
+      title: 'IP 주소',
       render: (log: AuditLog) => (
         <span className="text-sm text-gray-600 font-mono">
           {log.ipAddress || '-'}
@@ -221,7 +221,7 @@ const AuditLogs: React.FC = () => {
     },
     {
       key: 'actions',
-      header: '액션',
+      title: '액션',
       render: (log: AuditLog) => (
         <Button
           variant="ghost"
@@ -330,9 +330,7 @@ const AuditLogs: React.FC = () => {
             columns={columns}
             data={logs}
             loading={loading}
-            pagination={pagination}
-            onPageChange={(page) => setPagination(prev => ({ ...prev, page }))}
-            emptyMessage="감사 로그가 없습니다."
+            emptyText="감사 로그가 없습니다."
           />
         </div>
 

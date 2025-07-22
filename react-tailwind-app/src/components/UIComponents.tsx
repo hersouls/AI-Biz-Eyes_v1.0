@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import Card, { CardHeader, CardContent, CardFooter } from './Card';
-import Table, { TableHeader } from './Table';
+import Table from './Table';
 import Badge from './Badge';
 import Input from './Input';
 import Select from './Select';
@@ -47,12 +47,12 @@ const sampleData = [
 const columns = [
   {
     key: 'bidNtceNo',
-    header: '공고번호',
+    title: '공고번호',
     width: '120px'
   },
   {
     key: 'bidNtceNm',
-    header: '공고명',
+    title: '공고명',
     render: (value: string) => (
       <span className="font-medium text-primary hover:text-primary-700 cursor-pointer">
         {value}
@@ -61,18 +61,18 @@ const columns = [
   },
   {
     key: 'ntceInsttNm',
-    header: '공고기관',
+    title: '공고기관',
     width: '150px'
   },
   {
     key: 'bsnsDivNm',
-    header: '업무구분',
+    title: '업무구분',
     width: '100px',
     align: 'center' as const
   },
   {
     key: 'bidNtceSttusNm',
-    header: '상태',
+    title: '상태',
     width: '120px',
     align: 'center' as const,
     render: (value: string) => (
@@ -86,7 +86,7 @@ const columns = [
   },
   {
     key: 'asignBdgtAmt',
-    header: '예산금액',
+    title: '예산금액',
     width: '140px',
     align: 'right' as const,
     render: (value: string) => (
@@ -97,13 +97,13 @@ const columns = [
   },
   {
     key: 'bidClseDate',
-    header: '마감일',
+    title: '마감일',
     width: '120px',
     align: 'center' as const
   },
   {
     key: 'status',
-    header: '내부상태',
+    title: '내부상태',
     width: '100px',
     align: 'center' as const,
     render: (value: string) => {
@@ -344,12 +344,6 @@ const UIComponents: React.FC = () => {
             <Table
               data={sampleData}
               columns={columns}
-              selectable
-              selectedRows={selectedRows}
-              onSelectionChange={setSelectedRows}
-              rowKey="id"
-              hover
-              striped
             />
           </CardContent>
           <CardFooter>

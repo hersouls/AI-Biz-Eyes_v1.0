@@ -91,7 +91,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
   const tableColumns = [
     {
       key: 'projectName',
-      header: '사업명',
+      title: '사업명',
       render: (value: string, record: ReferenceData) => (
         <div className="text-left">
           <div className="font-medium text-gray-900">{value}</div>
@@ -103,40 +103,40 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     },
     {
       key: 'projectType',
-      header: '사업유형',
+      title: '사업유형',
       render: (value: string) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'organization',
-      header: '참여기관',
+      title: '참여기관',
       render: (value: string) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'participationYear',
-      header: '참여연도',
+      title: '참여연도',
       render: (value: number) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'contractAmount',
-      header: '계약금액',
+      title: '계약금액',
       render: (value: number | undefined) => (
         <span className="font-medium text-gray-900">{formatAmount(value)}</span>
       )
     },
     {
       key: 'status',
-      header: '성과상태',
+      title: '성과상태',
       render: (value: string) => getStatusBadge(value)
     },
     {
       key: 'score',
-      header: '평가등급',
+      title: '평가등급',
       render: (value: string | undefined) => getScoreBadge(value)
     },
     {
       key: 'actions',
-      header: '액션',
-      render: (_: any, record: ReferenceData) => (
+      title: '액션',
+      render: (_: unknown, record: ReferenceData) => (
         <div className="flex space-x-2">
           <Button
             size="sm"
@@ -261,8 +261,6 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           columns={tableColumns}
           data={references}
           loading={loading}
-          pagination={pagination}
-          onPageChange={(page: number) => setPagination(prev => ({ ...prev, page }))}
         />
       </Card>
     </div>
