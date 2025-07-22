@@ -12,7 +12,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer
 } from 'recharts';
 import { 
@@ -20,7 +19,6 @@ import {
   DocumentTextIcon,
   BellIcon,
   ServerIcon,
-  ExclamationTriangleIcon,
   ClockIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';

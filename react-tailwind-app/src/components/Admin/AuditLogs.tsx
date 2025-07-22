@@ -38,7 +38,6 @@ const AuditLogs: React.FC = () => {
   const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const loadAuditLogs = useCallback(async () => {
     try {
@@ -130,7 +129,6 @@ const AuditLogs: React.FC = () => {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (err) {
-      setError('감사 로그 내보내기에 실패했습니다.');
       console.error('Failed to export audit logs:', err);
     } finally {
       setExporting(false);

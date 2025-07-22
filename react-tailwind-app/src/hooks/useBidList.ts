@@ -47,40 +47,7 @@ export const useBidList = (): UseBidListReturn => {
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState(0);
 
-  // API URL 생성
-  const buildApiUrl = useCallback((params: {
-    page: number;
-    pageSize: number;
-    searchKeyword: string;
-    filters: BidListFilters;
-    sortBy: string;
-    sortOrder: 'asc' | 'desc';
-  }) => {
-    const { page, pageSize, searchKeyword, filters } = params;
-    
-    const queryParams = new URLSearchParams({
-      serviceKey: API_CONFIG.SERVICE_KEY,
-      type: 'json',
-      pageNo: page.toString(),
-      numOfRows: pageSize.toString(),
-      bidNtceNm: searchKeyword || '',
-      bsnsDivNm: filters.businessType || '',
-      bidNtceSttusNm: filters.status || '',
-      ntceInsttNm: filters.institution || '',
-      prtcptPsblRgnNm: filters.region || '',
-      cntrctCnclsSttusNm: filters.contractType || '',
-      elctrnBidYn: filters.biddingType === '전자입찰' ? 'Y' : 
-                   filters.biddingType === '일반입찰' ? 'N' : '',
-      intrntnlBidYn: filters.biddingType === '국제입찰' ? 'Y' : '',
-      cmmnCntrctYn: filters.contractType === '공동계약' ? 'Y' : '',
-      bidNtceDate: filters.dateRange.start || '',
-      bidClseDate: filters.dateRange.end || '',
-      asignBdgtAmt: filters.budgetRange.min || '',
-      presmptPrce: filters.budgetRange.max || ''
-    });
 
-    return `${API_CONFIG.BASE_URL}/getBidPblancListInfoServc?${queryParams.toString()}`;
-  }, []);
 
   // API 호출
   const fetchBids = useCallback(async (params: {

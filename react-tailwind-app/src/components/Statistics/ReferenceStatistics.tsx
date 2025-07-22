@@ -16,7 +16,6 @@ import {
 } from 'recharts';
 import { 
   DocumentTextIcon, 
-  XCircleIcon,
   ClockIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
