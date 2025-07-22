@@ -73,6 +73,7 @@ export const BidDetail: React.FC<BidDetailProps> = () => {
 
   const renderParticipationStatusBadge = (status: string | undefined) => {
     const statusConfig = getParticipationStatusBadge(status);
+    if (!statusConfig) return null;
     return <Badge variant={statusConfig.color}>{statusConfig.text}</Badge>;
   };
 
