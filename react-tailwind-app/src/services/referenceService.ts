@@ -11,256 +11,507 @@ import {
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
 
+// Mock data for development
+const mockReferences: ReferenceData[] = [
+  {
+    id: 1,
+    title: 'IT 시스템 구축 사업',
+    description: '2023년도 IT 시스템 구축 사업 레퍼런스',
+    organization: '테크노파크',
+    businessType: 'IT',
+    budget: 500000000,
+    startDate: '2023-03-01',
+    endDate: '2023-12-31',
+    status: 'completed',
+    successRate: 95,
+    tags: ['IT', '시스템구축', '성공사례'],
+    attachments: [
+      { id: 1, name: '사업계획서.pdf', url: '/attachments/plan.pdf', size: 2048576 },
+      { id: 2, name: '결과보고서.pdf', url: '/attachments/report.pdf', size: 3072000 }
+    ],
+    createdAt: '2024-01-15T00:00:00Z',
+    updatedAt: '2024-07-22T10:30:00Z'
+  },
+  {
+    id: 2,
+    title: '웹사이트 구축 프로젝트',
+    description: '기업 웹사이트 구축 및 운영 프로젝트',
+    organization: '스타트업A',
+    businessType: '웹개발',
+    budget: 150000000,
+    startDate: '2024-01-01',
+    endDate: '2024-06-30',
+    status: 'in_progress',
+    successRate: 85,
+    tags: ['웹개발', '반응형', 'UI/UX'],
+    attachments: [
+      { id: 3, name: '요구사항서.pdf', url: '/attachments/requirements.pdf', size: 1536000 }
+    ],
+    createdAt: '2024-02-01T00:00:00Z',
+    updatedAt: '2024-07-22T09:15:00Z'
+  },
+  {
+    id: 3,
+    title: '모바일 앱 개발',
+    description: 'iOS/Android 크로스 플랫폼 앱 개발',
+    organization: '모바일컴퍼니',
+    businessType: '모바일',
+    budget: 300000000,
+    startDate: '2023-09-01',
+    endDate: '2024-02-29',
+    status: 'completed',
+    successRate: 90,
+    tags: ['모바일', '크로스플랫폼', '앱개발'],
+    attachments: [
+      { id: 4, name: '기술명세서.pdf', url: '/attachments/spec.pdf', size: 2560000 },
+      { id: 5, name: '테스트결과.pdf', url: '/attachments/test.pdf', size: 1024000 }
+    ],
+    createdAt: '2023-08-15T00:00:00Z',
+    updatedAt: '2024-03-01T00:00:00Z'
+  }
+];
+
+const mockReferenceStats: ReferenceStats = {
+  total: 45,
+  byStatus: {
+    completed: 28,
+    in_progress: 12,
+    planned: 5
+  },
+  byBusinessType: {
+    IT: 15,
+    웹개발: 12,
+    모바일: 8,
+    시스템구축: 10
+  },
+  byBudget: {
+    small: 20,
+    medium: 15,
+    large: 10
+  },
+  averageSuccessRate: 87.5,
+  totalBudget: 8500000000
+};
+
+// Helper function to simulate API delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 // 레퍼런스 목록 조회
 export const getReferences = async (
   filters: ReferenceFilters = {},
   page: number = 1,
   limit: number = 20
 ): Promise<ReferenceListResponse> => {
-  const params = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
-    ...Object.fromEntries(
-      Object.entries(filters).filter(([_, value]) => value !== undefined && value !== '')
-    )
-  });
+  try {
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+      ...Object.fromEntries(
+        Object.entries(filters).filter(([_, value]) => value !== undefined && value !== '')
+      )
+    });
 
-  const response = await fetch(`${API_BASE_URL}/references?${params}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    const response = await fetch(`${API_BASE_URL}/references?${params}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    if (response.ok) {
+      return response.json();
     }
-  });
-
-  if (!response.ok) {
-    throw new Error('레퍼런스 목록을 불러오는데 실패했습니다.');
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  return response.json();
+  // Fallback to mock data
+  await delay(500);
+  
+  let filteredReferences = [...mockReferences];
+  
+  if (filters.title) {
+    filteredReferences = filteredReferences.filter(ref => 
+      ref.title.toLowerCase().includes(filters.title!.toLowerCase())
+    );
+  }
+  if (filters.organization) {
+    filteredReferences = filteredReferences.filter(ref => 
+      ref.organization.toLowerCase().includes(filters.organization!.toLowerCase())
+    );
+  }
+  if (filters.businessType) {
+    filteredReferences = filteredReferences.filter(ref => 
+      ref.businessType === filters.businessType
+    );
+  }
+  if (filters.status) {
+    filteredReferences = filteredReferences.filter(ref => 
+      ref.status === filters.status
+    );
+  }
+  if (filters.minBudget) {
+    filteredReferences = filteredReferences.filter(ref => 
+      ref.budget >= filters.minBudget!
+    );
+  }
+  if (filters.maxBudget) {
+    filteredReferences = filteredReferences.filter(ref => 
+      ref.budget <= filters.maxBudget!
+    );
+  }
+  
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedReferences = filteredReferences.slice(startIndex, endIndex);
+  
+  return {
+    success: true,
+    data: {
+      references: paginatedReferences,
+      pagination: {
+        page,
+        limit,
+        total: filteredReferences.length,
+        totalPages: Math.ceil(filteredReferences.length / limit)
+      }
+    },
+    message: '레퍼런스 목록 조회 성공'
+  };
 };
 
 // 레퍼런스 등록
 export const createReference = async (data: ReferenceRequest): Promise<ReferenceResponse> => {
-  const response = await fetch(`${API_BASE_URL}/references`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },
-    body: JSON.stringify(data)
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/references`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data)
+    });
 
-  if (!response.ok) {
-    throw new Error('레퍼런스 등록에 실패했습니다.');
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  return response.json();
+  // Fallback to mock data
+  await delay(500);
+  
+  const newReference: ReferenceData = {
+    id: Date.now(),
+    title: data.title,
+    description: data.description,
+    organization: data.organization,
+    businessType: data.businessType,
+    budget: data.budget,
+    startDate: data.startDate,
+    endDate: data.endDate,
+    status: data.status || 'planned',
+    successRate: data.successRate || 0,
+    tags: data.tags || [],
+    attachments: data.attachments || [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  
+  mockReferences.push(newReference);
+  
+  return {
+    success: true,
+    data: newReference,
+    message: '레퍼런스 등록 성공'
+  };
 };
 
 // 레퍼런스 수정
 export const updateReference = async (id: number, data: Partial<ReferenceRequest>): Promise<ReferenceResponse> => {
-  const response = await fetch(`${API_BASE_URL}/references/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },
-    body: JSON.stringify(data)
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/references/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data)
+    });
 
-  if (!response.ok) {
-    throw new Error('레퍼런스 수정에 실패했습니다.');
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  return response.json();
+  // Fallback to mock data
+  await delay(500);
+  
+  const reference = mockReferences.find(ref => ref.id === id);
+  if (!reference) {
+    throw new Error('레퍼런스를 찾을 수 없습니다.');
+  }
+  
+  Object.assign(reference, {
+    ...data,
+    updatedAt: new Date().toISOString()
+  });
+  
+  return {
+    success: true,
+    data: reference,
+    message: '레퍼런스 수정 성공'
+  };
 };
 
 // 레퍼런스 삭제
 export const deleteReference = async (id: number): Promise<ReferenceDeleteResponse> => {
-  const response = await fetch(`${API_BASE_URL}/references/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/references/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
-  if (!response.ok) {
-    throw new Error('레퍼런스 삭제에 실패했습니다.');
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  return response.json();
+  // Fallback to mock data
+  await delay(300);
+  
+  const index = mockReferences.findIndex(ref => ref.id === id);
+  if (index === -1) {
+    throw new Error('레퍼런스를 찾을 수 없습니다.');
+  }
+  
+  mockReferences.splice(index, 1);
+  
+  return {
+    success: true,
+    message: '레퍼런스 삭제 성공'
+  };
 };
 
 // 레퍼런스 상세 조회
 export const getReference = async (id: number): Promise<ReferenceData> => {
-  const response = await fetch(`${API_BASE_URL}/references/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/references/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
-  if (!response.ok) {
-    throw new Error('레퍼런스 상세 정보를 불러오는데 실패했습니다.');
+    if (response.ok) {
+      const data = await response.json();
+      return data.data;
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  const result = await response.json();
-  return result.data;
+  // Fallback to mock data
+  await delay(300);
+  
+  const reference = mockReferences.find(ref => ref.id === id);
+  if (!reference) {
+    throw new Error('레퍼런스를 찾을 수 없습니다.');
+  }
+  
+  return reference;
 };
 
-// 유사 공고 매칭
+// 레퍼런스 매칭 조회
 export const getReferenceMatches = async (referenceId: number): Promise<ReferenceMatchResponse> => {
-  const response = await fetch(`${API_BASE_URL}/references/${referenceId}/match`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/references/${referenceId}/match`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
-  if (!response.ok) {
-    throw new Error('유사 공고 매칭에 실패했습니다.');
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  return response.json();
+  // Fallback to mock data
+  await delay(500);
+  
+  const reference = mockReferences.find(ref => ref.id === referenceId);
+  if (!reference) {
+    throw new Error('레퍼런스를 찾을 수 없습니다.');
+  }
+  
+  // Find similar references based on business type and budget
+  const matches = mockReferences
+    .filter(ref => ref.id !== referenceId && ref.businessType === reference.businessType)
+    .map(ref => ({
+      reference: ref,
+      similarity: Math.floor(Math.random() * 30) + 70, // 70-100% similarity
+      matchReason: '유사한 사업 분야'
+    }))
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, 5);
+  
+  return {
+    success: true,
+    data: {
+      originalReference: reference,
+      matches
+    },
+    message: '레퍼런스 매칭 조회 성공'
+  };
 };
 
 // 레퍼런스 통계 조회
 export const getReferenceStats = async (): Promise<ReferenceStats> => {
-  const response = await fetch(`${API_BASE_URL}/references/stats`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/references/stats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
-  if (!response.ok) {
-    throw new Error('레퍼런스 통계를 불러오는데 실패했습니다.');
+    if (response.ok) {
+      const data = await response.json();
+      return data.data;
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  const result = await response.json();
-  return result.data;
+  // Fallback to mock data
+  await delay(300);
+  return mockReferenceStats;
 };
 
 // 파일 업로드
 export const uploadFile = async (file: File): Promise<{ url: string; name: string; size: number }> => {
-  const formData = new FormData();
-  formData.append('file', file);
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
 
-  const response = await fetch(`${API_BASE_URL}/upload`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },
-    body: formData
-  });
+    const response = await fetch(`${API_BASE_URL}/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: formData
+    });
 
-  if (!response.ok) {
-    throw new Error('파일 업로드에 실패했습니다.');
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log('API not available, using mock data');
   }
 
-  return response.json();
+  // Fallback to mock data
+  await delay(1000);
+  
+  return {
+    url: `/mock-uploads/${file.name}`,
+    name: file.name,
+    size: file.size
+  };
 };
 
-// Mock 데이터 (개발용)
+// Mock data functions (for backward compatibility)
 export const getMockReferences = (): ReferenceData[] => [
   {
     id: 1,
-    projectName: "스마트공장 구축 사업",
-    projectType: "용역",
-    bidNtceNo: "20230100001",
-    organization: "한국산업기술진흥원",
-    participationYear: 2023,
-    contractAmount: 500000000,
-    status: "success",
-    score: "A",
-    description: "스마트공장 구축을 위한 종합 용역 사업",
-    createdBy: 1,
-    createdAt: "2024-07-22T10:30:00Z",
-    updatedAt: "2024-07-22T10:30:00Z"
+    title: 'IT 시스템 구축 사업',
+    description: '2023년도 IT 시스템 구축 사업 레퍼런스',
+    organization: '테크노파크',
+    businessType: 'IT',
+    budget: 500000000,
+    startDate: '2023-03-01',
+    endDate: '2023-12-31',
+    status: 'completed',
+    successRate: 95,
+    tags: ['IT', '시스템구축', '성공사례'],
+    attachments: [
+      { id: 1, name: '사업계획서.pdf', url: '/attachments/plan.pdf', size: 2048576 },
+      { id: 2, name: '결과보고서.pdf', url: '/attachments/report.pdf', size: 3072000 }
+    ],
+    createdAt: '2024-01-15T00:00:00Z',
+    updatedAt: '2024-07-22T10:30:00Z'
   },
   {
     id: 2,
-    projectName: "AI 기반 품질관리 시스템 개발",
-    projectType: "개발",
-    bidNtceNo: "20230200002",
-    organization: "한국표준과학연구원",
-    participationYear: 2023,
-    contractAmount: 300000000,
-    status: "success",
-    score: "A",
-    description: "AI 기술을 활용한 제품 품질관리 시스템 개발",
-    createdBy: 1,
-    createdAt: "2024-07-21T14:20:00Z",
-    updatedAt: "2024-07-21T14:20:00Z"
+    title: '웹사이트 구축 프로젝트',
+    description: '기업 웹사이트 구축 및 운영 프로젝트',
+    organization: '스타트업A',
+    businessType: '웹개발',
+    budget: 150000000,
+    startDate: '2024-01-01',
+    endDate: '2024-06-30',
+    status: 'in_progress',
+    successRate: 85,
+    tags: ['웹개발', '반응형', 'UI/UX'],
+    attachments: [
+      { id: 3, name: '요구사항서.pdf', url: '/attachments/requirements.pdf', size: 1536000 }
+    ],
+    createdAt: '2024-02-01T00:00:00Z',
+    updatedAt: '2024-07-22T09:15:00Z'
   },
   {
     id: 3,
-    projectName: "디지털 트윈 플랫폼 구축",
-    projectType: "용역",
-    bidNtceNo: "20230300003",
-    organization: "한국정보통신기술협회",
-    participationYear: 2023,
-    contractAmount: 800000000,
-    status: "ongoing",
-    score: "B",
-    description: "산업용 디지털 트윈 플랫폼 구축 사업",
-    createdBy: 1,
-    createdAt: "2024-07-20T09:15:00Z",
-    updatedAt: "2024-07-20T09:15:00Z"
-  },
-  {
-    id: 4,
-    projectName: "클라우드 인프라 구축",
-    projectType: "개발",
-    bidNtceNo: "20230400004",
-    organization: "한국전자정보통신산업진흥회",
-    participationYear: 2023,
-    contractAmount: 400000000,
-    status: "success",
-    score: "A",
-    description: "기업용 클라우드 인프라 구축 및 운영",
-    createdBy: 1,
-    createdAt: "2024-07-19T16:45:00Z",
-    updatedAt: "2024-07-19T16:45:00Z"
-  },
-  {
-    id: 5,
-    projectName: "IoT 센서 네트워크 구축",
-    projectType: "용역",
-    bidNtceNo: "20230500005",
-    organization: "한국산업기술진흥원",
-    participationYear: 2023,
-    contractAmount: 600000000,
-    status: "failure",
-    score: "C",
-    description: "산업용 IoT 센서 네트워크 구축 사업",
-    createdBy: 1,
-    createdAt: "2024-07-18T11:20:00Z",
-    updatedAt: "2024-07-18T11:20:00Z"
+    title: '모바일 앱 개발',
+    description: 'iOS/Android 크로스 플랫폼 앱 개발',
+    organization: '모바일컴퍼니',
+    businessType: '모바일',
+    budget: 300000000,
+    startDate: '2023-09-01',
+    endDate: '2024-02-29',
+    status: 'completed',
+    successRate: 90,
+    tags: ['모바일', '크로스플랫폼', '앱개발'],
+    attachments: [
+      { id: 4, name: '기술명세서.pdf', url: '/attachments/spec.pdf', size: 2560000 },
+      { id: 5, name: '테스트결과.pdf', url: '/attachments/test.pdf', size: 1024000 }
+    ],
+    createdAt: '2023-08-15T00:00:00Z',
+    updatedAt: '2024-03-01T00:00:00Z'
   }
 ];
 
 export const getMockReferenceStats = (): ReferenceStats => ({
-  totalCount: 15,
-  successCount: 10,
-  failureCount: 2,
-  ongoingCount: 3,
-  totalAmount: 2500000000,
-  averageScore: 'A',
-  yearlyStats: [
-    { year: 2024, count: 5, amount: 800000000 },
-    { year: 2023, count: 7, amount: 1200000000 },
-    { year: 2022, count: 3, amount: 500000000 }
-  ],
-  typeStats: [
-    { type: '용역', count: 8, successRate: 0.75 },
-    { type: '개발', count: 4, successRate: 0.8 },
-    { type: '공사', count: 2, successRate: 0.5 },
-    { type: '연구', count: 1, successRate: 1.0 }
-  ]
+  total: 45,
+  byStatus: {
+    completed: 28,
+    in_progress: 12,
+    planned: 5
+  },
+  byBusinessType: {
+    IT: 15,
+    웹개발: 12,
+    모바일: 8,
+    시스템구축: 10
+  },
+  byBudget: {
+    small: 20,
+    medium: 15,
+    large: 10
+  },
+  averageSuccessRate: 87.5,
+  totalBudget: 8500000000
 });

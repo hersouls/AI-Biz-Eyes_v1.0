@@ -98,52 +98,57 @@ const mockUserActivities: UserActivity[] = [
     targetType: 'bid',
     ipAddress: '192.168.1.1',
     userAgent: 'Mozilla/5.0...',
-    createdAt: '2024-07-23T10:00:00Z'
+    createdAt: '2024-07-22T10:30:00Z',
+    details: { bidNo: '2024001', bidTitle: 'IT 시스템 구축 사업' }
   },
   {
     id: 2,
     userId: 1,
-    action: 'participate_bid',
-    targetId: 124,
-    targetType: 'bid',
+    action: 'create_reference',
+    targetId: 456,
+    targetType: 'reference',
     ipAddress: '192.168.1.1',
     userAgent: 'Mozilla/5.0...',
-    createdAt: '2024-07-22T15:30:00Z'
+    createdAt: '2024-07-22T09:15:00Z',
+    details: { referenceTitle: '유사 사업 레퍼런스' }
   },
   {
     id: 3,
     userId: 1,
-    action: 'add_reference',
-    targetId: 125,
-    targetType: 'reference',
+    action: 'download_report',
+    targetId: 789,
+    targetType: 'report',
     ipAddress: '192.168.1.1',
     userAgent: 'Mozilla/5.0...',
-    createdAt: '2024-07-21T09:15:00Z'
+    createdAt: '2024-07-21T16:45:00Z',
+    details: { reportType: 'weekly', format: 'pdf' }
   }
 ];
 
 const mockUserPerformance: UserPerformance = {
   userId: 1,
-  totalBidsViewed: 156,
-  totalBidsParticipated: 23,
-  totalReferencesAdded: 45,
-  totalReportsViewed: 12,
-  successRate: 78.5,
-  averageResponseTime: 2.3,
-  lastMonthActivity: 89,
-  thisMonthActivity: 67
+  period: '2024-07',
+  totalBidsViewed: 45,
+  totalBidsAnalyzed: 28,
+  totalReferencesCreated: 12,
+  totalReportsGenerated: 8,
+  averageSessionDuration: 45,
+  totalSessions: 25,
+  successRate: 85.5,
+  efficiencyScore: 92.3,
+  createdAt: '2024-07-22T00:00:00Z'
 };
 
 const mockPersonalSettings: PersonalSettings = {
   id: 1,
   userId: 1,
-  theme: 'light',
   language: 'ko',
   timezone: 'Asia/Seoul',
   dateFormat: 'YYYY-MM-DD',
-  numberFormat: '#,##0',
+  timeFormat: '24h',
+  theme: 'light',
   autoSave: true,
-  keyboardShortcuts: true,
+  autoSaveInterval: 300,
   createdAt: '2024-01-01T00:00:00Z'
 };
 
@@ -151,27 +156,13 @@ const mockSecuritySettings: SecuritySettings = {
   id: 1,
   userId: 1,
   twoFactorEnabled: false,
-  sessionTimeout: 30,
-  loginHistory: [
-    {
-      id: 1,
-      userId: 1,
-      loginAt: '2024-07-23T11:30:00Z',
-      ipAddress: '192.168.1.1',
-      userAgent: 'Mozilla/5.0...',
-      location: 'Seoul, Korea',
-      success: true
-    },
-    {
-      id: 2,
-      userId: 1,
-      loginAt: '2024-07-22T09:15:00Z',
-      ipAddress: '192.168.1.1',
-      userAgent: 'Mozilla/5.0...',
-      location: 'Seoul, Korea',
-      success: true
-    }
-  ],
+  loginNotifications: true,
+  sessionTimeout: 3600,
+  maxLoginAttempts: 5,
+  passwordExpiryDays: 90,
+  lastPasswordChange: '2024-06-01T00:00:00Z',
+  ipWhitelist: [],
+  deviceWhitelist: [],
   createdAt: '2024-01-01T00:00:00Z'
 };
 
@@ -182,35 +173,41 @@ const mockDataExports: DataExport[] = [
     type: 'work_history',
     format: 'excel',
     status: 'completed',
-    fileUrl: '/downloads/work_history_20240723.xlsx',
+    fileName: 'work_history_2024-07-22.xlsx',
     fileSize: 2048576,
-    createdAt: '2024-07-23T10:00:00Z',
-    completedAt: '2024-07-23T10:05:00Z'
+    downloadUrl: '/exports/work_history_2024-07-22.xlsx',
+    createdAt: '2024-07-22T10:00:00Z',
+    completedAt: '2024-07-22T10:05:00Z'
   },
   {
     id: 2,
     userId: 1,
     type: 'settings',
     format: 'json',
-    status: 'completed',
-    fileUrl: '/downloads/settings_20240722.json',
-    fileSize: 51200,
-    createdAt: '2024-07-22T15:00:00Z',
-    completedAt: '2024-07-22T15:01:00Z'
+    status: 'processing',
+    fileName: null,
+    fileSize: null,
+    downloadUrl: null,
+    createdAt: '2024-07-22T11:00:00Z',
+    completedAt: null
   }
 ];
 
+// Helper function to simulate API delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export class PersonalService {
-  // User Profile
   static async getUserProfile(): Promise<PersonalApiResponse<UserProfile>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/profile`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockUserProfile
+        data: mockUserProfile,
+        message: '프로필 조회 성공'
       };
     }
   }
@@ -220,10 +217,15 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/profile`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      Object.assign(mockUserProfile, data);
+      
       return {
         success: true,
-        data: { ...mockUserProfile, ...data }
+        data: mockUserProfile,
+        message: '프로필 업데이트 성공'
       };
     }
   }
@@ -233,24 +235,28 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/password`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
       return {
         success: true,
-        message: '비밀번호가 성공적으로 변경되었습니다.'
+        data: null,
+        message: '비밀번호 변경 성공'
       };
     }
   }
 
-  // Notification Settings
   static async getNotificationSettings(): Promise<PersonalApiResponse<NotificationSettings>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/notifications`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockNotificationSettings
+        data: mockNotificationSettings,
+        message: '알림 설정 조회 성공'
       };
     }
   }
@@ -260,24 +266,30 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/notifications`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      Object.assign(mockNotificationSettings, data);
+      
       return {
         success: true,
-        data: { ...mockNotificationSettings, ...data }
+        data: mockNotificationSettings,
+        message: '알림 설정 업데이트 성공'
       };
     }
   }
 
-  // Report Settings
   static async getReportSettings(): Promise<PersonalApiResponse<ReportSettings>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/reports`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockReportSettings
+        data: mockReportSettings,
+        message: '리포트 설정 조회 성공'
       };
     }
   }
@@ -287,24 +299,30 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/reports`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      Object.assign(mockReportSettings, data);
+      
       return {
         success: true,
-        data: { ...mockReportSettings, ...data }
+        data: mockReportSettings,
+        message: '리포트 설정 업데이트 성공'
       };
     }
   }
 
-  // Dashboard Settings
   static async getDashboardSettings(): Promise<PersonalApiResponse<DashboardSettings>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/dashboard`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockDashboardSettings
+        data: mockDashboardSettings,
+        message: '대시보드 설정 조회 성공'
       };
     }
   }
@@ -314,55 +332,76 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/dashboard`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      if (data.widgets) {
+        mockDashboardSettings.widgets = data.widgets;
+      }
+      if (data.defaultFilters) {
+        mockDashboardSettings.defaultFilters = { ...mockDashboardSettings.defaultFilters, ...data.defaultFilters };
+      }
+      if (data.layout) {
+        mockDashboardSettings.layout = { ...mockDashboardSettings.layout, ...data.layout };
+      }
+      
       return {
         success: true,
-        data: { ...mockDashboardSettings, ...data }
+        data: mockDashboardSettings,
+        message: '대시보드 설정 업데이트 성공'
       };
     }
   }
 
-  // User Activity
   static async getUserActivities(page: number = 1, limit: number = 20): Promise<PersonalApiResponse<{ activities: UserActivity[]; total: number }>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/activities?page=${page}&limit=${limit}`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      const paginatedActivities = mockUserActivities.slice(startIndex, endIndex);
+      
       return {
         success: true,
         data: {
-          activities: mockUserActivities,
+          activities: paginatedActivities,
           total: mockUserActivities.length
-        }
+        },
+        message: '활동 내역 조회 성공'
       };
     }
   }
 
-  // User Performance
   static async getUserPerformance(): Promise<PersonalApiResponse<UserPerformance>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/performance`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockUserPerformance
+        data: mockUserPerformance,
+        message: '성과 조회 성공'
       };
     }
   }
 
-  // Personal Settings
   static async getPersonalSettings(): Promise<PersonalApiResponse<PersonalSettings>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/settings`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockPersonalSettings
+        data: mockPersonalSettings,
+        message: '개인 설정 조회 성공'
       };
     }
   }
@@ -372,24 +411,30 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/settings`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      Object.assign(mockPersonalSettings, data);
+      
       return {
         success: true,
-        data: { ...mockPersonalSettings, ...data }
+        data: mockPersonalSettings,
+        message: '개인 설정 업데이트 성공'
       };
     }
   }
 
-  // Security Settings
   static async getSecuritySettings(): Promise<PersonalApiResponse<SecuritySettings>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/security`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockSecuritySettings
+        data: mockSecuritySettings,
+        message: '보안 설정 조회 성공'
       };
     }
   }
@@ -399,24 +444,30 @@ export class PersonalService {
       const response = await axios.put(`${API_BASE_URL}/personal/security`, data);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      Object.assign(mockSecuritySettings, data);
+      
       return {
         success: true,
-        data: { ...mockSecuritySettings, ...data }
+        data: mockSecuritySettings,
+        message: '보안 설정 업데이트 성공'
       };
     }
   }
 
-  // Data Export
   static async getDataExports(): Promise<PersonalApiResponse<DataExport[]>> {
     try {
       const response = await axios.get(`${API_BASE_URL}/personal/exports`);
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(300);
       return {
         success: true,
-        data: mockDataExports
+        data: mockDataExports,
+        message: '데이터 내보내기 목록 조회 성공'
       };
     }
   }
@@ -426,18 +477,28 @@ export class PersonalService {
       const response = await axios.post(`${API_BASE_URL}/personal/exports`, { type, format });
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(1000);
+      
       const newExport: DataExport = {
-        id: mockDataExports.length + 1,
+        id: Date.now(),
         userId: 1,
         type,
         format,
-        status: 'pending',
-        createdAt: new Date().toISOString()
+        status: 'processing',
+        fileName: null,
+        fileSize: null,
+        downloadUrl: null,
+        createdAt: new Date().toISOString(),
+        completedAt: null
       };
+      
+      mockDataExports.push(newExport);
+      
       return {
         success: true,
-        data: newExport
+        data: newExport,
+        message: '데이터 내보내기 요청 성공'
       };
     }
   }
@@ -447,21 +508,30 @@ export class PersonalService {
       const response = await axios.get(`${API_BASE_URL}/personal/exports/${exportId}/download`);
       return response.data.downloadUrl;
     } catch (error) {
-      // Mock response for development
-      return `/downloads/export_${exportId}.${format}`;
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      const exportItem = mockDataExports.find(e => e.id === exportId);
+      if (!exportItem) {
+        throw new Error('내보내기 항목을 찾을 수 없습니다.');
+      }
+      
+      return `/mock-exports/${exportItem.fileName || `export_${exportId}.${format}`}`;
     }
   }
 
-  // Test notification
   static async testNotification(channel: 'web' | 'email' | 'push'): Promise<PersonalApiResponse<null>> {
     try {
       const response = await axios.post(`${API_BASE_URL}/personal/test-notification`, { channel });
       return response.data;
     } catch (error) {
-      // Mock response for development
+      console.log('API not available, using mock data');
+      await delay(1000);
+      
       return {
         success: true,
-        message: `${channel} 알림 테스트가 성공적으로 발송되었습니다.`
+        data: null,
+        message: `${channel} 알림 테스트 성공`
       };
     }
   }
