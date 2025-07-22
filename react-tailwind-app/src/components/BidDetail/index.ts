@@ -1,0 +1,1 @@
+export { BidDetail } from './BidDetail';
