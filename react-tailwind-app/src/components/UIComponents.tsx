@@ -152,7 +152,11 @@ const UIComponents: React.FC = () => {
           <CardHeader 
             title="버튼 컴포넌트" 
             subtitle="다양한 스타일과 크기의 버튼들"
-          />
+          >
+            <div className="mt-2 text-body3 text-gray-500">
+              주요 액션, 보조 액션, 위험 액션 등 다양한 상황에 맞는 버튼 스타일을 제공합니다.
+            </div>
+          </CardHeader>
           <CardContent>
             <div className="space-y-6">
               {/* Button Variants */}
@@ -223,7 +227,11 @@ const UIComponents: React.FC = () => {
           <CardHeader 
             title="배지 컴포넌트" 
             subtitle="상태와 카테고리를 표시하는 배지들"
-          />
+          >
+            <div className="mt-2 text-body3 text-gray-500">
+              상태 표시, 카테고리 분류, 우선순위 표시 등에 활용할 수 있는 배지 컴포넌트입니다.
+            </div>
+          </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
@@ -256,7 +264,11 @@ const UIComponents: React.FC = () => {
           <CardHeader 
             title="폼 컴포넌트" 
             subtitle="입력 필드와 선택 컴포넌트들"
-          />
+          >
+            <div className="mt-2 text-body3 text-gray-500">
+              사용자 입력을 받는 다양한 폼 요소들로, 검증 기능과 에러 상태를 지원합니다.
+            </div>
+          </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Input Fields */}
@@ -319,7 +331,11 @@ const UIComponents: React.FC = () => {
                 내보내기
               </Button>
             }
-          />
+          >
+            <div className="mt-2 text-body3 text-gray-500">
+              데이터를 체계적으로 표시하는 테이블로, 정렬, 필터링, 선택 기능을 지원합니다.
+            </div>
+          </CardHeader>
           <CardContent>
             <Table
               data={sampleData}
