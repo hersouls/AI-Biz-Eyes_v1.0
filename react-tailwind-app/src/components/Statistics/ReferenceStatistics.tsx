@@ -17,7 +17,8 @@ import {
 import { 
   DocumentTextIcon, 
   XCircleIcon,
-  ClockIcon
+  ClockIcon,
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 
 interface ReferenceStatisticsProps {
