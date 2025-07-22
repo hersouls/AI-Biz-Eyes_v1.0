@@ -1,8 +1,8 @@
 import React from 'react';
 import { ReferenceData } from '../../types/reference';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Badge } from '../Badge';
+import Card from '../Card';
+import Button from '../Button';
+import Badge from '../Badge';
 
 interface ReferenceDetailProps {
   reference: ReferenceData;
@@ -18,25 +18,25 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
   onBack
 }) => {
   const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      success: { color: 'green', text: '성공' },
-      failure: { color: 'red', text: '실패' },
-      ongoing: { color: 'blue', text: '진행중' }
+    const statusConfig: Record<string, { color: 'success' | 'danger' | 'primary', text: string }> = {
+      success: { color: 'success', text: '성공' },
+      failure: { color: 'danger', text: '실패' },
+      ongoing: { color: 'primary', text: '진행중' }
     };
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    const config = statusConfig[status];
+    return <Badge variant={config?.color || 'default'}>{config?.text || status}</Badge>;
   };
 
   const getScoreBadge = (score: string) => {
-    const scoreConfig = {
-      'A+': { color: 'green', text: 'A+' },
-      'A': { color: 'green', text: 'A' },
-      'B': { color: 'yellow', text: 'B' },
-      'C': { color: 'orange', text: 'C' },
-      'D': { color: 'red', text: 'D' }
+    const scoreConfig: Record<string, { color: 'success' | 'warning' | 'danger', text: string }> = {
+      'A+': { color: 'success', text: 'A+' },
+      'A': { color: 'success', text: 'A' },
+      'B': { color: 'warning', text: 'B' },
+      'C': { color: 'warning', text: 'C' },
+      'D': { color: 'danger', text: 'D' }
     };
-    const config = scoreConfig[score as keyof typeof scoreConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    const config = scoreConfig[score];
+    return <Badge variant={config?.color || 'default'}>{config?.text || score}</Badge>;
   };
 
   const formatAmount = (amount: number) => {
@@ -85,7 +85,7 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
           <Button variant="outline" onClick={onEdit}>
             수정
           </Button>
-          <Button color="red" variant="outline" onClick={onDelete}>
+          <Button variant="danger" onClick={onDelete}>
             삭제
           </Button>
         </div>
@@ -221,7 +221,7 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
           </div>
         </div>
         <div className="mt-4">
-          <Button variant="outline" color="blue">
+          <Button variant="outline">
             유사 공고 찾기
           </Button>
         </div>

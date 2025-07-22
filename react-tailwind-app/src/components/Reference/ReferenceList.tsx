@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ReferenceData, ReferenceFilters } from '../../types/reference';
 import { getReferences, getMockReferences } from '../../services/referenceService';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { Select } from '../Select';
-import { Badge } from '../Badge';
-import { Table } from '../Table';
+import Card from '../Card';
+import Button from '../Button';
+import Input from '../Input';
+import Select from '../Select';
+import Badge from '../Badge';
+import Table from '../Table';
 
 interface ReferenceListProps {
   onAddNew?: () => void;
@@ -62,30 +62,30 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     setFilters(prev => ({ ...prev, search: value }));
   };
 
-  const handleFilterChange = (key: keyof ReferenceFilters, value: string) => {
+  const handleFilterChange = (key: keyof ReferenceFilters, value: string | number | undefined) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
   const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      success: { color: 'green', text: '성공' },
-      failure: { color: 'red', text: '실패' },
-      ongoing: { color: 'blue', text: '진행중' }
+    const statusConfig: Record<string, { color: 'success' | 'danger' | 'primary', text: string }> = {
+      success: { color: 'success', text: '성공' },
+      failure: { color: 'danger', text: '실패' },
+      ongoing: { color: 'primary', text: '진행중' }
     };
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    const config = statusConfig[status];
+    return <Badge variant={config?.color || 'default'}>{config?.text || status}</Badge>;
   };
 
   const getScoreBadge = (score: string) => {
-    const scoreConfig = {
-      'A+': { color: 'green', text: 'A+' },
-      'A': { color: 'green', text: 'A' },
-      'B': { color: 'yellow', text: 'B' },
-      'C': { color: 'orange', text: 'C' },
-      'D': { color: 'red', text: 'D' }
+    const scoreConfig: Record<string, { color: 'success' | 'warning' | 'danger', text: string }> = {
+      'A+': { color: 'success', text: 'A+' },
+      'A': { color: 'success', text: 'A' },
+      'B': { color: 'warning', text: 'B' },
+      'C': { color: 'warning', text: 'C' },
+      'D': { color: 'danger', text: 'D' }
     };
-    const config = scoreConfig[score as keyof typeof scoreConfig];
-    return <Badge color={config.color}>{config.text}</Badge>;
+    const config = scoreConfig[score];
+    return <Badge variant={config?.color || 'default'}>{config?.text || score}</Badge>;
   };
 
   const formatAmount = (amount: number) => {
@@ -95,7 +95,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
   const tableColumns = [
     {
       key: 'projectName',
-      title: '사업명',
+      header: '사업명',
       render: (value: string, record: ReferenceData) => (
         <div className="text-left">
           <div className="font-medium text-gray-900">{value}</div>
@@ -107,39 +107,39 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
     },
     {
       key: 'projectType',
-      title: '사업유형',
+      header: '사업유형',
       render: (value: string) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'organization',
-      title: '참여기관',
+      header: '참여기관',
       render: (value: string) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'participationYear',
-      title: '참여연도',
+      header: '참여연도',
       render: (value: number) => <span className="text-gray-700">{value}</span>
     },
     {
       key: 'contractAmount',
-      title: '계약금액',
+      header: '계약금액',
       render: (value: number) => (
         <span className="font-medium text-gray-900">{formatAmount(value)}</span>
       )
     },
     {
       key: 'status',
-      title: '성과상태',
+      header: '성과상태',
       render: (value: string) => getStatusBadge(value)
     },
     {
       key: 'score',
-      title: '평가등급',
+      header: '평가등급',
       render: (value: string) => getScoreBadge(value)
     },
     {
       key: 'actions',
-      title: '액션',
+      header: '액션',
       render: (_: any, record: ReferenceData) => (
         <div className="flex space-x-2">
           <Button
@@ -159,7 +159,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Button
             size="sm"
             variant="outline"
-            color="red"
+
             onClick={() => onDelete?.(record.id)}
           >
             삭제
@@ -177,7 +177,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <h1 className="text-2xl font-bold text-gray-900">레퍼런스 관리</h1>
           <p className="text-gray-600">조직의 사업 경험과 성과를 관리합니다</p>
         </div>
-        <Button onClick={onAddNew} color="blue">
+        <Button onClick={onAddNew}>
           + 새 레퍼런스 등록
         </Button>
       </div>
@@ -188,12 +188,12 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Input
             placeholder="사업명 검색"
             value={filters.search || ''}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(value: string) => handleSearch(value)}
           />
           <Select
             placeholder="사업유형"
             value={filters.type || ''}
-            onChange={(value) => handleFilterChange('type', value)}
+            onChange={(value: string | number) => handleFilterChange('type', value as string)}
             options={[
               { value: '용역', label: '용역' },
               { value: '개발', label: '개발' },
@@ -204,7 +204,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Select
             placeholder="성과상태"
             value={filters.status || ''}
-            onChange={(value) => handleFilterChange('status', value as any)}
+            onChange={(value: string | number) => handleFilterChange('status', value as any)}
             options={[
               { value: 'success', label: '성공' },
               { value: 'failure', label: '실패' },
@@ -214,7 +214,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           <Select
             placeholder="참여연도"
             value={filters.year?.toString() || ''}
-            onChange={(value) => handleFilterChange('year', parseInt(value) || undefined)}
+            onChange={(value: string | number) => handleFilterChange('year', parseInt(value as string) || undefined)}
             options={[
               { value: '2024', label: '2024년' },
               { value: '2023', label: '2023년' },
@@ -266,7 +266,7 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
           data={references}
           loading={loading}
           pagination={pagination}
-          onPageChange={(page) => setPagination(prev => ({ ...prev, page }))}
+          onPageChange={(page: number) => setPagination(prev => ({ ...prev, page }))}
         />
       </Card>
     </div>

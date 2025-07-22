@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Notification, NotificationFilter, NotificationStats } from '../../types/notification';
 import { NotificationService } from '../../services/notificationService';
-import { Card } from '../Card';
-import { Badge } from '../Badge';
-import { Button } from '../Button';
-import { Select } from '../Select';
-import { Input } from '../Input';
+import Card from '../Card';
+import Badge from '../Badge';
+import Button from '../Button';
+import Select from '../Select';
+import Input from '../Input';
 
 interface NotificationListProps {
   onNotificationClick?: (notification: Notification) => void;
@@ -120,30 +120,30 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'urgent':
-        return 'red';
+        return 'danger';
       case 'high':
-        return 'orange';
+        return 'warning';
       case 'normal':
-        return 'blue';
+        return 'primary';
       case 'low':
-        return 'gray';
+        return 'default';
       default:
-        return 'gray';
+        return 'default';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'unread':
-        return 'blue';
+        return 'primary';
       case 'read':
-        return 'gray';
+        return 'default';
       case 'important':
-        return 'yellow';
+        return 'warning';
       case 'completed':
-        return 'green';
+        return 'success';
       default:
-        return 'gray';
+        return 'default';
     }
   };
 
@@ -185,7 +185,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
           <Select
             label="알림 유형"
             value={filter.type || ''}
-            onChange={(value) => setFilter(prev => ({ ...prev, type: value || undefined }))}
+            onChange={(value: string | number) => setFilter(prev => ({ ...prev, type: (value as string) || undefined }))}
             options={[
               { value: '', label: '전체' },
               { value: 'urgent', label: '긴급' },
@@ -199,7 +199,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
           <Select
             label="상태"
             value={filter.status || ''}
-            onChange={(value) => setFilter(prev => ({ ...prev, status: value || undefined }))}
+            onChange={(value: string | number) => setFilter(prev => ({ ...prev, status: (value as string) || undefined }))}
             options={[
               { value: '', label: '전체' },
               { value: 'unread', label: '미읽음' },
@@ -211,7 +211,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
           <Select
             label="우선순위"
             value={filter.priority || ''}
-            onChange={(value) => setFilter(prev => ({ ...prev, priority: value || undefined }))}
+            onChange={(value: string | number) => setFilter(prev => ({ ...prev, priority: (value as string) || undefined }))}
             options={[
               { value: '', label: '전체' },
               { value: 'urgent', label: '긴급' },
@@ -305,10 +305,10 @@ export const NotificationList: React.FC<NotificationListProps> = ({
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-lg">{getNotificationIcon(notification.type)}</span>
                         <h3 className="font-medium text-gray-900">{notification.title}</h3>
-                        <Badge color={getPriorityColor(notification.priority)}>
+                        <Badge variant={getPriorityColor(notification.priority)}>
                           {notification.priority}
                         </Badge>
-                        <Badge color={getStatusColor(notification.status)}>
+                        <Badge variant={getStatusColor(notification.status)}>
                           {notification.status}
                         </Badge>
                       </div>

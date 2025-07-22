@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Report } from '../../types/notification';
 import { NotificationService } from '../../services/notificationService';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Select } from '../Select';
-import { Input } from '../Input';
+import Card from '../Card';
+import Button from '../Button';
+import Select from '../Select';
+import Input from '../Input';
 
 interface ReportListProps {
   onReportClick?: (report: Report) => void;
@@ -129,7 +129,7 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportClick }) => {
           <Select
             label="리포트 유형"
             value={selectedType}
-            onChange={setSelectedType}
+            onChange={(value: string | number) => setSelectedType(value as string)}
             options={[
               { value: '', label: '전체' },
               { value: 'daily', label: '일간' },
@@ -301,7 +301,7 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportClick }) => {
               <Select
                 label="리포트 유형"
                 value={createForm.type}
-                onChange={(value) => setCreateForm(prev => ({ ...prev, type: value as any }))}
+                onChange={(value: string | number) => setCreateForm(prev => ({ ...prev, type: value as any }))}
                 options={[
                   { value: 'daily', label: '일간' },
                   { value: 'weekly', label: '주간' },
@@ -311,16 +311,14 @@ export const ReportList: React.FC<ReportListProps> = ({ onReportClick }) => {
               
               <Input
                 label="시작일"
-                type="date"
                 value={createForm.startDate}
-                onChange={(e) => setCreateForm(prev => ({ ...prev, startDate: e.target.value }))}
+                onChange={(value: string) => setCreateForm(prev => ({ ...prev, startDate: value }))}
               />
               
               <Input
                 label="종료일"
-                type="date"
                 value={createForm.endDate}
-                onChange={(e) => setCreateForm(prev => ({ ...prev, endDate: e.target.value }))}
+                onChange={(value: string) => setCreateForm(prev => ({ ...prev, endDate: value }))}
               />
             </div>
             

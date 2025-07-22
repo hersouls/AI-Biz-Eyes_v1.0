@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ReferenceData, ReferenceRequest, ReferenceFile } from '../../types/reference';
-import { Card } from '../Card';
-import { Button } from '../Button';
-import { Input } from '../Input';
-import { Select } from '../Select';
+import Card from '../Card';
+import Button from '../Button';
+import Input from '../Input';
+import Select from '../Select';
 
 interface ReferenceFormProps {
   reference?: ReferenceData;
@@ -141,7 +141,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Input
                 value={formData.projectName}
-                onChange={(e) => handleInputChange('projectName', e.target.value)}
+                onChange={(value: string) => handleInputChange('projectName', value)}
                 placeholder="사업명을 입력하세요"
                 error={errors.projectName}
               />
@@ -153,7 +153,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Select
                 value={formData.projectType}
-                onChange={(value) => handleInputChange('projectType', value)}
+                onChange={(value: string | number) => handleInputChange('projectType', value as string)}
                 options={[
                   { value: '용역', label: '용역' },
                   { value: '개발', label: '개발' },
@@ -172,7 +172,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Input
                 value={formData.bidNtceNo}
-                onChange={(e) => handleInputChange('bidNtceNo', e.target.value)}
+                onChange={(value: string) => handleInputChange('bidNtceNo', value)}
                 placeholder="연계 공고번호 (선택사항)"
               />
             </div>
@@ -183,7 +183,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Input
                 value={formData.organization}
-                onChange={(e) => handleInputChange('organization', e.target.value)}
+                onChange={(value: string) => handleInputChange('organization', value)}
                 placeholder="참여기관명을 입력하세요"
                 error={errors.organization}
               />
@@ -196,7 +196,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               <Input
                 type="number"
                 value={formData.participationYear}
-                onChange={(e) => handleInputChange('participationYear', parseInt(e.target.value))}
+                onChange={(value: string) => handleInputChange('participationYear', parseInt(value))}
                 placeholder="참여연도를 입력하세요"
                 min="2000"
                 max={new Date().getFullYear() + 1}
@@ -211,7 +211,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               <Input
                 type="number"
                 value={formData.contractAmount}
-                onChange={(e) => handleInputChange('contractAmount', parseInt(e.target.value))}
+                onChange={(value: string) => handleInputChange('contractAmount', parseInt(value))}
                 placeholder="계약금액을 입력하세요"
                 min="0"
                 error={errors.contractAmount}
@@ -224,7 +224,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Select
                 value={formData.status}
-                onChange={(value) => handleInputChange('status', value as any)}
+                onChange={(value: string | number) => handleInputChange('status', value as any)}
                 options={[
                   { value: 'success', label: '성공' },
                   { value: 'failure', label: '실패' },
@@ -239,7 +239,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               </label>
               <Select
                 value={formData.score}
-                onChange={(value) => handleInputChange('score', value as any)}
+                onChange={(value: string | number) => handleInputChange('score', value as any)}
                 options={[
                   { value: 'A+', label: 'A+' },
                   { value: 'A', label: 'A' },
@@ -298,7 +298,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
                       <Button
                         size="sm"
                         variant="outline"
-                        color="red"
+
                         onClick={() => removeFile(index)}
                       >
                         삭제
@@ -322,7 +322,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             </Button>
             <Button
               type="submit"
-              color="blue"
+
               loading={loading}
             >
               {reference ? '수정' : '등록'}
