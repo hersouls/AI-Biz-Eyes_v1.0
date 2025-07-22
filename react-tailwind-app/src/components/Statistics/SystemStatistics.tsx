@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Card from '../Card';
 import Button from '../Button';
+import Badge from '../Badge';
 import {
   BarChart,
   Bar,
@@ -20,7 +21,8 @@ import {
   BellIcon,
   ServerIcon,
   ExclamationTriangleIcon,
-  ClockIcon
+  ClockIcon,
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 
 interface SystemStatisticsProps {

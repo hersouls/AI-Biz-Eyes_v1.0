@@ -97,15 +97,9 @@ export const PersonalPage: React.FC = () => {
 
         {/* Tab Content */}
         <div className="bg-white rounded-lg shadow-sm">
-          {isLoading ? (
-            <div className="flex items-center justify-center p-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
-          ) : (
-            <div className="p-6">
-              {renderTabContent()}
-            </div>
-          )}
+          <div className="p-6">
+            {renderTabContent()}
+          </div>
         </div>
       </div>
     </div>
