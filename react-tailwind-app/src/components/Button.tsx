@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
@@ -36,6 +36,7 @@ const Button: React.FC<ButtonProps> = ({
     sm: 'px-3 py-1.5 text-body3',
     md: 'px-4 py-2 text-body2',
     lg: 'px-6 py-3 text-body1',
+    xl: 'px-8 py-4 text-lg',
   };
 
   const widthClasses = fullWidth ? 'w-full' : '';
