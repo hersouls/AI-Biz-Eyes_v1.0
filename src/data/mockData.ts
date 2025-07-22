@@ -263,3 +263,201 @@ export const initialMockBidDetails = generateMockBidDetails(150);
 export const initialMockReferences = generateMockReferences(50);
 export const initialMockNotifications = generateMockNotifications(25);
 export const initialMockSystemLogs = generateMockSystemLogs(100);
+
+// Mock 공고 수집 이력 데이터
+export const mockFetchLogs = [
+  {
+    id: 1,
+    bidNtceNo: '202400001',
+    requestedAt: '2024-07-22T09:00:00Z',
+    resultCode: '00',
+    status: 'success' as const,
+    responseTime: 1200,
+    dataCount: 150
+  },
+  {
+    id: 2,
+    bidNtceNo: '202400002',
+    requestedAt: '2024-07-22T09:15:00Z',
+    resultCode: '03',
+    status: 'failed' as const,
+    errorMessage: '데이터가 없습니다.',
+    responseTime: 800,
+    dataCount: 0
+  },
+  {
+    id: 3,
+    requestedAt: '2024-07-22T09:30:00Z',
+    resultCode: '00',
+    status: 'success' as const,
+    responseTime: 950,
+    dataCount: 200
+  },
+  {
+    id: 4,
+    bidNtceNo: '202400003',
+    requestedAt: '2024-07-22T10:00:00Z',
+    resultCode: '01',
+    status: 'failed' as const,
+    errorMessage: '인증키 오류',
+    responseTime: 500,
+    dataCount: 0
+  },
+  {
+    id: 5,
+    requestedAt: '2024-07-22T10:15:00Z',
+    resultCode: '00',
+    status: 'pending' as const,
+    responseTime: null,
+    dataCount: null
+  }
+];
+
+// Mock 알림 설정 데이터
+export const mockNotificationConfigs = [
+  {
+    id: 1,
+    type: 'new_bid' as const,
+    channel: 'web' as const,
+    frequency: 'immediate' as const,
+    recipients: ['admin@example.com', 'user@example.com'],
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 2,
+    type: 'urgent' as const,
+    channel: 'email' as const,
+    frequency: 'immediate' as const,
+    recipients: ['admin@example.com', 'manager@example.com'],
+    isActive: true,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 3,
+    type: 'deadline' as const,
+    channel: 'push' as const,
+    frequency: 'daily' as const,
+    recipients: ['user@example.com'],
+    isActive: false,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  }
+];
+
+// Mock 리포트 설정 데이터
+export const mockReportConfigs = [
+  {
+    id: 1,
+    type: 'daily' as const,
+    recipients: ['admin@example.com'],
+    isActive: true,
+    schedule: '0 9 * * *',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 2,
+    type: 'weekly' as const,
+    recipients: ['admin@example.com', 'manager@example.com'],
+    isActive: true,
+    schedule: '0 9 * * 1',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 3,
+    type: 'monthly' as const,
+    recipients: ['admin@example.com'],
+    isActive: false,
+    schedule: '0 9 1 * *',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  }
+];
+
+// Mock 시스템 설정 데이터
+export const mockSystemConfigs = [
+  {
+    id: 1,
+    key: 'api_key',
+    value: 'encrypted_api_key_here',
+    description: '나라장터 OpenAPI 인증키',
+    category: 'api' as const,
+    isEncrypted: true,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 2,
+    key: 'backup_schedule',
+    value: '0 2 * * *',
+    description: '자동 백업 스케줄 (매일 새벽 2시)',
+    category: 'system' as const,
+    isEncrypted: false,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 3,
+    key: 'notification_retention_days',
+    value: '30',
+    description: '알림 보관 기간 (일)',
+    category: 'notification' as const,
+    isEncrypted: false,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  },
+  {
+    id: 4,
+    key: 'max_login_attempts',
+    value: '5',
+    description: '최대 로그인 시도 횟수',
+    category: 'security' as const,
+    isEncrypted: false,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-07-22T10:00:00Z'
+  }
+];
+
+// Mock 백업 데이터
+export const mockBackups = [
+  {
+    id: 1,
+    filename: 'backup_2024-07-22.zip',
+    size: 524288000,
+    type: 'auto' as const,
+    status: 'completed' as const,
+    createdAt: '2024-07-22T02:00:00Z',
+    downloadUrl: '/admin/backups/1/download'
+  },
+  {
+    id: 2,
+    filename: 'backup_2024-07-21.zip',
+    size: 512000000,
+    type: 'auto' as const,
+    status: 'completed' as const,
+    createdAt: '2024-07-21T02:00:00Z',
+    downloadUrl: '/admin/backups/2/download'
+  },
+  {
+    id: 3,
+    filename: 'backup_2024-07-20.zip',
+    size: 498000000,
+    type: 'manual' as const,
+    status: 'completed' as const,
+    createdAt: '2024-07-20T15:30:00Z',
+    downloadUrl: '/admin/backups/3/download'
+  },
+  {
+    id: 4,
+    filename: 'backup_2024-07-19.zip',
+    size: 0,
+    type: 'auto' as const,
+    status: 'failed' as const,
+    createdAt: '2024-07-19T02:00:00Z',
+    downloadUrl: null
+  }
+];
