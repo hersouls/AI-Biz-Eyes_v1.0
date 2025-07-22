@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReferenceData } from '../../types/reference';
+import { formatAmount } from '../../utils/formatters';
 import Card from '../Card';
 import Button from '../Button';
 import Badge from '../Badge';
@@ -28,25 +29,14 @@ const ReferenceDetail: React.FC<ReferenceDetailProps> = ({
   };
 
   const getScoreBadge = (score: string | undefined) => {
-    if (!score) {
-      return <Badge variant="gray">평가 없음</Badge>;
-    }
-    const scoreConfig: Record<string, { color: 'success' | 'warning' | 'danger', text: string }> = {
-      'A+': { color: 'success', text: 'A+' },
-      'A': { color: 'success', text: 'A' },
-      'B': { color: 'warning', text: 'B' },
-      'C': { color: 'warning', text: 'C' },
-      'D': { color: 'danger', text: 'D' }
+    const scoreConfig: { [key: string]: { color: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'gray'; text: string } } = {
+      'A': { color: 'success', text: 'A등급' },
+      'B': { color: 'info', text: 'B등급' },
+      'C': { color: 'warning', text: 'C등급' },
+      'D': { color: 'danger', text: 'D등급' }
     };
-    const config = scoreConfig[score];
-    return <Badge variant={config?.color || 'gray'}>{config?.text || score}</Badge>;
-  };
-
-  const formatAmount = (amount: number | undefined) => {
-    if (amount === undefined || amount === null) {
-      return '금액 미정';
-    }
-    return new Intl.NumberFormat('ko-KR').format(amount) + '원';
+    const config = scoreConfig[score || ''];
+    return <Badge variant={config?.color || 'gray'}>{config?.text || score || '평가 없음'}</Badge>;
   };
 
   const formatDate = (dateString: string) => {

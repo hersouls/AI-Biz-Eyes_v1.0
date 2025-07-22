@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReferenceStats as ReferenceStatsType } from '../../types/reference';
+import { formatAmount } from '../../utils/formatters';
 import Card from '../Card';
 
 interface ReferenceStatsProps {
@@ -7,13 +8,6 @@ interface ReferenceStatsProps {
 }
 
 const ReferenceStats: React.FC<ReferenceStatsProps> = ({ stats }) => {
-  const formatAmount = (amount: number | undefined) => {
-    if (amount === undefined || amount === null) {
-      return '금액 미정';
-    }
-    return new Intl.NumberFormat('ko-KR').format(amount) + '원';
-  };
-
   const formatPercentage = (value: number) => {
     return `${(value * 100).toFixed(1)}%`;
   };

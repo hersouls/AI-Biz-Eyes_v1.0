@@ -2,6 +2,7 @@ import React from 'react';
 import { ChevronUpIcon, ChevronDownIcon, EyeIcon, ClipboardDocumentIcon, UserGroupIcon, BellIcon } from '@heroicons/react/24/outline';
 import { BidData } from '../../types/bid';
 import { formatCurrency, formatDate, getStatusBadge } from '../../utils/formatters';
+import Badge from '../Badge';
 
 interface BidListTableProps {
   bids: BidData[];
@@ -40,6 +41,11 @@ export const BidListTable: React.FC<BidListTableProps> = ({
 
   const handleSort = (field: string) => {
     onSort(field);
+  };
+
+  const renderStatusBadge = (status: string) => {
+    const statusConfig = getStatusBadge(status);
+    return <Badge variant={statusConfig.color}>{statusConfig.text}</Badge>;
   };
 
   if (loading) {
@@ -234,7 +240,7 @@ export const BidListTable: React.FC<BidListTableProps> = ({
 
               {/* 상태 */}
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {getStatusBadge(bid.bidNtceSttusNm)}
+                {renderStatusBadge(bid.bidNtceSttusNm)}
               </td>
 
               {/* 공고일자 */}
