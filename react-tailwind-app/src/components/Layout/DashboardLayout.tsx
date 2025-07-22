@@ -72,7 +72,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex h-16 shrink-0 items-center">
             <img
               className="h-8 w-auto"
-              src="/gnbLogo_wt_p.png"
+              src="/logo-white.svg"
               alt="AI Biz Eyes"
             />
             <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
@@ -138,7 +138,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="flex items-center">
                 <img
                   className="h-8 w-auto"
-                  src="/gnbLogo_wt_p.png"
+                  src="/logo-white.svg"
                   alt="AI Biz Eyes"
                 />
                 <span className="ml-2 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
