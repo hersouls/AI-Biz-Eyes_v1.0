@@ -1,47 +1,52 @@
-import express from 'express';
-import { authenticateToken } from '../middleware/auth';
-import { PersonalController } from '../controllers/personalController';
-import { uploadAvatar, handleUploadError } from '../middleware/upload';
+import { Router, Request, Response } from 'express';
+import { createSuccessResponse, createErrorResponse } from '../utils/response';
+import { mockUsers } from '../data/mockData';
 
-const router = express.Router();
+const router = Router();
 
-// 모든 라우트에 인증 미들웨어 적용
-router.use(authenticateToken);
+// 개인 프로필 조회
+router.get('/profile', (req: Request, res: Response) => {
+  try {
+    // Mock 사용자 정보 반환 (첫 번째 사용자)
+    const user = mockUsers[0];
 
-// 프로필 관리
-router.get('/profile', PersonalController.getProfile);
-router.put('/profile', PersonalController.updateProfile);
-router.post('/profile/avatar', uploadAvatar, handleUploadError, PersonalController.uploadAvatar);
-router.delete('/profile/avatar', PersonalController.deleteAvatar);
+    const profile = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      organization: user.organization,
+      role: user.role,
+      isActive: user.isActive,
+      lastLogin: user.lastLogin,
+      createdAt: user.createdAt,
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      phone: '010-1234-5678',
+      department: 'IT 개발팀',
+      position: '시니어 개발자',
+      skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Python'],
+      experience: '8년',
+      education: '컴퓨터공학 학사',
+      certifications: ['AWS Certified Developer', 'Google Cloud Professional'],
+      preferences: {
+        notifications: {
+          email: true,
+          push: true,
+          sms: false
+        },
+        language: 'ko',
+        timezone: 'Asia/Seoul'
+      }
+    };
 
-// 알림 설정
-router.get('/notifications/settings', PersonalController.getNotificationSettings);
-router.put('/notifications/settings', PersonalController.updateNotificationSettings);
-
-// 리포트 설정
-router.get('/reports/settings', PersonalController.getReportSettings);
-router.put('/reports/settings', PersonalController.updateReportSettings);
-
-// 대시보드 설정
-router.get('/dashboard/settings', PersonalController.getDashboardSettings);
-router.put('/dashboard/settings', PersonalController.updateDashboardSettings);
-
-// 환경설정
-router.get('/settings', PersonalController.getPersonalSettings);
-router.put('/settings', PersonalController.updatePersonalSettings);
-
-// 활동 내역
-router.get('/activity', PersonalController.getActivityHistory);
-router.get('/activity/:id', PersonalController.getActivityDetail);
-
-// 데이터 내보내기
-router.post('/export', PersonalController.exportData);
-router.get('/export/history', PersonalController.getExportHistory);
-router.get('/export/:id/download', PersonalController.downloadExport);
-
-// 보안 설정
-router.get('/security', PersonalController.getSecuritySettings);
-router.put('/security/password', PersonalController.updatePassword);
-router.put('/security/two-factor', PersonalController.updateTwoFactor);
+    const response = createSuccessResponse(profile, '프로필을 성공적으로 조회했습니다.');
+    return res.json(response);
+  } catch (error) {
+    const errorResponse = createErrorResponse(
+      'INTERNAL_SERVER_ERROR',
+      '서버 오류가 발생했습니다.'
+    );
+    return res.status(500).json(errorResponse);
+  }
+});
 
 export default router;
