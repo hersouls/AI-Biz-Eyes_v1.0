@@ -92,6 +92,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-240 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
+          {/* AI Biz Eyes 로고 및 텍스트 - 상단으로 이동 */}
+          <div className="flex flex-col items-start pt-4">
+            <img
+              className="h-3.9 w-auto"
+              src="/gnblog_wt_p.png"
+              alt="AI Biz Eyes"
+            />
+            <span className="mt-1 text-body3 font-bold text-white">AI Biz Eyes</span>
+          </div>
+          
           <nav className="flex flex-1 flex-col">
             <ul className="flex flex-1 flex-col gap-y-7">
               <li>
@@ -139,18 +149,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   ))}
                 </ul>
               </li>
-                          </ul>
-            </nav>
-            <div className="flex flex-col items-start justify-end mt-auto pt-4">
-              <img
-                className="h-3.9 w-auto"
-                src="/gnblog_wt_p.png"
-                alt="AI Biz Eyes"
-              />
-              <span className="mt-1 text-body3 font-bold text-white">AI Biz Eyes</span>
-            </div>
+            </ul>
+          </nav>
+          
+          {/* 하단 이미지만 남김 */}
+          <div className="flex flex-col items-start justify-end mt-auto pt-4">
+            <img
+              className="h-3.9 w-auto"
+              src="/gnblog_wt_p.png"
+              alt="AI Biz Eyes"
+            />
           </div>
         </div>
+      </div>
 
       {/* 모바일 사이드바 오버레이 - z-index 증가 */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
@@ -167,6 +178,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
+            
+            {/* AI Biz Eyes 로고 및 텍스트 - 상단으로 이동 */}
+            <div className="flex flex-col items-start pt-4">
+              <img
+                className="h-3.9 w-auto"
+                src="/gnblog_wt_p.png"
+                alt="AI Biz Eyes"
+              />
+              <span className="mt-1 text-body3 font-bold text-white">AI Biz Eyes</span>
+            </div>
+            
             <nav className="flex flex-1 flex-col">
               <ul className="flex flex-1 flex-col gap-y-7">
                 <li>
@@ -217,13 +239,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </li>
               </ul>
             </nav>
+            
+            {/* 하단 이미지만 남김 */}
             <div className="flex flex-col items-start justify-end mt-auto pt-4">
               <img
                 className="h-3.9 w-auto"
                 src="/gnblog_wt_p.png"
                 alt="AI Biz Eyes"
               />
-              <span className="mt-1 text-body3 font-bold text-white">AI Biz Eyes</span>
             </div>
           </div>
         </div>
