@@ -60,7 +60,7 @@ export default function KTFooter() {
         </div>
 
         <div className="mt-10 text-center leading-[150%]">
-          <p className="text-[14px] font-bold text-[#edeff5]">
+          <p className="text-[14px] font-bold text-[#A0AEC0]">
             <strong>기업 상담전화</strong> &nbsp; 1588-0114 (유료)
           </p>
           <p className="mt-1 text-[13px] font-normal text-[#edeff5]">
