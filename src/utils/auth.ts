@@ -55,30 +55,45 @@ export const extractTokenFromHeader = (authHeader: string): string | null => {
 };
 */
 
-// 임시로 더미 함수들
+// 테스트용 더미 구현 (실제 구현 전까지 사용)
 export const generateToken = (payload: JWTPayload): string => {
-  return 'dummy-token';
+  // 실제 구현에서는 JWT 토큰을 생성하지만, 테스트를 위해 더미 구현 사용
+  return `dummy-token-${payload.id}-${payload.email}-${payload.role || 'user'}`;
 };
 
 export const generateRefreshToken = (payload: JWTPayload): string => {
-  return 'dummy-refresh-token';
+  return `dummy-refresh-token-${payload.id}-${payload.email}`;
 };
 
 export const verifyToken = (token: string): JWTPayload => {
+  // 실제 구현에서는 JWT 토큰을 검증하지만, 테스트를 위해 더미 구현 사용
+  if (token.includes('dummy-token')) {
+    const parts = token.split('-');
+    return { 
+      id: parseInt(parts[2]), 
+      email: parts[3], 
+      role: parts[4] || 'user' 
+    };
+  }
   return { id: 1, email: 'dummy@example.com', role: 'user' };
 };
 
 export const hashPassword = async (password: string): Promise<string> => {
-  return 'dummy-hashed-password';
+  // 실제 구현에서는 bcrypt를 사용하지만, 테스트를 위해 더미 구현 사용
+  return `hashed-${password}`;
 };
 
 export const comparePassword = async (
   password: string,
   hashedPassword: string
 ): Promise<boolean> => {
-  return true;
+  // 실제 구현에서는 bcrypt.compare를 사용하지만, 테스트를 위해 더미 구현 사용
+  return hashedPassword === `hashed-${password}`;
 };
 
 export const extractTokenFromHeader = (authHeader: string): string | null => {
-  return 'dummy-token';
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
+  }
+  return authHeader.substring(7);
 };
