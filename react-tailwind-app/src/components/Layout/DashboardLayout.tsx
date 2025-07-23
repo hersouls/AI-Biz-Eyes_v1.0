@@ -87,12 +87,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background-light font-pretendard flex flex-col">
+    <div className="min-h-screen bg-white font-pretendard flex flex-col">
       {/* 기존 Dialog 구조 제거 - 새로운 모바일 사이드바로 대체됨 */}
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-240 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#1B2233] px-6 pb-4">
           <nav className="flex flex-1 flex-col">
             <ul className="flex flex-1 flex-col gap-y-7">
               <li>
@@ -146,9 +146,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <img
                 className="h-3.9 w-auto"
                 src="/gnblog_wt_p.png"
-                alt="AI Biz Eyes"
+                alt="KT Enterprise"
               />
-              <span className="mt-1 text-body3 font-bold text-white">AI Biz Eyes</span>
             </div>
           </div>
         </div>
@@ -156,8 +155,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* 모바일 사이드바 오버레이 - z-index 증가 */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-primary">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
+        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-[#1B2233]">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#1B2233] px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center justify-end">
               <button
                 type="button"
@@ -222,9 +221,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <img
                 className="h-3.9 w-auto"
                 src="/gnblog_wt_p.png"
-                alt="AI Biz Eyes"
+                alt="KT Enterprise"
               />
-              <span className="mt-1 text-body3 font-bold text-white">AI Biz Eyes</span>
             </div>
           </div>
         </div>
