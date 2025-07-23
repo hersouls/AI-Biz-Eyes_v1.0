@@ -17,6 +17,7 @@ import personalRoutes from './routes/personal';
 import statisticsRoutes from './routes/statistics';
 import dashboardRoutes from './routes/dashboard';
 import integrationRoutes from './routes/integration';
+import dashboardRoutes from './routes/dashboard';
 
 const app = express();
 const PORT = process.env.PORT || 3003;
@@ -79,6 +80,7 @@ app.use('/api/personal', personalRoutes);
 app.use('/api/statistics', statisticsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/integration', integrationRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // 404 핸들러
 app.use('*', (req, res) => {

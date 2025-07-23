@@ -2,8 +2,8 @@ const puppeteer = require('puppeteer');
 const axios = require('axios');
 
 // 설정
-const FRONTEND_URL = 'https://bizeyes.moonwave.kr';
-const API_BASE_URL = 'https://bizeyes.moonwave.kr/api';
+const FRONTEND_URL = 'http://localhost:3000';
+const API_BASE_URL = 'http://localhost:3003/api';
 
 // 테스트 결과
 const browserTestResults = {
@@ -117,7 +117,16 @@ class BrowserIntegrationTest {
       // 로그인 폼 요소 찾기
       const emailInput = await this.page.$('input[type="email"], input[name="email"]');
       const passwordInput = await this.page.$('input[type="password"], input[name="password"]');
-      const loginButton = await this.page.$('button[type="submit"], button:contains("로그인")');
+      
+      // JavaScript를 사용하여 로그인 버튼 찾기
+      const loginButton = await this.page.evaluateHandle(() => {
+        const buttons = Array.from(document.querySelectorAll('button'));
+        return buttons.find(button => 
+          button.textContent.includes('로그인') || 
+          button.textContent.includes('Login') ||
+          button.type === 'submit'
+        );
+      });
       
       if (emailInput && passwordInput && loginButton) {
         logTestResult('Login Form Elements Found', true);

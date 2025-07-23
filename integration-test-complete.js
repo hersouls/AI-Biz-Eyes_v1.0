@@ -153,9 +153,10 @@ async function testReferenceAPIs(token) {
   try {
     // 참고자료 생성
     const createRefResponse = await axios.post(`${API_ENDPOINTS.references}`, {
-      title: 'Test Reference',
-      content: 'Test content for integration testing',
-      category: 'test'
+      projectName: 'Test Reference Project',
+      projectType: '용역',
+      contractAmount: 50000000,
+      status: 'success'
     }, { headers });
     
     if (createRefResponse.data.success) {
@@ -280,7 +281,7 @@ async function testErrorHandling() {
   
   try {
     // 잘못된 토큰으로 인증 테스트
-    const authErrorResponse = await axios.get(`${API_ENDPOINTS.bids}`, {
+    const authErrorResponse = await axios.get(`${API_BASE_URL}/api/auth/me`, {
       headers: { Authorization: 'Bearer invalid-token' },
       validateStatus: () => true
     });

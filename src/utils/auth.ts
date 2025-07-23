@@ -75,7 +75,8 @@ export const verifyToken = (token: string): JWTPayload => {
       role: parts[4] || 'user' 
     };
   }
-  return { id: 1, email: 'dummy@example.com', role: 'user' };
+  // 잘못된 토큰인 경우 에러를 발생시킴
+  throw new Error('Invalid token');
 };
 
 export const hashPassword = async (password: string): Promise<string> => {
