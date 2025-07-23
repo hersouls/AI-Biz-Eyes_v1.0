@@ -6,6 +6,7 @@ import ReferenceStatistics from './ReferenceStatistics';
 import NotificationStatistics from './NotificationStatistics';
 import SystemStatistics from './SystemStatistics';
 import { useAuth } from '../../hooks/useAuth';
+import { BarChart3, TrendingUp, Bell, Settings } from 'lucide-react';
 
 type StatisticsTab = 'bids' | 'references' | 'notifications' | 'system';
 
@@ -15,10 +16,10 @@ const StatisticsPage: React.FC = () => {
   const { user } = useAuth();
 
   const tabs = [
-    { id: 'bids', label: '공고 통계', icon: '📊' },
-    { id: 'references', label: '레퍼런스 통계', icon: '📈' },
-    { id: 'notifications', label: '알림 통계', icon: '🔔' },
-    ...(user?.role === 'admin' ? [{ id: 'system', label: '시스템 통계', icon: '⚙️' }] : [])
+    { id: 'bids', label: '공고 통계', icon: BarChart3 },
+    { id: 'references', label: '레퍼런스 통계', icon: TrendingUp },
+    { id: 'notifications', label: '알림 통계', icon: Bell },
+    ...(user?.role === 'admin' ? [{ id: 'system', label: '시스템 통계', icon: Settings }] : [])
   ];
 
   const periodOptions = [
@@ -59,18 +60,21 @@ const StatisticsPage: React.FC = () => {
         {/* 필터 및 컨트롤 */}
         <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div className="flex flex-wrap gap-2">
-            {tabs.map((tab) => (
-              <Button
-                key={tab.id}
-                variant={activeTab === tab.id ? 'primary' : 'secondary'}
-                size="sm"
-                onClick={() => setActiveTab(tab.id as StatisticsTab)}
-                className="flex items-center gap-2"
-              >
-                <span>{tab.icon}</span>
-                {tab.label}
-              </Button>
-            ))}
+            {tabs.map((tab) => {
+              const IconComponent = tab.icon;
+              return (
+                <Button
+                  key={tab.id}
+                  variant={activeTab === tab.id ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setActiveTab(tab.id as StatisticsTab)}
+                  className="flex items-center gap-2"
+                >
+                  <IconComponent size={16} />
+                  {tab.label}
+                </Button>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-3">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Report } from '../../types/notification';
 import Card from '../Card';
 import Button from '../Button';
+import { BarChart3, X } from 'lucide-react';
 
 interface ReportDetailProps {
   report: Report | null;
@@ -57,7 +58,7 @@ export const ReportDetail: React.FC<ReportDetailProps> = ({
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
-            <span className="text-2xl">📊</span>
+            <BarChart3 className="text-blue-500" size={24} />
             <h2 className="text-xl font-semibold text-gray-900">리포트 상세</h2>
             <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
               {getReportTypeLabel(report.type)}
@@ -68,7 +69,7 @@ export const ReportDetail: React.FC<ReportDetailProps> = ({
             size="sm"
             onClick={onClose}
           >
-            ✕
+            <X size={16} />
           </Button>
         </div>
 

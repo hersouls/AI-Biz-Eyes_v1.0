@@ -4,6 +4,7 @@ import { NotificationService } from '../../services/notificationService';
 import Card from '../Card';
 import Button from '../Button';
 import Badge from '../Badge';
+import { AlertTriangle, Clock, AlertCircle, RefreshCw, Megaphone, Edit, MapPin, X } from 'lucide-react';
 
 interface NotificationDetailProps {
   notification: Notification | null;
@@ -39,19 +40,19 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'urgent':
-        return '🚨';
+        return <AlertTriangle className="text-red-500" size={24} />;
       case 'deadline':
-        return '⏰';
+        return <Clock className="text-orange-500" size={24} />;
       case 'missing':
-        return '⚠️';
+        return <AlertCircle className="text-yellow-500" size={24} />;
       case 'duplicate':
-        return '🔄';
+        return <RefreshCw className="text-blue-500" size={24} />;
       case 'new':
-        return '📢';
+        return <Megaphone className="text-green-500" size={24} />;
       case 'update':
-        return '📝';
+        return <Edit className="text-purple-500" size={24} />;
       default:
-        return '📌';
+        return <MapPin className="text-gray-500" size={24} />;
     }
   };
 
@@ -140,7 +141,7 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
-            <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
+            {getNotificationIcon(notification.type)}
             <h2 className="text-xl font-semibold text-gray-900">알림 상세</h2>
           </div>
           <Button
@@ -148,7 +149,7 @@ export const NotificationDetail: React.FC<NotificationDetailProps> = ({
             size="sm"
             onClick={onClose}
           >
-            ✕
+            <X size={16} />
           </Button>
         </div>
 

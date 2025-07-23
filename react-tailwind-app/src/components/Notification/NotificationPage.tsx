@@ -6,6 +6,7 @@ import { NotificationSettings } from './NotificationSettings';
 import { NotificationDetail } from './NotificationDetail';
 import { ReportDetail } from './ReportDetail';
 import Card from '../Card';
+import { Bell, BarChart3, Settings } from 'lucide-react';
 
 type TabType = 'notifications' | 'reports' | 'settings';
 
@@ -34,9 +35,9 @@ export const NotificationPage: React.FC = () => {
   };
 
   const tabs = [
-    { id: 'notifications', label: '알림', icon: '🔔' },
-    { id: 'reports', label: '리포트', icon: '📊' },
-    { id: 'settings', label: '설정', icon: '⚙️' }
+    { id: 'notifications', label: '알림', icon: Bell },
+    { id: 'reports', label: '리포트', icon: BarChart3 },
+    { id: 'settings', label: '설정', icon: Settings }
   ] as const;
 
   return (
@@ -54,20 +55,23 @@ export const NotificationPage: React.FC = () => {
         <Card className="mb-6">
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                    activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <span>{tab.icon}</span>
-                  <span>{tab.label}</span>
-                </button>
-              ))}
+              {tabs.map((tab) => {
+                const IconComponent = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                      activeTab === tab.id
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <IconComponent size={16} />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
             </nav>
           </div>
         </Card>
