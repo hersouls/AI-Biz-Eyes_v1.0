@@ -1,24 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
+
+// Mock the entire upload module to avoid multer issues
+jest.mock('../../../src/middleware/upload', () => ({
+  handleUploadError: jest.requireActual('../../../src/middleware/upload').handleUploadError,
+}));
+
 import { handleUploadError } from '../../../src/middleware/upload';
-import fs from 'fs';
-import path from 'path';
-
-// Mock fs and path to avoid file system operations during tests
-jest.mock('fs', () => ({
-  existsSync: jest.fn(),
-  mkdirSync: jest.fn(),
-}));
-
-jest.mock('path', () => ({
-  join: jest.fn(),
-  extname: jest.fn(),
-}));
-
-// Mock multer to avoid actual file upload operations
-jest.mock('multer', () => ({
-  diskStorage: jest.fn(() => ({})),
-  single: jest.fn(() => jest.fn()),
-}));
 
 describe('Upload Middleware', () => {
   const mockRequest = (file?: any, user?: any): any => ({
@@ -37,16 +24,6 @@ describe('Upload Middleware', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (fs.existsSync as jest.Mock).mockReturnValue(false);
-    (fs.mkdirSync as jest.Mock).mockImplementation(() => {});
-    (path.join as jest.Mock).mockReturnValue('/mock/path');
-  });
-
-  describe('uploadAvatar', () => {
-    it('should be defined (mocked for testing)', () => {
-      // uploadAvatar is mocked, so we just test that the module can be imported
-      expect(true).toBe(true);
-    });
   });
 
   describe('handleUploadError', () => {
@@ -103,20 +80,6 @@ describe('Upload Middleware', () => {
         success: false,
         message: 'Unknown upload error'
       });
-    });
-  });
-
-  describe('Directory creation', () => {
-    it('should handle directory creation (mocked for testing)', () => {
-      // Directory creation is mocked, so we just test that the module can be imported
-      expect(true).toBe(true);
-    });
-  });
-
-  describe('Path construction', () => {
-    it('should handle path construction (mocked for testing)', () => {
-      // Path construction is mocked, so we just test that the module can be imported
-      expect(true).toBe(true);
     });
   });
 });
