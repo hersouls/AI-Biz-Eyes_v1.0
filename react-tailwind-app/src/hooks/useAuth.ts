@@ -3,7 +3,7 @@
  * 현재는 블록처리된 상태입니다.
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface User {
   id: number;
@@ -117,7 +117,7 @@ export const useAuth = () => {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   });
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   const fetchUserInfo = async () => {
     // 더미 사용자 정보 반환
