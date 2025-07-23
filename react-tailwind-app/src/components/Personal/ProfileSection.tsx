@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { User, Mail, Building2, Phone, Users, Briefcase } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { UserProfile, ProfileUpdateRequest, PasswordChangeRequest } from '../../types/personal';
+import { useUser } from '../../contexts/UserContext';
 import Button from '../Button';
 import Input from '../Input';
 import Badge from '../Badge';
@@ -13,6 +14,7 @@ export const ProfileSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const { refreshUser } = useUser();
 
   // Form states
   const [formData, setFormData] = useState<ProfileUpdateRequest>({});
@@ -55,6 +57,9 @@ export const ProfileSection: React.FC = () => {
         setProfile(response.data);
         setIsEditing(false);
         setMessage({ type: 'success', text: '프로필이 성공적으로 업데이트되었습니다.' });
+        
+        // 전역 사용자 정보 업데이트
+        await refreshUser();
       } else {
         setMessage({ type: 'error', text: response.message || '프로필 업데이트에 실패했습니다.' });
       }
