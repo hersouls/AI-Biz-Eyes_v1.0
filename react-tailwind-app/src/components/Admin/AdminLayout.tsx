@@ -14,6 +14,7 @@ import {
   ClipboardList,
   FileBarChart
 } from 'lucide-react';
+import Footer from '../Layout/Footer';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -44,7 +45,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -90,7 +91,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-64 flex flex-col flex-1">
         {/* Top bar */}
         <div className="sticky top-0 z-40 flex items-center justify-between h-16 bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8">
           <button
@@ -119,9 +120,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </div>
 
         {/* Page content */}
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="p-4 sm:p-6 lg:p-8 flex-1">
           {children}
         </main>
+        
+        <Footer />
       </div>
 
       {/* Mobile overlay */}
