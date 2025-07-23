@@ -59,8 +59,8 @@ const Table = <T extends Record<string, any> = any>({
   rowKey = 'id'
 }: TableProps<T>) => {
   const classes = clsx(
-    'min-w-full divide-y divide-gray-200',
-    bordered && 'border border-gray-200 rounded-5',
+    'min-w-full divide-y divide-gray',
+    bordered && 'border border-gray rounded-5',
     className
   );
 
@@ -237,7 +237,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   className
 }) => {
   return (
-    <thead className="bg-gray-50">
+    <thead className="bg-gray">
       <tr className={clsx('', className)}>
         {children}
       </tr>
@@ -269,9 +269,9 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
   };
 
   const classes = clsx(
-    'px-6 py-3 text-body3 font-bold text-gray-700 uppercase tracking-wider',
+    'px-6 py-3 text-body3 font-bold text-navy uppercase tracking-wider',
     alignClasses[align],
-    sortable && 'cursor-pointer hover:bg-gray-100',
+    sortable && 'cursor-pointer hover:bg-gray/20',
     className
   );
 
@@ -292,7 +292,7 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
               </svg>
             )}
             {!sortDirection && (
-              <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 text-gray" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             )}
@@ -330,9 +330,9 @@ export const TableRow: React.FC<TableRowProps> = ({
 }) => {
   const classes = clsx(
     compact ? 'px-4 py-2' : 'px-6 py-4',
-    striped && index % 2 === 1 && 'bg-gray-50',
-    hover && 'hover:bg-gray-50',
-    selected && 'bg-primary-50 border-l-4 border-primary',
+    striped && index % 2 === 1 && 'bg-gray/10',
+    hover && 'hover:bg-gray/20',
+    selected && 'bg-primary/10 border-l-4 border-primary',
     onClick && 'cursor-pointer',
     'transition-colors duration-150',
     className

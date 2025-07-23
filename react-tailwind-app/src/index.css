@@ -5,38 +5,107 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* 🎯 브랜드 중심 강조 (Primary) */
+    --primary: #005BAC;
+
+    /* 🧭 정보 밀도 높은 배경 (Dark Background) */
+    --navy: #1B2233;
+
+    /* 🌤 긍정·전환 유도 배경 (Light Accent) */
+    --sky: #0073CE;
+
+    /* 📰 문서성, 보조 정보 전달용 (Sub Text / Border) */
+    --gray: #D0D4DA;
+
+    /* 📢 주의/긴급/제휴 강조 태그 (Alert / Badge) */
+    --red: #ED1C24;
+
+    /* 🧪 관리자/개발자 전용 UI 태그 */
+    --purple: #4A3AFF;
+
+    /* ⬛ 진중한 선택 유도 버튼 (Secondary CTA) */
+    --black: #000000;
+
+    /* 🧾 가독성 중심 텍스트 및 배경 */
+    --white: #FFFFFF;
+  }
+
   html {
     font-family: 'Pretendard', sans-serif;
   }
   
   body {
     font-family: 'Pretendard', sans-serif;
-    background-color: #f8fafc;
+    background-color: var(--white);
+    color: var(--navy);
   }
 }
 
 @layer components {
+  /* 🎯 Primary 버튼 - 브랜드 중심 강조 */
   .btn-primary {
-    @apply bg-primary text-white hover:bg-primary-700 focus:ring-primary-500 disabled:bg-primary-300;
+    @apply bg-primary text-white hover:bg-sky focus:ring-primary disabled:bg-gray transition-colors duration-200;
   }
   
+  /* 🌤 Secondary 버튼 - 전환 유도용 강조 */
   .btn-secondary {
-    @apply bg-secondary text-white hover:bg-secondary-700 focus:ring-secondary-500 disabled:bg-secondary-300;
+    @apply bg-sky text-white hover:bg-primary focus:ring-sky disabled:bg-gray transition-colors duration-200;
   }
   
+  /* ⬛ Outline 버튼 - 진중한 선택 유도 */
   .btn-outline {
-    @apply border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-primary-500 disabled:bg-gray-100;
+    @apply border border-gray text-navy bg-white hover:bg-gray hover:text-navy focus:ring-primary disabled:bg-gray disabled:text-gray transition-colors duration-200;
   }
   
+  /* 📢 Danger 버튼 - 주의/경고 액션 */
+  .btn-danger {
+    @apply bg-red text-white hover:bg-red/90 focus:ring-red disabled:bg-gray transition-colors duration-200;
+  }
+  
+  /* 🧪 Admin 버튼 - 관리자/개발자 전용 */
+  .btn-admin {
+    @apply bg-purple text-white hover:bg-purple/90 focus:ring-purple disabled:bg-gray transition-colors duration-200;
+  }
+  
+  /* 🧾 카드 기본 스타일 */
   .card-base {
-    @apply bg-white border border-gray-200 rounded-5 shadow-md transition-shadow duration-200;
+    @apply bg-white border border-gray rounded-5 shadow-md transition-shadow duration-200 hover:shadow-lg;
   }
   
+  /* 🧭 네비게이션 카드 */
+  .card-nav {
+    @apply bg-navy text-white border border-navy rounded-5 shadow-md;
+  }
+  
+  /* 📰 테이블 헤더 */
   .table-header {
-    @apply bg-gray-50 text-gray-700 font-semibold text-body3;
+    @apply bg-gray text-navy font-semibold text-body3;
   }
   
+  /* 📰 테이블 행 */
   .table-row {
-    @apply border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150;
+    @apply border-b border-gray hover:bg-gray/20 transition-colors duration-150;
+  }
+  
+  /* 🎯 배지 스타일 */
+  .badge-primary {
+    @apply bg-primary text-white px-2 py-1 rounded-full text-detail2;
+  }
+  
+  .badge-sky {
+    @apply bg-sky text-white px-2 py-1 rounded-full text-detail2;
+  }
+  
+  .badge-red {
+    @apply bg-red text-white px-2 py-1 rounded-full text-detail2;
+  }
+  
+  .badge-purple {
+    @apply bg-purple text-white px-2 py-1 rounded-full text-detail2;
+  }
+  
+  .badge-gray {
+    @apply bg-gray text-navy px-2 py-1 rounded-full text-detail2;
   }
 }

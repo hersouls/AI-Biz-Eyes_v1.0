@@ -10,6 +10,7 @@ export { default as Select } from './Select';
 
 // Layout Components
 export { default as UIComponents } from './UIComponents';
+export { default as ColorSystemDemo } from './ColorSystemDemo';
 
 // Reference Components
 export * from './Reference';

@@ -6,50 +6,38 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#031B4B',
-          50: '#f0f4ff',
-          100: '#e0e9ff',
-          200: '#c7d6ff',
-          300: '#a3b8ff',
-          400: '#7b91ff',
-          500: '#5b6bff',
-          600: '#3d4bff',
-          700: '#2d3bff',
-          800: '#031B4B',
-          900: '#1a1a4b',
-        },
-        secondary: {
-          DEFAULT: '#119891',
-          50: '#f0fdfc',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#119891',
-          700: '#0d7a6b',
-          800: '#0f5f5b',
-          900: '#134e4a',
-        },
-        gray: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-        },
+        // 🎯 브랜드 중심 강조 (Primary)
+        primary: 'var(--primary)',
+        
+        // 🧭 정보 밀도 높은 배경 (Dark Background)
+        navy: 'var(--navy)',
+        
+        // 🌤 긍정·전환 유도 배경 (Light Accent)
+        sky: 'var(--sky)',
+        
+        // 📰 문서성, 보조 정보 전달용 (Sub Text / Border)
+        gray: 'var(--gray)',
+        
+        // 📢 주의/긴급/제휴 강조 태그 (Alert / Badge)
+        red: 'var(--red)',
+        
+        // 🧪 관리자/개발자 전용 UI 태그
+        purple: 'var(--purple)',
+        
+        // ⬛ 진중한 선택 유도 버튼 (Secondary CTA)
+        black: 'var(--black)',
+        
+        // 🧾 가독성 중심 텍스트 및 배경
+        white: 'var(--white)',
+        
+        // 기존 호환성을 위한 별칭
+        secondary: 'var(--sky)',
         state: {
-          red: '#EC193A',
-          violet: '#6d8be1',
+          red: 'var(--red)',
+          violet: 'var(--purple)',
         },
         background: {
-          light: '#edeff5',
+          light: 'var(--gray)',
         }
       },
       fontFamily: {

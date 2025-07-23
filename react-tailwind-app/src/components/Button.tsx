@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'admin';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
   icon?: React.ReactNode;
@@ -29,11 +29,23 @@ const Button: React.FC<ButtonProps> = ({
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variantClasses = {
-    primary: 'bg-primary text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm',
-    secondary: 'bg-secondary text-white hover:bg-secondary-700 focus:ring-secondary-500 shadow-sm',
-    outline: 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-primary-500 shadow-sm',
-    ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm',
+    // 🎯 브랜드 중심 강조 (Primary)
+    primary: 'bg-primary text-white hover:bg-sky focus:ring-primary shadow-sm',
+    
+    // 🌤 전환 유도용 강조 (Secondary)
+    secondary: 'bg-sky text-white hover:bg-primary focus:ring-sky shadow-sm',
+    
+    // ⬛ 진중한 선택 유도 (Outline)
+    outline: 'border border-gray text-navy bg-white hover:bg-gray hover:text-navy focus:ring-primary shadow-sm',
+    
+    // 📰 보조 정보 전달 (Ghost)
+    ghost: 'text-navy hover:bg-gray focus:ring-gray',
+    
+    // 📢 주의/경고 액션 (Danger)
+    danger: 'bg-red text-white hover:bg-red/90 focus:ring-red shadow-sm',
+    
+    // 🧪 관리자/개발자 전용 (Admin)
+    admin: 'bg-purple text-white hover:bg-purple/90 focus:ring-purple shadow-sm',
   };
 
   const sizeClasses = {

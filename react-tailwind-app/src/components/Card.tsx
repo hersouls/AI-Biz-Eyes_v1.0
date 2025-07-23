@@ -10,6 +10,7 @@ interface CardProps {
   hover?: boolean;
   header?: React.ReactNode;
   footer?: React.ReactNode;
+  variant?: 'default' | 'nav';
 }
 
 const Card: React.FC<CardProps> = ({
@@ -20,7 +21,8 @@ const Card: React.FC<CardProps> = ({
   border = true,
   hover = false,
   header,
-  footer
+  footer,
+  variant = 'default'
 }) => {
   const paddingClasses = {
     none: '',
@@ -36,9 +38,18 @@ const Card: React.FC<CardProps> = ({
     lg: 'shadow-lg'
   };
 
+  const variantClasses = {
+    // 🧾 기본 카드 스타일
+    default: 'bg-white border-gray',
+    
+    // 🧭 네비게이션 카드 스타일
+    nav: 'bg-navy text-white border-navy',
+  };
+
   const classes = clsx(
-    'bg-white rounded-5',
-    border && 'border border-gray-200',
+    'rounded-5',
+    variantClasses[variant],
+    border && 'border',
     shadowClasses[shadow],
     hover && 'hover:shadow-lg transition-shadow duration-200',
     className
@@ -47,7 +58,10 @@ const Card: React.FC<CardProps> = ({
   return (
     <div className={classes}>
       {header && (
-        <div className="px-6 py-4 border-b border-gray-200">
+        <div className={clsx(
+          'px-6 py-4 border-b',
+          variant === 'default' ? 'border-gray' : 'border-gray/20'
+        )}>
           {header}
         </div>
       )}
@@ -57,7 +71,10 @@ const Card: React.FC<CardProps> = ({
       </div>
       
       {footer && (
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-5">
+        <div className={clsx(
+          'px-6 py-4 border-t rounded-b-5',
+          variant === 'default' ? 'border-gray bg-gray/10' : 'border-gray/20 bg-gray/10'
+        )}>
           {footer}
         </div>
       )}
@@ -87,7 +104,7 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
           <h3 className="text-subtitle1 font-bold text-primary">{title}</h3>
         )}
         {subtitle && (
-          <p className="mt-1 text-body3 text-gray-600">{subtitle}</p>
+          <p className="mt-1 text-body3 text-gray">{subtitle}</p>
         )}
         {children}
       </div>

@@ -54,7 +54,7 @@ const columns = [
     key: 'bidNtceNm',
     header: '공고명',
     render: (value: string) => (
-      <span className="font-medium text-primary hover:text-primary-700 cursor-pointer">
+      <span className="font-medium text-primary hover:text-sky cursor-pointer">
         {value}
       </span>
     )
