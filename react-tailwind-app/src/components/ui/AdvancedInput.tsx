@@ -5,7 +5,7 @@ interface AdvancedInputProps {
   label?: string;
   placeholder?: string;
   value?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date';
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'filled' | 'outlined';
   error?: string;

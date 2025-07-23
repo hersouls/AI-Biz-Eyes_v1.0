@@ -211,7 +211,7 @@ export default function EnhancedNotification() {
                   variant="ghost"
                   icon={<Trash2 className="w-3 h-3" />}
                   onClick={(e) => {
-                    e.stopPropagation();
+                    e?.stopPropagation();
                     deleteNotification(notification.id);
                   }}
                 >

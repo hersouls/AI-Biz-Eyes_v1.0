@@ -11,7 +11,7 @@ interface AdvancedButtonProps {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   className?: string;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
 }
 
