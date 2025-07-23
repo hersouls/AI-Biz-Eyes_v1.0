@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  UsersIcon, 
-  CogIcon, 
-  ChartBarIcon, 
-  DocumentTextIcon,
-  ShieldCheckIcon,
-  CloudArrowUpIcon,
-  ExclamationTriangleIcon,
-  HomeIcon,
+  Users, 
+  Settings, 
+  BarChart3, 
+  FileText,
+  Shield,
+  Upload,
+  AlertTriangle,
+  Home,
   // 품질/감사 기능 아이콘 추가
-  ChartPieIcon,
-  ClipboardDocumentListIcon,
-  DocumentChartBarIcon,
-  Cog6ToothIcon
-} from '@heroicons/react/24/outline';
+  PieChart,
+  ClipboardList,
+  FileBarChart,
+  Settings
+} from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -25,19 +25,19 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: '대시보드', href: '/admin', icon: HomeIcon },
-    { name: '사용자 관리', href: '/admin/users', icon: UsersIcon },
-    { name: '시스템 로그', href: '/admin/logs', icon: DocumentTextIcon },
-    { name: '수집 이력', href: '/admin/fetch-logs', icon: CloudArrowUpIcon },
-    { name: '알림 설정', href: '/admin/notifications', icon: ExclamationTriangleIcon },
-    { name: '리포트 설정', href: '/admin/reports', icon: ChartBarIcon },
-    { name: '시스템 설정', href: '/admin/system', icon: CogIcon },
-    { name: '백업 관리', href: '/admin/backups', icon: ShieldCheckIcon },
+    { name: '대시보드', href: '/admin', icon: Home },
+    { name: '사용자 관리', href: '/admin/users', icon: Users },
+    { name: '시스템 로그', href: '/admin/logs', icon: FileText },
+    { name: '수집 이력', href: '/admin/fetch-logs', icon: Upload },
+    { name: '알림 설정', href: '/admin/notifications', icon: AlertTriangle },
+    { name: '리포트 설정', href: '/admin/reports', icon: BarChart3 },
+    { name: '시스템 설정', href: '/admin/system', icon: Settings },
+    { name: '백업 관리', href: '/admin/backups', icon: Shield },
     // 품질/감사 기능 메뉴 추가
-    { name: '품질 관리', href: '/admin/quality', icon: ChartPieIcon },
-    { name: '감사 로그', href: '/admin/audit-logs', icon: ClipboardDocumentListIcon },
-    { name: '품질 리포트', href: '/admin/quality-report', icon: DocumentChartBarIcon },
-    { name: '감사 설정', href: '/admin/audit-settings', icon: Cog6ToothIcon },
+    { name: '품질 관리', href: '/admin/quality', icon: PieChart },
+    { name: '감사 로그', href: '/admin/audit-logs', icon: ClipboardList },
+    { name: '품질 리포트', href: '/admin/quality-report', icon: FileBarChart },
+    { name: '감사 설정', href: '/admin/audit-settings', icon: Settings },
   ];
 
   const isActive = (href: string) => {

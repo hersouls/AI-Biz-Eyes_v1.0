@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ClockIcon, EyeIcon, HandThumbUpIcon, DocumentTextIcon, ChartBarIcon } from '@heroicons/react/24/outline';
+import { Clock, Eye, ThumbsUp, FileText, BarChart3 } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { UserActivity, UserPerformance } from '../../types/personal';
 
@@ -71,7 +71,7 @@ export const ActivitySection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
-              <EyeIcon className="w-8 h-8 text-blue-600" />
+              <Eye className="w-8 h-8 text-blue-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">조회한 공고</p>
                 <p className="text-2xl font-bold text-gray-900">{performance.totalBidsViewed}</p>
@@ -81,7 +81,7 @@ export const ActivitySection: React.FC = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
-              <HandThumbUpIcon className="w-8 h-8 text-green-600" />
+              <ThumbsUp className="w-8 h-8 text-green-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">참여한 공고</p>
                 <p className="text-2xl font-bold text-gray-900">{performance.totalBidsParticipated}</p>
@@ -91,7 +91,7 @@ export const ActivitySection: React.FC = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
-              <DocumentTextIcon className="w-8 h-8 text-purple-600" />
+              <FileText className="w-8 h-8 text-purple-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">추가한 레퍼런스</p>
                 <p className="text-2xl font-bold text-gray-900">{performance.totalReferencesAdded}</p>
@@ -101,7 +101,7 @@ export const ActivitySection: React.FC = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-sm border">
             <div className="flex items-center">
-              <ChartBarIcon className="w-8 h-8 text-orange-600" />
+              <BarChart3 className="w-8 h-8 text-orange-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">성공률</p>
                 <p className="text-2xl font-bold text-gray-900">{performance.successRate}%</p>
@@ -125,7 +125,7 @@ export const ActivitySection: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     <div className="flex-shrink-0">
                       <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <ClockIcon className="w-4 h-4 text-blue-600" />
+                        <Clock className="w-4 h-4 text-blue-600" />
                       </div>
                     </div>
                     <div>
@@ -145,7 +145,7 @@ export const ActivitySection: React.FC = () => {
             ))
           ) : (
             <div className="px-6 py-8 text-center">
-              <ClockIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500">활동 내역이 없습니다.</p>
             </div>
           )}

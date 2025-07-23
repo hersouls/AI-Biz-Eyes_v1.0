@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserIcon, EnvelopeIcon, BuildingOfficeIcon, PhoneIcon, UserGroupIcon, BriefcaseIcon } from '@heroicons/react/24/outline';
+import { User, Mail, Building2, Phone, Users, Briefcase } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { UserProfile, ProfileUpdateRequest, PasswordChangeRequest } from '../../types/personal';
 import Button from '../Button';
@@ -162,7 +162,7 @@ export const ProfileSection: React.FC = () => {
           
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <UserIcon className="w-5 h-5 text-gray-400" />
+                              <User className="w-5 h-5 text-gray-400" />
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700">이름</label>
                 {isEditing ? (
@@ -178,7 +178,7 @@ export const ProfileSection: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              <EnvelopeIcon className="w-5 h-5 text-gray-400" />
+                              <Mail className="w-5 h-5 text-gray-400" />
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700">이메일</label>
                 <p className="mt-1 text-sm text-gray-900">{profile.email}</p>
@@ -186,7 +186,7 @@ export const ProfileSection: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              <BuildingOfficeIcon className="w-5 h-5 text-gray-400" />
+                              <Building2 className="w-5 h-5 text-gray-400" />
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700">소속</label>
                 {isEditing ? (
@@ -202,7 +202,7 @@ export const ProfileSection: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              <UserGroupIcon className="w-5 h-5 text-gray-400" />
+                              <Users className="w-5 h-5 text-gray-400" />
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700">부서</label>
                 {isEditing ? (
@@ -218,7 +218,7 @@ export const ProfileSection: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              <BriefcaseIcon className="w-5 h-5 text-gray-400" />
+                              <Briefcase className="w-5 h-5 text-gray-400" />
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700">직책</label>
                 {isEditing ? (
@@ -234,7 +234,7 @@ export const ProfileSection: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-3">
-              <PhoneIcon className="w-5 h-5 text-gray-400" />
+                              <Phone className="w-5 h-5 text-gray-400" />
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700">연락처</label>
                 {isEditing ? (

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ClipboardDocumentListIcon, 
-  ClockIcon, 
-  CheckCircleIcon, 
-  ExclamationTriangleIcon,
-  ArrowUpIcon,
-  ArrowDownIcon 
-} from '@heroicons/react/24/outline';
+  ClipboardList, 
+  Clock, 
+  CheckCircle, 
+  AlertTriangle,
+  TrendingUp,
+  TrendingDown
+} from 'lucide-react';
 import clsx from 'clsx';
 import { DashboardService } from '../../services/dashboardService';
 import { DashboardStats } from '../../types/dashboard';
@@ -80,9 +80,9 @@ function KPICard({ title, value, icon: Icon, change, color, description }: KPICa
                     change.type === 'increase' ? 'text-green-600' : 'text-red-600'
                   )}>
                     {change.type === 'increase' ? (
-                      <ArrowUpIcon className="self-center flex-shrink-0 h-4 w-4 text-green-500 mr-1" />
+                      <TrendingUp className="self-center flex-shrink-0 h-4 w-4 text-green-500 mr-1" />
                     ) : (
-                      <ArrowDownIcon className="self-center flex-shrink-0 h-4 w-4 text-red-500 mr-1" />
+                      <TrendingDown className="self-center flex-shrink-0 h-4 w-4 text-red-500 mr-1" />
                     )}
                     <span className="sr-only">
                       {change.type === 'increase' ? '증가' : '감소'}
@@ -158,7 +158,7 @@ export default function KPICards() {
     {
       title: '전체 공고',
       value: stats.totalBids.toLocaleString(),
-      icon: ClipboardDocumentListIcon,
+              icon: ClipboardList,
       change: { value: stats.monthlyGrowth, type: 'increase' as const, period: '지난 달 대비' },
       color: 'primary' as const,
       description: '진행중인 공고 수'
@@ -166,7 +166,7 @@ export default function KPICards() {
     {
       title: '진행중',
       value: stats.activeBids.toLocaleString(),
-      icon: ClockIcon,
+              icon: Clock,
       change: { value: 5, type: 'increase' as const, period: '지난 주 대비' },
       color: 'secondary' as const,
       description: '현재 진행중인 공고'
@@ -174,7 +174,7 @@ export default function KPICards() {
     {
       title: '완료',
       value: stats.completedBids.toLocaleString(),
-      icon: CheckCircleIcon,
+              icon: CheckCircle,
       change: { value: 8, type: 'increase' as const, period: '지난 달 대비' },
       color: 'success' as const,
       description: '완료된 공고 수'
@@ -182,7 +182,7 @@ export default function KPICards() {
     {
       title: '긴급',
       value: stats.urgentBids.toLocaleString(),
-      icon: ExclamationTriangleIcon,
+              icon: AlertTriangle,
       change: { value: 3, type: 'decrease' as const, period: '지난 주 대비' },
       color: 'danger' as const,
       description: '긴급 처리 필요'

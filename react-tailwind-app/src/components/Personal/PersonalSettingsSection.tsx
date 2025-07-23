@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  CogIcon, 
-  ClockIcon, 
-  LanguageIcon,
-  ComputerDesktopIcon,
-  DevicePhoneMobileIcon,
-  SunIcon
-} from '@heroicons/react/24/outline';
+  Settings, 
+  Clock, 
+  Languages,
+  Monitor,
+  Smartphone,
+  Sun
+} from 'lucide-react';
 
 interface SettingOption {
   id: string;
@@ -29,7 +29,7 @@ const settingOptions: SettingOption[] = [
       { value: 'America/New_York', label: '미국 동부 시간 (UTC-5)' },
       { value: 'Europe/London', label: '영국 시간 (UTC+0)' }
     ],
-    icon: ClockIcon
+    icon: Clock
   },
   {
     id: 'language',
@@ -41,7 +41,7 @@ const settingOptions: SettingOption[] = [
       { value: 'en', label: 'English' },
       { value: 'ja', label: '日本語' }
     ],
-    icon: LanguageIcon
+    icon: Languages
   },
   {
     id: 'theme',
@@ -53,28 +53,28 @@ const settingOptions: SettingOption[] = [
       { value: 'dark', label: '다크 모드' },
       { value: 'auto', label: '시스템 설정 따름' }
     ],
-    icon: SunIcon
+    icon: Sun
   },
   {
     id: 'auto-refresh',
     name: '자동 새로고침',
     description: '페이지를 자동으로 새로고침합니다.',
     type: 'toggle',
-    icon: CogIcon
+    icon: Settings
   },
   {
     id: 'desktop-notifications',
     name: '데스크톱 알림',
     description: '브라우저 데스크톱 알림을 활성화합니다.',
     type: 'toggle',
-    icon: ComputerDesktopIcon
+    icon: Monitor
   },
   {
     id: 'mobile-optimization',
     name: '모바일 최적화',
     description: '모바일 기기에서 최적화된 레이아웃을 사용합니다.',
     type: 'toggle',
-    icon: DevicePhoneMobileIcon
+    icon: Smartphone
   }
 ];
 

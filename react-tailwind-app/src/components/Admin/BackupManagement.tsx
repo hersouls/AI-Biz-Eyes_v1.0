@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ShieldCheckIcon, 
-  CloudArrowUpIcon, 
-  ArrowDownTrayIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ExclamationTriangleIcon,
-  PlusIcon,
-  TrashIcon
-} from '@heroicons/react/24/outline';
+  Shield, 
+  Upload, 
+  Download,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Plus,
+  Trash2
+} from 'lucide-react';
 import { BackupInfo } from '../../types/admin';
 import { adminService } from '../../services/adminService';
 import Button from '../Button';
@@ -93,10 +93,10 @@ const BackupManagement: React.FC = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircleIcon className="h-5 w-5 text-green-500" />;
-      case 'failed': return <XCircleIcon className="h-5 w-5 text-red-500" />;
-      case 'in_progress': return <ClockIcon className="h-5 w-5 text-yellow-500" />;
-      default: return <ClockIcon className="h-5 w-5 text-gray-500" />;
+      case 'completed': return <CheckCircle className="h-5 w-5 text-green-500" />;
+      case 'failed': return <XCircle className="h-5 w-5 text-red-500" />;
+      case 'in_progress': return <Clock className="h-5 w-5 text-yellow-500" />;
+      default: return <Clock className="h-5 w-5 text-gray-500" />;
     }
   };
 
@@ -158,7 +158,7 @@ const BackupManagement: React.FC = () => {
           {creatingBackup ? (
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
           ) : (
-            <PlusIcon className="h-5 w-5" />
+                            <Plus className="h-5 w-5" />
           )}
           <span>{creatingBackup ? '백업 생성 중...' : '새 백업 생성'}</span>
         </Button>
@@ -168,7 +168,7 @@ const BackupManagement: React.FC = () => {
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-md p-4">
           <div className="flex">
-            <XCircleIcon className="h-5 w-5 text-red-400" />
+                            <XCircle className="h-5 w-5 text-red-400" />
             <div className="ml-3">
               <p className="text-sm text-red-800">{error}</p>
             </div>
@@ -181,7 +181,7 @@ const BackupManagement: React.FC = () => {
         <Card className="p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <ShieldCheckIcon className="h-8 w-8 text-blue-600" />
+                              <Shield className="h-8 w-8 text-blue-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">전체 백업</p>
@@ -193,7 +193,7 @@ const BackupManagement: React.FC = () => {
         <Card className="p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <CheckCircleIcon className="h-8 w-8 text-green-600" />
+                              <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">성공</p>
@@ -207,7 +207,7 @@ const BackupManagement: React.FC = () => {
         <Card className="p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <XCircleIcon className="h-8 w-8 text-red-600" />
+                              <XCircle className="h-8 w-8 text-red-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">실패</p>
@@ -221,7 +221,7 @@ const BackupManagement: React.FC = () => {
         <Card className="p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <ClockIcon className="h-8 w-8 text-yellow-600" />
+                              <Clock className="h-8 w-8 text-yellow-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">진행중</p>
@@ -239,7 +239,7 @@ const BackupManagement: React.FC = () => {
         
         {backups.length === 0 ? (
           <Card className="p-8 text-center">
-            <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
+                          <Upload className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-medium text-gray-900">백업이 없습니다</h3>
             <p className="mt-1 text-sm text-gray-500">
               첫 번째 백업을 생성해보세요.
@@ -290,7 +290,7 @@ const BackupManagement: React.FC = () => {
                           {downloadingBackup === backup.id ? (
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                           ) : (
-                            <ArrowDownTrayIcon className="h-4 w-4" />
+                            <Download className="h-4 w-4" />
                           )}
                         </Button>
                       )}
@@ -300,7 +300,7 @@ const BackupManagement: React.FC = () => {
                         size="sm"
                         onClick={() => setDeletingBackup(backup)}
                       >
-                        <TrashIcon className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -317,7 +317,7 @@ const BackupManagement: React.FC = () => {
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
             <div className="mt-3">
               <div className="flex items-center space-x-3 mb-4">
-                <ExclamationTriangleIcon className="h-6 w-6 text-red-500" />
+                <AlertTriangle className="h-6 w-6 text-red-500" />
                 <h3 className="text-lg font-medium text-gray-900">백업 삭제</h3>
               </div>
               <p className="text-sm text-gray-600 mb-4">

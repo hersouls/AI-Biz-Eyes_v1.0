@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronUpIcon, ChevronDownIcon, EyeIcon, ClipboardDocumentIcon, UserGroupIcon, BellIcon } from '@heroicons/react/24/outline';
+import { ChevronUp, ChevronDown, Eye, Clipboard, Users, Bell } from 'lucide-react';
 import { BidData } from '../../types/bid';
 import { formatCurrency, formatDate, getStatusBadge } from '../../utils/formatters';
 import Badge from '../Badge';
@@ -32,11 +32,11 @@ export const BidListTable: React.FC<BidListTableProps> = ({
 
   const renderSortIcon = (field: string) => {
     if (sortBy !== field) {
-      return <ChevronUpIcon className="h-4 w-4 text-gray-400" />;
+      return <ChevronUp className="h-4 w-4 text-gray-400" />;
     }
     return sortOrder === 'asc' ? 
-      <ChevronUpIcon className="h-4 w-4 text-blue-500" /> : 
-      <ChevronDownIcon className="h-4 w-4 text-blue-500" />;
+      <ChevronUp className="h-4 w-4 text-blue-500" /> : 
+      <ChevronDown className="h-4 w-4 text-blue-500" />;
   };
 
   const handleSort = (field: string) => {
@@ -282,7 +282,7 @@ export const BidListTable: React.FC<BidListTableProps> = ({
                     className="text-blue-600 hover:text-blue-900 p-1 rounded"
                     title="상세보기"
                   >
-                    <EyeIcon className="h-4 w-4" />
+                    <Eye className="h-4 w-4" />
                   </button>
                   
                   {bid.bidNtceUrl && (
@@ -291,7 +291,7 @@ export const BidListTable: React.FC<BidListTableProps> = ({
                       className="text-green-600 hover:text-green-900 p-1 rounded"
                       title="원문 바로가기"
                     >
-                      <ClipboardDocumentIcon className="h-4 w-4" />
+                      <Clipboard className="h-4 w-4" />
                     </button>
                   )}
                   
@@ -300,7 +300,7 @@ export const BidListTable: React.FC<BidListTableProps> = ({
                     className="text-purple-600 hover:text-purple-900 p-1 rounded"
                     title="레퍼런스 매칭"
                   >
-                    <UserGroupIcon className="h-4 w-4" />
+                    <Users className="h-4 w-4" />
                   </button>
                   
                   <button
@@ -308,7 +308,7 @@ export const BidListTable: React.FC<BidListTableProps> = ({
                     className="text-orange-600 hover:text-orange-900 p-1 rounded"
                     title="참여판단"
                   >
-                    <BellIcon className="h-4 w-4" />
+                    <Bell className="h-4 w-4" />
                   </button>
                 </div>
               </td>

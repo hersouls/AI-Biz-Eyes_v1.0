@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  CalendarDaysIcon, 
-  ClockIcon, 
-  ExclamationTriangleIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  PlusIcon
-} from '@heroicons/react/24/outline';
+  CalendarDays, 
+  Clock, 
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  Plus
+} from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import clsx from 'clsx';
@@ -88,14 +88,14 @@ const getEventTypeStyle = (type: string) => {
 const getEventTypeIcon = (type: string) => {
   switch (type) {
     case 'deadline':
-      return <ExclamationTriangleIcon className="h-4 w-4" />;
-    case 'presentation':
-    case 'opening':
-      return <CalendarDaysIcon className="h-4 w-4" />;
-    case 'urgent':
-      return <ClockIcon className="h-4 w-4" />;
-    default:
-      return <CalendarDaysIcon className="h-4 w-4" />;
+      return <AlertTriangle className="h-4 w-4" />;
+          case 'presentation':
+      case 'opening':
+        return <CalendarDays className="h-4 w-4" />;
+      case 'urgent':
+        return <Clock className="h-4 w-4" />;
+      default:
+        return <CalendarDays className="h-4 w-4" />;
   }
 };
 
@@ -130,13 +130,13 @@ const MiniCalendar = () => {
             onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
             className="p-1 rounded hover:bg-gray-100"
           >
-            <ChevronLeftIcon className="h-4 w-4" />
+                            <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
             className="p-1 rounded hover:bg-gray-100"
           >
-            <ChevronRightIcon className="h-4 w-4" />
+                            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -183,14 +183,14 @@ export default function CalendarTimeline() {
       <div className="bg-white shadow rounded-lg">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900 flex items-center">
-            <CalendarDaysIcon className="h-5 w-5 mr-2 text-blue-600" />
+            <CalendarDays className="h-5 w-5 mr-2 text-blue-600" />
             일정 캘린더
           </h3>
         </div>
         <MiniCalendar />
         <div className="px-6 py-3 bg-gray-50">
           <button className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-            <PlusIcon className="h-4 w-4 mr-2" />
+                            <Plus className="h-4 w-4 mr-2" />
             일정 추가
           </button>
         </div>
@@ -202,7 +202,7 @@ export default function CalendarTimeline() {
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-medium text-gray-900 flex items-center">
-              <ClockIcon className="h-5 w-5 mr-2 text-green-600" />
+              <Clock className="h-5 w-5 mr-2 text-green-600" />
               오늘의 일정
             </h3>
           </div>
@@ -240,7 +240,7 @@ export default function CalendarTimeline() {
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-medium text-gray-900 flex items-center">
-              <CalendarDaysIcon className="h-5 w-5 mr-2 text-purple-600" />
+              <CalendarDays className="h-5 w-5 mr-2 text-purple-600" />
               다가오는 일정
             </h3>
           </div>

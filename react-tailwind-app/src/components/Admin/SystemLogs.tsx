@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  EyeIcon,
-  ExclamationTriangleIcon,
-  XCircleIcon
-} from '@heroicons/react/24/outline';
+  Eye,
+  AlertTriangle,
+  XCircle
+} from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { SystemLog } from '../../types/admin';
 import AdminLayout from './AdminLayout';
@@ -60,10 +60,10 @@ const SystemLogs: React.FC = () => {
 
   const getLevelBadge = (level: string) => {
     const levelConfig = {
-      info: { color: 'blue', text: '정보', icon: ExclamationTriangleIcon },
-      warning: { color: 'yellow', text: '경고', icon: ExclamationTriangleIcon },
-      error: { color: 'red', text: '오류', icon: XCircleIcon },
-      debug: { color: 'gray', text: '디버그', icon: ExclamationTriangleIcon }
+      info: { color: 'blue', text: '정보', icon: AlertTriangle },
+      warning: { color: 'yellow', text: '경고', icon: AlertTriangle },
+      error: { color: 'red', text: '오류', icon: XCircle },
+      debug: { color: 'gray', text: '디버그', icon: AlertTriangle }
     };
     const config = levelConfig[level as keyof typeof levelConfig] || levelConfig.info;
     const Icon = config.icon;
@@ -242,7 +242,7 @@ const SystemLogs: React.FC = () => {
                         onClick={() => openDetailModal(log)}
                         className="text-blue-600 hover:text-blue-900 p-1"
                       >
-                        <EyeIcon className="h-4 w-4" />
+                        <Eye className="h-4 w-4" />
                       </button>
                     </td>
                   </tr>
@@ -293,7 +293,7 @@ const SystemLogs: React.FC = () => {
                     onClick={() => setShowDetailModal(false)}
                     className="text-gray-400 hover:text-gray-600"
                   >
-                    <XCircleIcon className="h-6 w-6" />
+                    <XCircle className="h-6 w-6" />
                   </button>
                 </div>
                 
@@ -372,7 +372,7 @@ const SystemLogs: React.FC = () => {
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex">
-              <XCircleIcon className="h-5 w-5 text-red-400" />
+                              <XCircle className="h-5 w-5 text-red-400" />
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">오류 발생</h3>
                 <p className="text-sm text-red-700 mt-1">{error}</p>

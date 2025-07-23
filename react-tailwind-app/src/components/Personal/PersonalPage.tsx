@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { 
-  UserIcon, 
-  BellIcon, 
-  DocumentTextIcon, 
-  CogIcon, 
-  ShieldCheckIcon, 
-  ChartBarIcon,
-  ArrowDownTrayIcon,
-  ClockIcon
-} from '@heroicons/react/24/outline';
+  User, 
+  Bell, 
+  FileText, 
+  Settings, 
+  Shield, 
+  BarChart3,
+  Download,
+  Clock
+} from 'lucide-react';
 import { ProfileSection } from './ProfileSection';
 import { NotificationSettingsSection } from './NotificationSettingsSection';
 import { ReportSettingsSection } from './ReportSettingsSection';
@@ -21,14 +21,14 @@ import { PersonalSettingsSection } from './PersonalSettingsSection';
 type TabType = 'profile' | 'notifications' | 'reports' | 'dashboard' | 'activity' | 'security' | 'export' | 'settings';
 
 const tabs = [
-  { id: 'profile', name: '내 정보', icon: UserIcon },
-  { id: 'notifications', name: '알림 설정', icon: BellIcon },
-  { id: 'reports', name: '리포트 설정', icon: DocumentTextIcon },
-  { id: 'dashboard', name: '대시보드 설정', icon: ChartBarIcon },
-  { id: 'activity', name: '활동 내역', icon: ClockIcon },
-  { id: 'security', name: '보안 설정', icon: ShieldCheckIcon },
-  { id: 'export', name: '데이터 내보내기', icon: ArrowDownTrayIcon },
-  { id: 'settings', name: '환경설정', icon: CogIcon },
+  { id: 'profile', name: '내 정보', icon: User },
+  { id: 'notifications', name: '알림 설정', icon: Bell },
+  { id: 'reports', name: '리포트 설정', icon: FileText },
+  { id: 'dashboard', name: '대시보드 설정', icon: BarChart3 },
+  { id: 'activity', name: '활동 내역', icon: Clock },
+  { id: 'security', name: '보안 설정', icon: Shield },
+  { id: 'export', name: '데이터 내보내기', icon: Download },
+  { id: 'settings', name: '환경설정', icon: Settings },
 ];
 
 export const PersonalPage: React.FC = () => {

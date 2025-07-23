@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ClockIcon } from '@heroicons/react/24/outline';
+import { Clock } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { SecuritySettings } from '../../types/personal';
 import Button from '../Button';
@@ -185,7 +185,7 @@ export const SecuritySection: React.FC = () => {
 
           {settings.loginHistory.length === 0 && (
             <div className="text-center p-8">
-              <ClockIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-500">로그인 기록이 없습니다.</p>
             </div>
           )}

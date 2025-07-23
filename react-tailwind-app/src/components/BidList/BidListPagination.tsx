@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface BidListPaginationProps {
   currentPage: number;
@@ -102,7 +102,7 @@ export const BidListPagination: React.FC<BidListPaginationProps> = ({
           disabled={currentPage === 1}
           className="relative inline-flex items-center px-2 py-2 rounded-md text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <ChevronLeftIcon className="h-5 w-5" />
+                          <ChevronLeft className="h-5 w-5" />
         </button>
 
         {/* 페이지 번호들 */}
@@ -133,7 +133,7 @@ export const BidListPagination: React.FC<BidListPaginationProps> = ({
           disabled={currentPage === totalPages}
           className="relative inline-flex items-center px-2 py-2 rounded-md text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <ChevronRightIcon className="h-5 w-5" />
+                          <ChevronRight className="h-5 w-5" />
         </button>
       </div>
 

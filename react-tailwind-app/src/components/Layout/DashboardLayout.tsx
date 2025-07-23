@@ -8,27 +8,27 @@ import {
   Transition,
 } from '@headlessui/react';
 import {
-  Bars3Icon,
-  BellIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-  ClipboardDocumentListIcon,
-  BookOpenIcon,
-  BellAlertIcon,
-  ChartPieIcon as ChartPieIconSolid,
-  Cog6ToothIcon as Cog6ToothIconSolid,
-} from '@heroicons/react/24/outline';
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+  Menu,
+  Bell,
+  Home,
+  Users,
+  X,
+  ClipboardList,
+  BookOpen,
+  BellRing,
+  PieChart,
+  Settings,
+} from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 
 const navigation = [
-  { name: '대시보드', href: '/dashboard', icon: HomeIcon, current: true },
-  { name: '공고 리스트', href: '/bid-list', icon: ClipboardDocumentListIcon, current: false },
-  { name: '레퍼런스 관리', href: '/references', icon: BookOpenIcon, current: false },
-  { name: '알림/리포트', href: '/notifications', icon: BellAlertIcon, current: false },
-  { name: '통계/분석', href: '/statistics', icon: ChartPieIconSolid, current: false },
-  { name: '통합 관리', href: '/integration', icon: Cog6ToothIconSolid, current: false },
-  { name: '개인 설정', href: '/personal', icon: UsersIcon, current: false },
+  { name: '대시보드', href: '/dashboard', icon: Home, current: true },
+  { name: '공고 리스트', href: '/bid-list', icon: ClipboardList, current: false },
+  { name: '레퍼런스 관리', href: '/references', icon: BookOpen, current: false },
+  { name: '알림/리포트', href: '/notifications', icon: BellRing, current: false },
+  { name: '통계/분석', href: '/statistics', icon: PieChart, current: false },
+  { name: '통합 관리', href: '/integration', icon: Settings, current: false },
+  { name: '개인 설정', href: '/personal', icon: Users, current: false },
 ];
 
 const teams = [
@@ -149,7 +149,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 onClick={() => setSidebarOpen(false)}
               >
                 <span className="sr-only">Close sidebar</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
             <nav className="flex flex-1 flex-col">
@@ -219,7 +219,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             }}
           >
             <span className="sr-only">Open sidebar</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                            <Menu className="h-6 w-6" aria-hidden="true" />
           </button>
 
           {/* Separator */}
@@ -230,7 +230,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <label htmlFor="search-field" className="sr-only">
                 검색
               </label>
-              <MagnifyingGlassIcon
+                              <Search
                 className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
                 aria-hidden="true"
               />
@@ -245,7 +245,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="flex items-center gap-x-4 lg:gap-x-6">
               <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
                 <span className="sr-only">알림 보기</span>
-                <BellIcon className="h-6 w-6" aria-hidden="true" />
+                <Bell className="h-6 w-6" aria-hidden="true" />
               </button>
 
               {/* Separator */}
@@ -264,7 +264,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     <span className="ml-4 text-body2 font-semibold leading-6 text-gray-900" aria-hidden="true">
                       홍길동
                     </span>
-                    <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <ChevronDown className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                   </span>
                 </MenuButton>
                 <Transition
