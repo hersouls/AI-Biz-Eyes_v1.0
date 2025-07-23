@@ -149,7 +149,6 @@ const ReferenceManager: React.FC = () => {
               </div>
             </div>
             <ReferenceList
-              onAddNew={handleAddNew}
               onEdit={handleEdit}
               onDelete={handleDelete}
               onView={handleView}
