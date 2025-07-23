@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { EnvelopeIcon, DevicePhoneMobileIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { Mail, Smartphone, Globe } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { NotificationSettings } from '../../types/personal';
 import Button from '../Button';
@@ -194,7 +194,7 @@ export const NotificationSettingsSection: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <GlobeAltIcon className="w-5 h-5 text-gray-400" />
+                <Globe className="w-5 h-5 text-gray-400" />
                 <div>
                   <h4 className="font-medium text-gray-900">웹 알림</h4>
                   <p className="text-sm text-gray-600">브라우저 내 알림</p>
@@ -225,7 +225,7 @@ export const NotificationSettingsSection: React.FC = () => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <EnvelopeIcon className="w-5 h-5 text-gray-400" />
+                <Mail className="w-5 h-5 text-gray-400" />
                 <div>
                   <h4 className="font-medium text-gray-900">이메일 알림</h4>
                   <p className="text-sm text-gray-600">이메일로 알림 수신</p>
@@ -256,7 +256,7 @@ export const NotificationSettingsSection: React.FC = () => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <DevicePhoneMobileIcon className="w-5 h-5 text-gray-400" />
+                <Smartphone className="w-5 h-5 text-gray-400" />
                 <div>
                   <h4 className="font-medium text-gray-900">푸시 알림</h4>
                   <p className="text-sm text-gray-600">모바일 푸시 알림</p>

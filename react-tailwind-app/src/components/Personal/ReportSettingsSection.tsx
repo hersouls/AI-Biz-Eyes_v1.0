@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { EnvelopeIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { Mail, Globe } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { ReportSettings } from '../../types/personal';
 import Button from '../Button';
@@ -162,7 +162,7 @@ export const ReportSettingsSection: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <EnvelopeIcon className="w-5 h-5 text-gray-400" />
+                <Mail className="w-5 h-5 text-gray-400" />
                 <div>
                   <h4 className="font-medium text-gray-900">이메일 리포트</h4>
                   <p className="text-sm text-gray-600">이메일로 리포트 수신</p>
@@ -184,7 +184,7 @@ export const ReportSettingsSection: React.FC = () => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <GlobeAltIcon className="w-5 h-5 text-gray-400" />
+                <Globe className="w-5 h-5 text-gray-400" />
                 <div>
                   <h4 className="font-medium text-gray-900">웹 리포트</h4>
                   <p className="text-sm text-gray-600">웹에서 리포트 확인</p>

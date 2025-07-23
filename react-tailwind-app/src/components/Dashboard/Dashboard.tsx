@@ -4,11 +4,11 @@ import ChartsSection from './ChartsSection';
 import RecentActivity from './RecentActivity';
 import CalendarTimeline from './CalendarTimeline';
 import { 
-  Cog6ToothIcon, 
-  ArrowPathIcon,
-  DocumentArrowDownIcon,
-  AdjustmentsHorizontalIcon
-} from '@heroicons/react/24/outline';
+  Settings, 
+  RotateCcw,
+  FileDown,
+  SlidersHorizontal
+} from 'lucide-react';
 
 export default function Dashboard() {
   return (
@@ -28,21 +28,21 @@ export default function Dashboard() {
             type="button"
             className="inline-flex items-center rounded-5 bg-white px-4 py-2 text-body2 font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200"
           >
-            <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
+            <SlidersHorizontal className="h-5 w-5 mr-2" />
             대시보드 설정
           </button>
           <button
             type="button"
             className="inline-flex items-center rounded-5 bg-white px-4 py-2 text-body2 font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200"
           >
-            <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+            <FileDown className="h-5 w-5 mr-2" />
             리포트 다운로드
           </button>
           <button
             type="button"
             className="inline-flex items-center rounded-5 bg-secondary px-4 py-2 text-body2 font-medium text-white shadow-sm hover:bg-secondary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-colors duration-200"
           >
-            <ArrowPathIcon className="h-5 w-5 mr-2" />
+            <RotateCcw className="h-5 w-5 mr-2" />
             데이터 새로고침
           </button>
         </div>
@@ -107,7 +107,7 @@ export default function Dashboard() {
                 type="button"
                 className="inline-flex items-center rounded-5 bg-white/20 backdrop-blur-sm px-4 py-2 text-body2 font-medium text-white hover:bg-white/30 transition-colors duration-200"
               >
-                <Cog6ToothIcon className="h-5 w-5 mr-2" />
+                <Settings className="h-5 w-5 mr-2" />
                 설정
               </button>
             </div>

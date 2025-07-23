@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  ArrowDownTrayIcon, 
-  DocumentArrowDownIcon, 
-  CogIcon,
-  CalendarIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
+  Download, 
+  FileDown, 
+  Settings,
+  Calendar,
+  CheckCircle,
+  AlertTriangle
+} from 'lucide-react';
 
 interface ExportOption {
   id: string;
@@ -22,28 +22,28 @@ const exportOptions: ExportOption[] = [
     name: '업무 이력',
     description: '내가 처리한 공고, 알림, 레퍼런스 내역',
     format: 'excel',
-    icon: DocumentArrowDownIcon
+    icon: FileDown
   },
   {
     id: 'activity-log',
     name: '활동 로그',
     description: '최근 액션, 로그인 이력, 성과 요약',
     format: 'csv',
-    icon: CalendarIcon
+    icon: Calendar
   },
   {
     id: 'personal-settings',
     name: '개인화 설정',
     description: '알림 설정, 대시보드 구성, 환경설정',
     format: 'json',
-    icon: CogIcon
+    icon: Settings
   },
   {
     id: 'performance-report',
     name: '성과 리포트',
     description: '참여사업, 수주금액, KPI 통계',
     format: 'excel',
-    icon: CheckCircleIcon
+    icon: CheckCircle
   }
 ];
 
@@ -107,9 +107,9 @@ export const ExportSection: React.FC = () => {
 
   const getStatusIcon = (status: string) => {
     if (status === 'completed') {
-      return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
+      return <CheckCircle className="w-5 h-5 text-green-500" />;
     }
-    return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />;
+    return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
   };
 
   return (
@@ -209,7 +209,7 @@ export const ExportSection: React.FC = () => {
               : 'bg-blue-600 text-white hover:bg-blue-700'
           }`}
         >
-          <ArrowDownTrayIcon className="w-5 h-5 mr-2" />
+                          <Download className="w-5 h-5 mr-2" />
           {isExporting ? '내보내는 중...' : '선택한 항목 내보내기'}
         </button>
       </div>

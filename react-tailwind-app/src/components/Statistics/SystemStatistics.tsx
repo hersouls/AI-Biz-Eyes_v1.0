@@ -15,13 +15,13 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { 
-  UsersIcon, 
-  DocumentTextIcon,
-  BellIcon,
-  ServerIcon,
-  ClockIcon,
-  CheckCircleIcon
-} from '@heroicons/react/24/outline';
+  Users, 
+  FileText,
+  Bell,
+  Server,
+  Clock,
+  CheckCircle
+} from 'lucide-react';
 
 interface SystemStatisticsProps {
   period: string;
@@ -179,7 +179,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
               <p className="text-2xl font-bold text-gray-900">{formatNumber(stats.users.total)}</p>
               <p className="text-sm text-gray-500">활성: {formatNumber(stats.users.active)}</p>
             </div>
-            <UsersIcon className="h-8 w-8 text-blue-600" />
+                            <Users className="h-8 w-8 text-blue-600" />
           </div>
         </Card>
 
@@ -190,7 +190,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
               <p className="text-2xl font-bold text-gray-900">{formatNumber(stats.bids.total)}</p>
               <p className="text-sm text-gray-500">오늘 신규: {formatNumber(stats.bids.newToday)}</p>
             </div>
-            <DocumentTextIcon className="h-8 w-8 text-green-600" />
+                            <FileText className="h-8 w-8 text-green-600" />
           </div>
         </Card>
 
@@ -201,7 +201,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
               <p className="text-2xl font-bold text-gray-900">{formatNumber(stats.notifications.total)}</p>
               <p className="text-sm text-gray-500">미읽: {formatNumber(stats.notifications.unread)}</p>
             </div>
-            <BellIcon className="h-8 w-8 text-orange-600" />
+                            <Bell className="h-8 w-8 text-orange-600" />
           </div>
         </Card>
 
@@ -214,7 +214,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
               </p>
               <p className="text-sm text-gray-500">업타임: {stats.system.uptime}</p>
             </div>
-            <ServerIcon className="h-8 w-8 text-purple-600" />
+                            <Server className="h-8 w-8 text-purple-600" />
           </div>
         </Card>
       </div>
@@ -319,7 +319,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                <CheckCircle className="h-5 w-5 text-green-600" />
                 <span className="text-sm font-medium text-gray-700">시스템 업타임</span>
               </div>
               <span className="text-sm font-semibold text-gray-900">{stats.system.uptime}</span>
@@ -327,7 +327,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <ServerIcon className="h-5 w-5 text-blue-600" />
+                <Server className="h-5 w-5 text-blue-600" />
                 <span className="text-sm font-medium text-gray-700">디스크 사용량</span>
               </div>
               <span className={`text-sm font-semibold ${

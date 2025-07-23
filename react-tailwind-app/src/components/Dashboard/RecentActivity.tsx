@@ -1,15 +1,15 @@
 import React from 'react';
 import { 
-  CalendarDaysIcon, 
-  ClockIcon, 
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  EyeIcon,
-  ArrowTopRightOnSquareIcon,
-  BellIcon,
-  DocumentTextIcon,
-  UserGroupIcon
-} from '@heroicons/react/24/outline';
+  CalendarDays, 
+  Clock, 
+  AlertTriangle,
+  CheckCircle,
+  Eye,
+  ExternalLink,
+  Bell,
+  FileText,
+  Users
+} from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -150,7 +150,7 @@ export default function RecentActivity() {
       <div className="bg-white shadow rounded-lg">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900 flex items-center">
-            <DocumentTextIcon className="h-5 w-5 mr-2 text-blue-600" />
+                            <FileText className="h-5 w-5 mr-2 text-blue-600" />
             최근 공고
           </h3>
         </div>
@@ -168,7 +168,7 @@ export default function RecentActivity() {
                   </p>
                   <p className="text-sm text-gray-500 mt-1">{bid.ntceInsttNm}</p>
                   <div className="flex items-center mt-2 text-xs text-gray-500">
-                    <CalendarDaysIcon className="h-4 w-4 mr-1" />
+                    <CalendarDays className="h-4 w-4 mr-1" />
                     마감: {bid.bidClseDate}
                   </div>
                   <p className="text-sm font-semibold text-green-600 mt-1">
@@ -177,10 +177,10 @@ export default function RecentActivity() {
                 </div>
                 <div className="flex flex-col space-y-1">
                   <button className="p-1 text-gray-400 hover:text-gray-600">
-                    <EyeIcon className="h-4 w-4" />
+                    <Eye className="h-4 w-4" />
                   </button>
                   <button className="p-1 text-gray-400 hover:text-gray-600">
-                    <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                                          <ExternalLink className="h-4 w-4" />
                   </button>
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function RecentActivity() {
       <div className="bg-white shadow rounded-lg">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900 flex items-center">
-            <BellIcon className="h-5 w-5 mr-2 text-yellow-600" />
+                            <Bell className="h-5 w-5 mr-2 text-yellow-600" />
             알림 센터
           </h3>
         </div>
@@ -208,13 +208,13 @@ export default function RecentActivity() {
               <div className="flex items-start">
                 <div className="flex-shrink-0">
                   {notification.type === 'urgent' && (
-                    <ExclamationTriangleIcon className="h-5 w-5 text-red-500" />
+                    <AlertTriangle className="h-5 w-5 text-red-500" />
                   )}
                   {notification.type === 'success' && (
-                    <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                                          <CheckCircle className="h-5 w-5 text-green-500" />
                   )}
                   {notification.type === 'deadline' && (
-                    <ClockIcon className="h-5 w-5 text-yellow-500" />
+                                          <Clock className="h-5 w-5 text-yellow-500" />
                   )}
                 </div>
                 <div className="ml-3 flex-1">
@@ -246,7 +246,7 @@ export default function RecentActivity() {
       <div className="bg-white shadow rounded-lg">
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900 flex items-center">
-            <UserGroupIcon className="h-5 w-5 mr-2 text-purple-600" />
+                            <Users className="h-5 w-5 mr-2 text-purple-600" />
             AI 추천 공고
           </h3>
         </div>

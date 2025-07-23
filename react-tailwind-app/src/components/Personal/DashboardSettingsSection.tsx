@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChartBarIcon, EyeIcon, EyeSlashIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
+import { BarChart3, Eye, EyeOff, ArrowUpDown } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { DashboardSettings } from '../../types/personal';
 import Button from '../Button';
@@ -125,7 +125,7 @@ export const DashboardSettingsSection: React.FC = () => {
           {settings.widgets.map((widget, index) => (
             <div key={widget.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <ChartBarIcon className="w-5 h-5 text-gray-400" />
+                <BarChart3 className="w-5 h-5 text-gray-400" />
                 <div>
                   <h4 className="font-medium text-gray-900">{widgetLabels[widget.type]}</h4>
                   <p className="text-sm text-gray-600">순서: {widget.order}</p>
@@ -138,14 +138,14 @@ export const DashboardSettingsSection: React.FC = () => {
                   disabled={index === 0}
                   className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50"
                 >
-                  <ArrowsUpDownIcon className="w-4 h-4 rotate-90" />
+                  <ArrowUpDown className="w-4 h-4 rotate-90" />
                 </button>
                 <button
                   onClick={() => moveWidget(widget.id, 'down')}
                   disabled={index === settings.widgets.length - 1}
                   className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50"
                 >
-                  <ArrowsUpDownIcon className="w-4 h-4 -rotate-90" />
+                  <ArrowUpDown className="w-4 h-4 -rotate-90" />
                 </button>
                 <button
                   onClick={() => handleToggleWidget(widget.id)}
@@ -160,9 +160,9 @@ export const DashboardSettingsSection: React.FC = () => {
                   />
                 </button>
                 {widget.isVisible ? (
-                  <EyeIcon className="w-4 h-4 text-green-600" />
+                                      <Eye className="w-4 h-4 text-green-600" />
                 ) : (
-                  <EyeSlashIcon className="w-4 h-4 text-gray-400" />
+                                      <EyeOff className="w-4 h-4 text-gray-400" />
                 )}
               </div>
             </div>

@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  UsersIcon, 
-  DocumentTextIcon, 
-  ExclamationTriangleIcon, 
-  ChartBarIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ArrowUpIcon,
-  ArrowDownIcon
-} from '@heroicons/react/24/outline';
+  Users, 
+  FileText, 
+  AlertTriangle, 
+  BarChart3,
+  Clock,
+  CheckCircle,
+  XCircle,
+  TrendingUp,
+  TrendingDown
+} from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { SystemStatistics } from '../../types/admin';
 import AdminLayout from './AdminLayout';
@@ -61,8 +61,8 @@ const AdminDashboard: React.FC = () => {
     };
 
     const changeIcons = {
-      positive: <ArrowUpIcon className="h-4 w-4 text-green-500" />,
-      negative: <ArrowDownIcon className="h-4 w-4 text-red-500" />,
+      positive: <TrendingUp className="h-4 w-4 text-green-500" />,
+      negative: <TrendingDown className="h-4 w-4 text-red-500" />,
       neutral: null
     };
 
@@ -143,7 +143,7 @@ const AdminDashboard: React.FC = () => {
       <AdminLayout>
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex">
-            <XCircleIcon className="h-5 w-5 text-red-400" />
+                            <XCircle className="h-5 w-5 text-red-400" />
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">오류 발생</h3>
               <p className="text-sm text-red-700 mt-1">{error}</p>
@@ -189,7 +189,7 @@ const AdminDashboard: React.FC = () => {
             <StatCard
               title="전체 사용자"
               value={statistics.users.total}
-              icon={UsersIcon}
+              icon={Users}
               change={`+${statistics.users.newThisMonth}명`}
               changeType="positive"
               color="blue"
@@ -197,13 +197,13 @@ const AdminDashboard: React.FC = () => {
             <StatCard
               title="활성 사용자"
               value={statistics.users.active}
-              icon={CheckCircleIcon}
+              icon={CheckCircle}
               color="green"
             />
             <StatCard
               title="전체 공고"
               value={statistics.bids.total.toLocaleString()}
-              icon={DocumentTextIcon}
+              icon={FileText}
               change={`+${statistics.bids.newToday}건`}
               changeType="positive"
               color="yellow"
@@ -211,31 +211,31 @@ const AdminDashboard: React.FC = () => {
             <StatCard
               title="동기화 성공률"
               value={`${statistics.bids.syncSuccess}%`}
-              icon={ChartBarIcon}
+              icon={BarChart3}
               color="green"
             />
             <StatCard
               title="전체 알림"
               value={statistics.notifications.total}
-              icon={ExclamationTriangleIcon}
+              icon={AlertTriangle}
               color="red"
             />
             <StatCard
               title="읽지 않은 알림"
               value={statistics.notifications.unread}
-              icon={ClockIcon}
+              icon={Clock}
               color="yellow"
             />
             <StatCard
               title="긴급 알림"
               value={statistics.notifications.urgent}
-              icon={ExclamationTriangleIcon}
+              icon={AlertTriangle}
               color="red"
             />
             <StatCard
               title="시스템 가동률"
               value={statistics.system.uptime}
-              icon={CheckCircleIcon}
+              icon={CheckCircle}
               color="green"
             />
           </div>
@@ -292,28 +292,28 @@ const AdminDashboard: React.FC = () => {
               <QuickActionCard
                 title="새 사용자 등록"
                 description="새로운 사용자 계정을 생성합니다"
-                icon={UsersIcon}
+                icon={Users}
                 onClick={() => window.location.href = '/admin/users'}
                 color="blue"
               />
               <QuickActionCard
                 title="시스템 로그 확인"
                 description="시스템 로그를 확인합니다"
-                icon={DocumentTextIcon}
+                icon={FileText}
                 onClick={() => window.location.href = '/admin/logs'}
                 color="yellow"
               />
               <QuickActionCard
                 title="백업 생성"
                 description="시스템 데이터를 백업합니다"
-                icon={ChartBarIcon}
+                icon={BarChart3}
                 onClick={() => window.location.href = '/admin/backups'}
                 color="green"
               />
               <QuickActionCard
                 title="알림 설정"
                 description="알림 설정을 관리합니다"
-                icon={ExclamationTriangleIcon}
+                icon={AlertTriangle}
                 onClick={() => window.location.href = '/admin/notifications'}
                 color="red"
               />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { X } from 'lucide-react';
 
 interface BidListFilterProps {
   filters: {
@@ -129,7 +129,7 @@ export const BidListFilter: React.FC<BidListFilterProps> = ({
             onClick={clearFilters}
             className="flex items-center text-sm text-gray-500 hover:text-gray-700"
           >
-            <XMarkIcon className="h-4 w-4 mr-1" />
+                            <X className="h-4 w-4 mr-1" />
             필터 초기화
           </button>
         )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DocumentTextIcon, FunnelIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { FileText, Filter, CheckCircle } from 'lucide-react';
 
 interface BidListStatsProps {
   totalCount: number;
@@ -19,7 +19,7 @@ export const BidListStats: React.FC<BidListStatsProps> = ({
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <DocumentTextIcon className="h-8 w-8 text-blue-600" />
+              <FileText className="h-8 w-8 text-blue-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">전체 공고</p>
@@ -34,7 +34,7 @@ export const BidListStats: React.FC<BidListStatsProps> = ({
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <FunnelIcon className="h-8 w-8 text-green-600" />
+              <Filter className="h-8 w-8 text-green-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">필터 결과</p>
@@ -54,7 +54,7 @@ export const BidListStats: React.FC<BidListStatsProps> = ({
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <CheckCircleIcon className="h-8 w-8 text-purple-600" />
+              <CheckCircle className="h-8 w-8 text-purple-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">선택됨</p>
