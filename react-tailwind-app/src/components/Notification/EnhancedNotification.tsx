@@ -10,11 +10,7 @@ import {
   Settings,
   Trash2,
   Archive,
-  Star,
-  Clock,
-  Mail,
-  MessageSquare,
-  FileText
+  Clock
 } from 'lucide-react';
 import { AdvancedCard, AdvancedButton, AdvancedInput, AdvancedBadge, AdvancedModal } from '../ui';
 
@@ -99,13 +95,7 @@ const typeConfig = {
   }
 };
 
-const categoryColors: Record<string, string> = {
-  '선정': 'bg-green-100 text-green-800',
-  '마감임박': 'bg-red-100 text-red-800',
-  '접수완료': 'bg-blue-100 text-blue-800',
-  '심사통과': 'bg-yellow-100 text-yellow-800',
-  '보완요청': 'bg-orange-100 text-orange-800'
-};
+
 
 export default function EnhancedNotification() {
   const [notifications, setNotifications] = useState(mockNotifications);

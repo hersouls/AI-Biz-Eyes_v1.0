@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { 
   Heart, 
-  Star, 
   Settings, 
   Download, 
   Plus,
-  Search,
-  Filter,
-  Eye,
-  Edit,
-  Trash2,
-  CheckCircle,
-  AlertCircle,
-  Info,
-  XCircle
+  Search
 } from 'lucide-react';
 import { 
   AdvancedCard, 
