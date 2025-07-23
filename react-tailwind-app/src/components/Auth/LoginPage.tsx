@@ -3,9 +3,8 @@
  * 현재는 블록처리된 상태입니다.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, User, Lock } from 'lucide-react';
 
 // ===== 블록처리된 로그인 페이지 =====
 // TODO: 나중에 구현할 예정
