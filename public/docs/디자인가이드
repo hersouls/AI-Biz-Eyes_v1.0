@@ -5,14 +5,81 @@
 
 ## 📌 Foundation
 
-### 🎨 Color  
-(*Tailwind Custom Color 적용/확장*)
+### 🎨 Color System
+(*CSS Custom Properties + Tailwind 확장 적용*)
 
-- **Primary**: #031B4B (tailwind: `bg-[#031B4B]`, `text-[#031B4B]`)
-- **Secondary**: #119891 (`bg-[#119891]`)
-- **Grayscale/Border/BG**: 기존값 Tailwind 확장(`bg-[#edeff5]` 등)
-- **State**: Red(#EC193A), Violet(#6d8be1)  
-  → Tailwind config 확장/alias 활용
+#### **컬러 시스템 맵핑**
+
+| 용도 | 설명 | HEX 코드 | CSS 변수명 |
+|------|------|----------|------------|
+| Primary Main | 브랜드 중심 강조 | #005BAC | --primary |
+| Primary Dark | 정보 밀도 높은 배경 | #1B2233 | --navy |
+| Primary Light | 전환 유도용 강조 배경 | #0073CE | --sky |
+| Text Main | 기본 텍스트/배경 | #FFFFFF | --white |
+| Text Sub | 보조 텍스트/라인 | #D0D4DA | --gray |
+| Button Black | 보조 CTA 버튼 배경 | #000000 | --black |
+| Badge Red | 주의/제휴/경고용 태그 | #ED1C24 | --red |
+| Badge Purple | 관리자/개발자 UI 태그 | #4A3AFF | --purple |
+
+#### **CSS Custom Properties 정의**
+```css
+:root {
+  /* 🎯 브랜드 중심 강조 (Primary) */
+  --primary: #005BAC;
+
+  /* 🧭 정보 밀도 높은 배경 (Dark Background) */
+  --navy: #1B2233;
+
+  /* 🌤 긍정·전환 유도 배경 (Light Accent) */
+  --sky: #0073CE;
+
+  /* 📰 문서성, 보조 정보 전달용 (Sub Text / Border) */
+  --gray: #D0D4DA;
+
+  /* 📢 주의/긴급/제휴 강조 태그 (Alert / Badge) */
+  --red: #ED1C24;
+
+  /* 🧪 관리자/개발자 전용 UI 태그 */
+  --purple: #4A3AFF;
+
+  /* ⬛ 진중한 선택 유도 버튼 (Secondary CTA) */
+  --black: #000000;
+
+  /* 🧾 가독성 중심 텍스트 및 배경 */
+  --white: #FFFFFF;
+}
+```
+
+#### **Tailwind CSS 확장 설정**
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: 'var(--primary)',
+        navy: 'var(--navy)',
+        sky: 'var(--sky)',
+        gray: 'var(--gray)',
+        red: 'var(--red)',
+        purple: 'var(--purple)',
+        black: 'var(--black)',
+        white: 'var(--white)',
+      }
+    }
+  }
+}
+```
+
+#### **컬러 사용 가이드**
+- **Primary (#005BAC)**: 메인 버튼, 브랜드 로고, 주요 액션
+- **Navy (#1B2233)**: 네비게이션, 사이드바, 다크 모드 배경
+- **Sky (#0073CE)**: 호버 상태, 링크, 정보성 강조
+- **Gray (#D0D4DA)**: 보조 텍스트, 테두리, 비활성 상태
+- **Red (#ED1C24)**: 에러, 경고, 삭제 액션
+- **Purple (#4A3AFF)**: 관리자 기능, 개발자 도구
+- **Black (#000000)**: 보조 버튼, 모달 오버레이
+- **White (#FFFFFF)**: 기본 텍스트, 카드 배경
 
 ---
 
@@ -69,3 +136,4 @@
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { Bell, User } from "lucide-react";
 import { ReloadIcon } from "@radix-ui/react-icons";
+```

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'gray';
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'gray' | 'admin';
   size?: 'sm' | 'md' | 'lg';
   rounded?: boolean;
   className?: string;
@@ -23,13 +23,29 @@ const Badge: React.FC<BadgeProps> = ({
   onRemove
 }) => {
   const variantClasses = {
-    primary: 'bg-primary-100 text-primary-800 border-primary-200',
-    secondary: 'bg-secondary-100 text-secondary-800 border-secondary-200',
+    // 🎯 브랜드 중심 강조 (Primary)
+    primary: 'bg-primary text-white border-primary',
+    
+    // 🌤 전환 유도용 강조 (Secondary)
+    secondary: 'bg-sky text-white border-sky',
+    
+    // ✅ 성공 상태
     success: 'bg-green-100 text-green-800 border-green-200',
+    
+    // ⚠️ 경고 상태
     warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    danger: 'bg-red-100 text-red-800 border-red-200',
+    
+    // 📢 주의/경고 (Danger)
+    danger: 'bg-red text-white border-red',
+    
+    // ℹ️ 정보 상태
     info: 'bg-blue-100 text-blue-800 border-blue-200',
-    gray: 'bg-gray-100 text-gray-800 border-gray-200'
+    
+    // 📰 보조 정보 (Gray)
+    gray: 'bg-gray text-navy border-gray',
+    
+    // 🧪 관리자/개발자 전용 (Admin)
+    admin: 'bg-purple text-white border-purple',
   };
 
   const sizeClasses = {
