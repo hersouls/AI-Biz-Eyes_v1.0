@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
           <p><strong>기업 상담전화</strong> &nbsp; 1588-0114 (유료)</p>
           <p className="mt-1">(주)케이티 &nbsp; 대표이사 김영섭 &nbsp; 경기도 성남시 분당구 불정로 90 (정자동)</p>
           <p className="mt-1">사업자등록번호: 102-81-42945 &nbsp; | &nbsp; 통신판매업신고: 2002-경기성남-0048 &nbsp;
-            <a href="#" className="underline hover:text-white">사업자정보확인</a>
+            <button type="button" className="underline hover:text-white bg-transparent border-none p-0 cursor-pointer">사업자정보확인</button>
           </p>
           <p className="mt-2 text-gray-500">&copy; 2024 KT corp. All rights reserved.</p>
         </div>
