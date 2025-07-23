@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { BidStatistics, SystemStatistics, ApiResponse } from '../types';
-import { mockBidStatistics, mockSystemStatistics } from '../data/mockData';
+import { mockBidStatistics, mockSystemStatistics, initialMockReferences } from '../data/mockData';
 
 export class StatisticsController {
   // 공고 통계 조회
@@ -33,30 +33,70 @@ export class StatisticsController {
     try {
       const { period, startDate, endDate } = req.query;
       
-      // Mock 레퍼런스 통계 데이터
+      // 실제 Mock 데이터에서 통계 계산
+      const totalReferences = initialMockReferences.length;
+      const successCount = initialMockReferences.filter(ref => ref.status === 'success').length;
+      const failureCount = initialMockReferences.filter(ref => ref.status === 'failure').length;
+      const ongoingCount = initialMockReferences.filter(ref => ref.status === 'ongoing').length;
+      const successRate = totalReferences > 0 ? (successCount / totalReferences) * 100 : 0;
+
+      // 사업유형별 통계 계산
+      const typeStats = [
+        { projectType: '공사', count: initialMockReferences.filter(ref => ref.projectType === '공사').length, success: initialMockReferences.filter(ref => ref.projectType === '공사' && ref.status === 'success').length, totalAmount: initialMockReferences.filter(ref => ref.projectType === '공사').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+        { projectType: '용역', count: initialMockReferences.filter(ref => ref.projectType === '용역').length, success: initialMockReferences.filter(ref => ref.projectType === '용역' && ref.status === 'success').length, totalAmount: initialMockReferences.filter(ref => ref.projectType === '용역').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+        { projectType: '물품', count: initialMockReferences.filter(ref => ref.projectType === '물품').length, success: initialMockReferences.filter(ref => ref.projectType === '물품' && ref.status === 'success').length, totalAmount: initialMockReferences.filter(ref => ref.projectType === '물품').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+        { projectType: 'IT', count: initialMockReferences.filter(ref => ref.projectType === 'IT').length, success: initialMockReferences.filter(ref => ref.projectType === 'IT' && ref.status === 'success').length, totalAmount: initialMockReferences.filter(ref => ref.projectType === 'IT').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+        { projectType: 'CT', count: initialMockReferences.filter(ref => ref.projectType === 'CT').length, success: initialMockReferences.filter(ref => ref.projectType === 'CT' && ref.status === 'success').length, totalAmount: initialMockReferences.filter(ref => ref.projectType === 'CT').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+        { projectType: 'AI', count: initialMockReferences.filter(ref => ref.projectType === 'AI').length, success: initialMockReferences.filter(ref => ref.projectType === 'AI' && ref.status === 'success').length, totalAmount: initialMockReferences.filter(ref => ref.projectType === 'AI').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) }
+      ];
+
+      // 연도별 통계 계산
+      const yearlyStats: Array<{
+        participationYear: number;
+        count: number;
+        success: number;
+        totalAmount: number;
+      }> = [];
+      const years = [...new Set(initialMockReferences.map(ref => ref.participationYear))].filter((year): year is number => year !== undefined).sort((a, b) => b - a);
+      years.forEach(year => {
+        const yearRefs = initialMockReferences.filter(ref => ref.participationYear === year);
+        yearlyStats.push({
+          participationYear: year,
+          count: yearRefs.length,
+          success: yearRefs.filter(ref => ref.status === 'success').length,
+          totalAmount: yearRefs.reduce((sum, ref) => sum + (ref.contractAmount || 0), 0)
+        });
+      });
+
+      // 기관별 통계 계산
+      const organizationStats: Array<{
+        organization: string;
+        count: number;
+        success: number;
+        totalAmount: number;
+      }> = [];
+      const organizations = [...new Set(initialMockReferences.map(ref => ref.organization))].filter((org): org is string => org !== undefined);
+      organizations.forEach(org => {
+        const orgRefs = initialMockReferences.filter(ref => ref.organization === org);
+        organizationStats.push({
+          organization: org,
+          count: orgRefs.length,
+          success: orgRefs.filter(ref => ref.status === 'success').length,
+          totalAmount: orgRefs.reduce((sum, ref) => sum + (ref.contractAmount || 0), 0)
+        });
+      });
+
       const statistics = {
-        totalReferences: 150,
-        successRate: 75.5,
+        totalReferences,
+        successRate: Math.round(successRate * 10) / 10,
         successStats: {
-          success: 113,
-          failure: 25,
-          ongoing: 12
+          success: successCount,
+          failure: failureCount,
+          ongoing: ongoingCount
         },
-        yearlyStats: [
-          { participationYear: 2024, count: 45, success: 35, totalAmount: 15000000000 },
-          { participationYear: 2023, count: 38, success: 28, totalAmount: 12000000000 },
-          { participationYear: 2022, count: 32, success: 24, totalAmount: 10000000000 }
-        ],
-        typeStats: [
-          { projectType: '공사', count: 60, success: 45, totalAmount: 20000000000 },
-          { projectType: '용역', count: 70, success: 53, totalAmount: 15000000000 },
-          { projectType: '물품', count: 20, success: 15, totalAmount: 2000000000 }
-        ],
-        organizationStats: [
-          { organization: '조달청', count: 40, success: 30, totalAmount: 12000000000 },
-          { organization: '한국산업기술진흥원', count: 35, success: 26, totalAmount: 10000000000 },
-          { organization: '중소기업진흥공단', count: 30, success: 22, totalAmount: 8000000000 }
-        ]
+        yearlyStats,
+        typeStats,
+        organizationStats
       };
 
       const response: ApiResponse<any> = {

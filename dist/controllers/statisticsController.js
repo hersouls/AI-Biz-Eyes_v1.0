@@ -26,29 +26,52 @@ class StatisticsController {
     static async getReferenceStatistics(req, res) {
         try {
             const { period, startDate, endDate } = req.query;
+            const totalReferences = mockData_1.initialMockReferences.length;
+            const successCount = mockData_1.initialMockReferences.filter(ref => ref.status === 'success').length;
+            const failureCount = mockData_1.initialMockReferences.filter(ref => ref.status === 'failure').length;
+            const ongoingCount = mockData_1.initialMockReferences.filter(ref => ref.status === 'ongoing').length;
+            const successRate = totalReferences > 0 ? (successCount / totalReferences) * 100 : 0;
+            const typeStats = [
+                { projectType: '공사', count: mockData_1.initialMockReferences.filter(ref => ref.projectType === '공사').length, success: mockData_1.initialMockReferences.filter(ref => ref.projectType === '공사' && ref.status === 'success').length, totalAmount: mockData_1.initialMockReferences.filter(ref => ref.projectType === '공사').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+                { projectType: '용역', count: mockData_1.initialMockReferences.filter(ref => ref.projectType === '용역').length, success: mockData_1.initialMockReferences.filter(ref => ref.projectType === '용역' && ref.status === 'success').length, totalAmount: mockData_1.initialMockReferences.filter(ref => ref.projectType === '용역').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+                { projectType: '물품', count: mockData_1.initialMockReferences.filter(ref => ref.projectType === '물품').length, success: mockData_1.initialMockReferences.filter(ref => ref.projectType === '물품' && ref.status === 'success').length, totalAmount: mockData_1.initialMockReferences.filter(ref => ref.projectType === '물품').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+                { projectType: 'IT', count: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'IT').length, success: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'IT' && ref.status === 'success').length, totalAmount: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'IT').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+                { projectType: 'CT', count: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'CT').length, success: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'CT' && ref.status === 'success').length, totalAmount: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'CT').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) },
+                { projectType: 'AI', count: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'AI').length, success: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'AI' && ref.status === 'success').length, totalAmount: mockData_1.initialMockReferences.filter(ref => ref.projectType === 'AI').reduce((sum, ref) => sum + (ref.contractAmount || 0), 0) }
+            ];
+            const yearlyStats = [];
+            const years = [...new Set(mockData_1.initialMockReferences.map(ref => ref.participationYear))].filter((year) => year !== undefined).sort((a, b) => b - a);
+            years.forEach(year => {
+                const yearRefs = mockData_1.initialMockReferences.filter(ref => ref.participationYear === year);
+                yearlyStats.push({
+                    participationYear: year,
+                    count: yearRefs.length,
+                    success: yearRefs.filter(ref => ref.status === 'success').length,
+                    totalAmount: yearRefs.reduce((sum, ref) => sum + (ref.contractAmount || 0), 0)
+                });
+            });
+            const organizationStats = [];
+            const organizations = [...new Set(mockData_1.initialMockReferences.map(ref => ref.organization))].filter((org) => org !== undefined);
+            organizations.forEach(org => {
+                const orgRefs = mockData_1.initialMockReferences.filter(ref => ref.organization === org);
+                organizationStats.push({
+                    organization: org,
+                    count: orgRefs.length,
+                    success: orgRefs.filter(ref => ref.status === 'success').length,
+                    totalAmount: orgRefs.reduce((sum, ref) => sum + (ref.contractAmount || 0), 0)
+                });
+            });
             const statistics = {
-                totalReferences: 150,
-                successRate: 75.5,
+                totalReferences,
+                successRate: Math.round(successRate * 10) / 10,
                 successStats: {
-                    success: 113,
-                    failure: 25,
-                    ongoing: 12
+                    success: successCount,
+                    failure: failureCount,
+                    ongoing: ongoingCount
                 },
-                yearlyStats: [
-                    { participationYear: 2024, count: 45, success: 35, totalAmount: 15000000000 },
-                    { participationYear: 2023, count: 38, success: 28, totalAmount: 12000000000 },
-                    { participationYear: 2022, count: 32, success: 24, totalAmount: 10000000000 }
-                ],
-                typeStats: [
-                    { projectType: '공사', count: 60, success: 45, totalAmount: 20000000000 },
-                    { projectType: '용역', count: 70, success: 53, totalAmount: 15000000000 },
-                    { projectType: '물품', count: 20, success: 15, totalAmount: 2000000000 }
-                ],
-                organizationStats: [
-                    { organization: '조달청', count: 40, success: 30, totalAmount: 12000000000 },
-                    { organization: '한국산업기술진흥원', count: 35, success: 26, totalAmount: 10000000000 },
-                    { organization: '중소기업진흥공단', count: 30, success: 22, totalAmount: 8000000000 }
-                ]
+                yearlyStats,
+                typeStats,
+                organizationStats
             };
             const response = {
                 success: true,

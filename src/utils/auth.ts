@@ -11,16 +11,16 @@ interface JWTPayload {
 }
 
 export const generateToken = (payload: JWTPayload): string => {
-  return jwt.sign(payload, JWT_SECRET as jwt.Secret, { expiresIn: JWT_EXPIRES_IN });
+  return (jwt.sign as any)(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
 
 export const generateRefreshToken = (payload: JWTPayload): string => {
-  return jwt.sign(payload, JWT_SECRET as jwt.Secret, { expiresIn: '30d' });
+  return (jwt.sign as any)(payload, JWT_SECRET, { expiresIn: '30d' });
 };
 
 export const verifyToken = (token: string): JWTPayload => {
   try {
-    return jwt.verify(token, JWT_SECRET as jwt.Secret) as JWTPayload;
+    return (jwt.verify as any)(token, JWT_SECRET) as JWTPayload;
   } catch (error) {
     throw new Error('Invalid token');
   }
