@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { 
   User, 
   Bell, 
@@ -33,6 +34,15 @@ const tabs = [
 
 export const PersonalPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
+  const [searchParams] = useSearchParams();
+
+  // URL 쿼리 파라미터에서 탭 정보를 가져와서 설정
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['profile', 'notifications', 'reports', 'dashboard', 'activity', 'security', 'export', 'settings'].includes(tabParam)) {
+      setActiveTab(tabParam as TabType);
+    }
+  }, [searchParams]);
 
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);
