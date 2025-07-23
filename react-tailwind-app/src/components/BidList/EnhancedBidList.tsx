@@ -87,7 +87,7 @@ const mockBids = [
   }
 ];
 
-const statusColors = {
+const statusColors: Record<string, string> = {
   '접수중': 'bg-green-100 text-green-800',
   '마감임박': 'bg-red-100 text-red-800',
   '마감': 'bg-gray-100 text-gray-800',
@@ -95,7 +95,7 @@ const statusColors = {
   '선정': 'bg-blue-100 text-blue-800'
 };
 
-const priorityColors = {
+const priorityColors: Record<string, string> = {
   'high': 'bg-red-100 text-red-800',
   'medium': 'bg-yellow-100 text-yellow-800',
   'low': 'bg-green-100 text-green-800'
@@ -223,17 +223,23 @@ export default function EnhancedBidList() {
             variant="ghost"
             icon={<Eye className="w-4 h-4" />}
             onClick={() => handleBidClick(row)}
-          />
+          >
+            보기
+          </AdvancedButton>
           <AdvancedButton
             size="sm"
             variant="ghost"
             icon={<Edit className="w-4 h-4" />}
-          />
+          >
+            수정
+          </AdvancedButton>
           <AdvancedButton
             size="sm"
             variant="ghost"
             icon={<Trash2 className="w-4 h-4" />}
-          />
+          >
+            삭제
+          </AdvancedButton>
         </div>
       )
     }

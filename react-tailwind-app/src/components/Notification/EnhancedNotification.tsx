@@ -99,7 +99,7 @@ const typeConfig = {
   }
 };
 
-const categoryColors = {
+const categoryColors: Record<string, string> = {
   '선정': 'bg-green-100 text-green-800',
   '마감임박': 'bg-red-100 text-red-800',
   '접수완료': 'bg-blue-100 text-blue-800',
@@ -214,7 +214,9 @@ export default function EnhancedNotification() {
                     e.stopPropagation();
                     deleteNotification(notification.id);
                   }}
-                />
+                >
+                  삭제
+                </AdvancedButton>
               </div>
             </div>
           </div>

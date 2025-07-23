@@ -19,6 +19,7 @@ import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';
 import { PersonalPage } from './components/Personal/PersonalPage';
 import ColorSystemDemo from './components/ColorSystemDemo';
+import UIComponentsDemo from './components/Demo/UIComponentsDemo';
 // import { LoginPage, ProtectedRoute } from './components/Auth'; // TODO: 나중에 구현 예정
 import { ProtectedRoute } from './components/Auth';
 import { 
@@ -112,6 +113,13 @@ function App() {
               <ProtectedRoute>
                 <DashboardLayout>
                   <ColorSystemDemo />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/ui-demo" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <UIComponentsDemo />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
