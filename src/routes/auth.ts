@@ -12,10 +12,6 @@ import { LoginRequest, RefreshTokenRequest } from '../types';
 
 const router = Router();
 
-// ===== 블록처리된 로그인/로그아웃 기능 =====
-// TODO: 나중에 구현할 예정
-
-/*
 // 로그인
 router.post('/login', [
   body('email').isEmail().withMessage('유효한 이메일을 입력해주세요.'),
@@ -170,24 +166,6 @@ router.get('/me', (req: Request, res: Response) => {
     );
     return res.status(500).json(errorResponse);
   }
-});
-*/
-
-// 임시로 더미 응답을 반환하는 라우트들
-router.post('/login', (req: Request, res: Response) => {
-  res.status(501).json({ message: '로그인 기능은 현재 구현되지 않았습니다.' });
-});
-
-router.post('/logout', (req: Request, res: Response) => {
-  res.status(501).json({ message: '로그아웃 기능은 현재 구현되지 않았습니다.' });
-});
-
-router.post('/refresh', (req: Request, res: Response) => {
-  res.status(501).json({ message: '토큰 갱신 기능은 현재 구현되지 않았습니다.' });
-});
-
-router.get('/me', (req: Request, res: Response) => {
-  res.status(501).json({ message: '사용자 정보 조회 기능은 현재 구현되지 않았습니다.' });
 });
 
 export default router;

@@ -5,8 +5,8 @@ const { promisify } = require('util');
 const execAsync = promisify(exec);
 
 // 설정
-const API_BASE_URL = 'https://bizeyes.moonwave.kr/api';
-const FRONTEND_URL = 'https://bizeyes.moonwave.kr';
+const API_BASE_URL = 'http://localhost:3003';
+const FRONTEND_URL = 'http://localhost:3000';
 const API_ENDPOINTS = {
   health: `${API_BASE_URL}/health`,
   auth: `${API_BASE_URL}/api/auth`,
@@ -121,7 +121,7 @@ async function testBidAPIs(token) {
   
   try {
     // 입찰 통계
-    const statsResponse = await axios.get(`${API_ENDPOINTS.statistics}`, { headers });
+    const statsResponse = await axios.get(`${API_ENDPOINTS.bids}/statistics`, { headers });
     if (statsResponse.data.success) {
       logTestResult('Bid Statistics API', true);
     } else {
