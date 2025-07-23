@@ -20,7 +20,8 @@ import {
   Settings,
 } from 'lucide-react';
 import { ChevronDown, Search } from 'lucide-react';
-import { logout, getCurrentUser } from '../../utils/auth';
+import { logout } from '../../utils/auth';
+import { useUser } from '../../contexts/UserContext';
 
 const navigation = [
   { name: '대시보드', href: '/dashboard', icon: Home, current: true },
@@ -50,9 +51,9 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, isLoading } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
-  const currentUser = getCurrentUser();
 
   // 사이드바 상태 변경 시 로그 출력
   useEffect(() => {
@@ -284,7 +285,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   />
                   <span className="hidden lg:flex lg:items-center">
                     <span className="ml-4 text-body2 font-semibold leading-6 text-gray-900" aria-hidden="true">
-                      {currentUser?.name || '사용자'}
+                      {isLoading ? '로딩 중...' : (user?.name || '사용자')}
                     </span>
                     <ChevronDown className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                   </span>

@@ -52,8 +52,26 @@ export const isAuthenticated = (): boolean => {
   return true;
 };
 
-export const getCurrentUser = () => {
-  // 더미 사용자 정보 반환
+// 개인설정 서비스에서 실제 사용자 정보를 가져오는 함수
+export const getCurrentUser = async () => {
+  try {
+    // PersonalService를 동적으로 import하여 순환 의존성 방지
+    const { PersonalService } = await import('../services/personalService');
+    const response = await PersonalService.getUserProfile();
+    
+    if (response.success && response.data) {
+      return {
+        id: response.data.id,
+        email: response.data.email,
+        name: response.data.name,
+        role: response.data.role
+      };
+    }
+  } catch (error) {
+    console.error('사용자 프로필 조회 실패:', error);
+  }
+  
+  // 실패 시 기본 더미 데이터 반환
   return {
     id: 1,
     email: 'dummy@example.com',
