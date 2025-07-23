@@ -92,13 +92,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-240 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
-          <div className="flex flex-col h-16 shrink-0 items-center justify-center">
-            <img
-              className="h-5.6 w-auto"
-              src="/gnblog_wt_p.png"
-              alt="AI Biz Eyes"
-            />
-            <span className="mt-1 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
+          <div className="flex flex-col h-16 shrink-0 items-start justify-center">
+            <span className="text-subtitle1 font-bold text-white">KT AI Biz Eyes</span>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul className="flex flex-1 flex-col gap-y-7">
@@ -149,6 +144,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </li>
             </ul>
           </nav>
+          <div className="flex flex-col items-start justify-end mt-auto pb-4">
+            <img
+              className="h-2.8 w-auto"
+              src="/gnblog_wt_p.png"
+              alt="AI Biz Eyes"
+            />
+          </div>
         </div>
       </div>
 
@@ -158,13 +160,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="fixed inset-y-0 left-0 z-50 w-64 bg-primary">
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center justify-between">
-              <div className="flex flex-col items-center">
-                <img
-                  className="h-5.6 w-auto"
-                  src="/gnblog_wt_p.png"
-                  alt="AI Biz Eyes"
-                />
-                <span className="mt-1 text-subtitle1 font-bold text-white">AI Biz Eyes</span>
+              <div className="flex flex-col items-start">
+                <span className="text-subtitle1 font-bold text-white">KT AI Biz Eyes</span>
               </div>
               <button
                 type="button"
@@ -225,6 +222,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </li>
               </ul>
             </nav>
+            <div className="flex flex-col items-start justify-end mt-auto pb-4">
+              <img
+                className="h-2.8 w-auto"
+                src="/gnblog_wt_p.png"
+                alt="AI Biz Eyes"
+              />
+            </div>
           </div>
         </div>
       </div>
