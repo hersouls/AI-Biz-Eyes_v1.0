@@ -31,7 +31,8 @@ class NaraApiDebugger {
         }
       });
 
-      console.log(`🔗 테스트 URL: ${url.toString()}`);
+      console.log(`🔗 테스트: ${endpoint}`);
+      console.log(`📡 URL: ${url.toString()}`);
 
       const response = await fetch(url.toString(), {
         method: 'GET',
@@ -41,123 +42,80 @@ class NaraApiDebugger {
         }
       });
 
-      console.log(`📊 응답 상태: ${response.status} ${response.statusText}`);
-      console.log(`📋 응답 헤더:`, Object.fromEntries(response.headers.entries()));
-
-      const responseText = await response.text();
+      console.log(`📊 HTTP 상태: ${response.status} ${response.statusText}`);
       
-      console.log('📄 응답 데이터:');
-      console.log(responseText);
+      const responseText = await response.text();
+      console.log(`📄 응답 길이: ${responseText.length} 문자`);
+      console.log(`📋 응답 내용: ${responseText.substring(0, 200)}...`);
       
       return {
-        success: response.ok,
         status: response.status,
+        success: response.ok,
         data: responseText
       };
     } catch (error) {
-      console.error('❌ 오류:', error.message);
+      console.error(`❌ 오류: ${error.message}`);
       return {
+        status: 0,
         success: false,
-        error: error.message
+        data: error.message
       };
     }
   }
 
   async testDifferentEndpoints() {
-    console.log('🔍 나라장터 API 엔드포인트 디버깅');
+    console.log('\n🔍 다양한 엔드포인트 테스트');
     console.log('=' .repeat(60));
     
-    const testCases = [
-      {
-        name: '기본 엔드포인트 테스트',
-        endpoint: '/getBidPblancListInfoServc',
-        params: { pageNo: 1, numOfRows: 1 }
-      },
-      {
-        name: '다른 패턴 테스트 1',
-        endpoint: '/getBidPblancList',
-        params: { pageNo: 1, numOfRows: 1 }
-      },
-      {
-        name: '다른 패턴 테스트 2',
-        endpoint: '/getBidList',
-        params: { pageNo: 1, numOfRows: 1 }
-      },
-      {
-        name: '다른 패턴 테스트 3',
-        endpoint: '/getBidPblancListInfo',
-        params: { pageNo: 1, numOfRows: 1 }
-      },
-      {
-        name: '기본 URL만 테스트',
-        endpoint: '',
-        params: { pageNo: 1, numOfRows: 1 }
-      }
+    const endpoints = [
+      '/getBidPblancListInfoServc',
+      '/getBidPblancListInfoServc/',
+      '/getBidPblancListInfoServc.json',
+      '/getBidPblancListInfoServc.xml',
+      '/getBidPblancListInfoServc/1',
+      '/getBidPblancListInfoServc?pageNo=1&numOfRows=1',
+      '/getBidPblancListInfoServc?serviceKey=' + this.serviceKey + '&type=json&pageNo=1&numOfRows=1'
     ];
 
-    for (const testCase of testCases) {
-      console.log(`\n🧪 ${testCase.name}`);
-      console.log('-'.repeat(40));
-      
-      const result = await this.testEndpoint(testCase.endpoint, testCase.params);
-      
-      if (result.success) {
-        console.log('✅ 성공');
-      } else {
-        console.log('❌ 실패');
-      }
-      
-      // API 호출 간격 조절
-      await new Promise(resolve => setTimeout(resolve, 2000));
+    for (const endpoint of endpoints) {
+      console.log(`\n--- ${endpoint} ---`);
+      await this.testEndpoint(endpoint, { pageNo: 1, numOfRows: 1 });
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기
     }
   }
 
   async testDifferentBaseUrls() {
-    console.log('\n🌐 다른 기본 URL 테스트');
+    console.log('\n🔍 다양한 기본 URL 테스트');
     console.log('=' .repeat(60));
     
     const baseUrls = [
       'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
-      'https://apis.data.go.kr/1230000/BidPublicInfoService',
-      'https://apis.data.go.kr/1230000/ad/BidPublicInfo',
-      'https://apis.data.go.kr/1230000/BidPublicInfo'
+      'https://apis.data.go.kr/1230000/ad/BidPublicInfoService/',
+      'https://apis.data.go.kr/1230000/ad/BidPublicInfoService/v1',
+      'https://apis.data.go.kr/1230000/ad/BidPublicInfoService/v1.0'
     ];
 
     for (const baseUrl of baseUrls) {
-      console.log(`\n🔗 테스트 URL: ${baseUrl}`);
-      console.log('-'.repeat(40));
+      console.log(`\n--- ${baseUrl} ---`);
+      const url = new URL('/getBidPblancListInfoServc', baseUrl);
+      url.searchParams.set('serviceKey', this.serviceKey);
+      url.searchParams.set('type', 'json');
+      url.searchParams.set('pageNo', '1');
+      url.searchParams.set('numOfRows', '1');
+      
+      console.log(`📡 URL: ${url.toString()}`);
       
       try {
-        const url = new URL(baseUrl + '/getBidPblancListInfoServc');
-        url.searchParams.set('serviceKey', this.serviceKey);
-        url.searchParams.set('type', 'json');
-        url.searchParams.set('pageNo', '1');
-        url.searchParams.set('numOfRows', '1');
-
-        console.log(`📡 호출 URL: ${url.toString()}`);
-
-        const response = await fetch(url.toString(), {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
-
-        console.log(`📊 응답 상태: ${response.status} ${response.statusText}`);
+        const response = await fetch(url.toString());
+        console.log(`📊 HTTP 상태: ${response.status} ${response.statusText}`);
         
-        if (response.ok) {
-          const responseText = await response.text();
-          console.log('📄 응답 데이터 (처음 200자):');
-          console.log(responseText.substring(0, 200) + '...');
-        }
-        
+        const responseText = await response.text();
+        console.log(`📋 응답: ${responseText.substring(0, 200)}...`);
       } catch (error) {
-        console.error('❌ 오류:', error.message);
+        console.error(`❌ 오류: ${error.message}`);
       }
       
-      // API 호출 간격 조절
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기
     }
   }
 }
@@ -170,8 +128,4 @@ async function main() {
   await apiDebugger.testDifferentBaseUrls();
 }
 
-if (require.main === module) {
-  main().catch(console.error);
-}
-
-module.exports = NaraApiDebugger;
+main().catch(console.error);
