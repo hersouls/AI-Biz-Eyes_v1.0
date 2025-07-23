@@ -12,6 +12,7 @@ import { NotificationPage } from './components/Notification';
 import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';
 import { PersonalPage } from './components/Personal/PersonalPage';
+import { LoginPage, ProtectedRoute } from './components/Auth';
 import { 
   AdminLayout,
   AdminDashboard, 
@@ -34,47 +35,66 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          {/* Auth Routes */}
+          <Route path="/login" element={<LoginPage />} />
+          
           {/* Main Routes with DashboardLayout */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={
-            <DashboardLayout>
-              <Dashboard />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/bid-list" element={
-            <DashboardLayout>
-              <BidList />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <BidList />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/bid-detail/:bidNo" element={
-            <DashboardLayout>
-              <BidDetail />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <BidDetail />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/references" element={
-            <DashboardLayout>
-              <ReferenceManager />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ReferenceManager />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/notifications" element={
-            <DashboardLayout>
-              <NotificationPage />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <NotificationPage />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/statistics" element={
-            <DashboardLayout>
-              <StatisticsPage />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <StatisticsPage />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/integration" element={
-            <DashboardLayout>
-              <IntegrationPage />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <IntegrationPage />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/personal" element={
-            <DashboardLayout>
-              <PersonalPage />
-            </DashboardLayout>
+            <ProtectedRoute>
+              <DashboardLayout>
+                <PersonalPage />
+              </DashboardLayout>
+            </ProtectedRoute>
           } />
           
           {/* Admin Routes */}

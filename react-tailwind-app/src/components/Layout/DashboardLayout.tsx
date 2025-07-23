@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Menu as HeadlessMenu,
   MenuButton,
@@ -20,6 +20,7 @@ import {
   Settings,
 } from 'lucide-react';
 import { ChevronDown, Search } from 'lucide-react';
+import { logout, getCurrentUser } from '../../utils/auth';
 
 const navigation = [
   { name: '대시보드', href: '/dashboard', icon: Home, current: true },
@@ -38,9 +39,9 @@ const teams = [
 ];
 
 const userNavigation = [
-  { name: '내 정보', href: '#' },
-  { name: '설정', href: '#' },
-  { name: '로그아웃', href: '#' },
+  { name: '내 정보', action: 'profile' },
+  { name: '설정', action: 'settings' },
+  { name: '로그아웃', action: 'logout' },
 ];
 
 interface DashboardLayoutProps {
@@ -50,6 +51,8 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
 
   // 사이드바 상태 변경 시 로그 출력
   useEffect(() => {
@@ -61,6 +64,25 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     ...item,
     current: location.pathname === item.href
   }));
+
+  // 사용자 메뉴 액션 핸들러
+  const handleUserMenuAction = (action: string) => {
+    switch (action) {
+      case 'profile':
+        navigate('/personal');
+        break;
+      case 'settings':
+        navigate('/personal?tab=settings');
+        break;
+      case 'logout':
+        if (window.confirm('로그아웃하시겠습니까?')) {
+          logout();
+        }
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="h-full bg-background-light font-pretendard">
@@ -262,7 +284,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   />
                   <span className="hidden lg:flex lg:items-center">
                     <span className="ml-4 text-body2 font-semibold leading-6 text-gray-900" aria-hidden="true">
-                      홍길동
+                      {currentUser?.name || '사용자'}
                     </span>
                     <ChevronDown className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                   </span>
@@ -280,19 +302,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                     {userNavigation.map((item) => (
                       <MenuItem key={item.name}>
                         {({ active }) => (
-                          <a
-                            href={item.href}
+                          <button
+                            onClick={() => handleUserMenuAction(item.action)}
                             className={`
-                              block px-3 py-1 text-body3 leading-6
+                              block w-full text-left px-3 py-1 text-body3 leading-6 cursor-pointer
                               ${active ? 'bg-gray-50' : ''}
                             `}
                           >
                             {item.name}
-                          </a>
+                          </button>
                         )}
                       </MenuItem>
                     ))}
-                              </MenuItems>
+                  </MenuItems>
           </Transition>
         </HeadlessMenu>
             </div>
