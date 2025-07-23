@@ -10,14 +10,12 @@ import Badge from '../Badge';
 import Table from '../Table';
 
 interface ReferenceListProps {
-  onAddNew?: () => void;
   onEdit?: (reference: ReferenceData) => void;
   onDelete?: (id: number) => void;
   onView?: (reference: ReferenceData) => void;
 }
 
 const ReferenceList: React.FC<ReferenceListProps> = ({
-  onAddNew,
   onEdit,
   onDelete,
   onView
@@ -167,16 +165,6 @@ const ReferenceList: React.FC<ReferenceListProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 헤더 */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">레퍼런스 관리</h1>
-          <p className="text-gray-600">조직의 사업 경험과 성과를 관리합니다</p>
-        </div>
-        <Button onClick={onAddNew}>
-          + 새 레퍼런스 등록
-        </Button>
-      </div>
 
       {/* 필터 */}
       <Card>
