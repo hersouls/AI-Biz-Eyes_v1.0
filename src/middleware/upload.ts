@@ -37,10 +37,8 @@ const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCa
   }
 };
 
-// 파일 크기 제한 (5MB)
-const limits = {
-  fileSize: 5 * 1024 * 1024
-};
+// 파일 크기 제한 없음
+const limits = {};
 
 // 아바타 업로드 미들웨어
 export const uploadAvatar = multer({
@@ -51,14 +49,7 @@ export const uploadAvatar = multer({
 
 // 에러 핸들링 미들웨어
 export const handleUploadError = (err: any, req: any, res: any, next: any) => {
-  if (err instanceof multer.MulterError) {
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({
-        success: false,
-        message: '파일 크기는 5MB를 초과할 수 없습니다.'
-      });
-    }
-  } else if (err) {
+  if (err) {
     return res.status(400).json({
       success: false,
       message: err.message

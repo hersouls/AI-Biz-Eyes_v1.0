@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { User, Mail, Building2, Phone, Users, Briefcase } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { User, Mail, Building2, Phone, Users, Briefcase, Camera, Trash2 } from 'lucide-react';
 import { PersonalService } from '../../services/personalService';
 import { UserProfile, ProfileUpdateRequest, PasswordChangeRequest } from '../../types/personal';
 import { useUser } from '../../contexts/UserContext';
@@ -13,8 +13,10 @@ export const ProfileSection: React.FC = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const { refreshUser } = useUser();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form states
   const [formData, setFormData] = useState<ProfileUpdateRequest>({});
@@ -111,6 +113,58 @@ export const ProfileSection: React.FC = () => {
     }
   };
 
+  const handleAvatarUpload = async (file: File) => {
+    try {
+      setIsUploadingAvatar(true);
+      const response = await PersonalService.uploadAvatar(file);
+      if (response.success && response.data) {
+        setProfile(response.data.user);
+        setMessage({ type: 'success', text: '아바타가 성공적으로 업로드되었습니다.' });
+        await refreshUser();
+      } else {
+        setMessage({ type: 'error', text: response.message || '아바타 업로드에 실패했습니다.' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: '아바타 업로드 중 오류가 발생했습니다.' });
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
+
+  const handleAvatarDelete = async () => {
+    if (!confirm('아바타를 삭제하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      setIsUploadingAvatar(true);
+      const response = await PersonalService.deleteAvatar();
+      if (response.success && response.data) {
+        setProfile(response.data);
+        setMessage({ type: 'success', text: '아바타가 성공적으로 삭제되었습니다.' });
+        await refreshUser();
+      } else {
+        setMessage({ type: 'error', text: response.message || '아바타 삭제에 실패했습니다.' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: '아바타 삭제 중 오류가 발생했습니다.' });
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // 이미지 파일 검증
+      if (!file.type.startsWith('image/')) {
+        setMessage({ type: 'error', text: '이미지 파일만 업로드 가능합니다.' });
+        return;
+      }
+      handleAvatarUpload(file);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-12">
@@ -161,6 +215,69 @@ export const ProfileSection: React.FC = () => {
 
       {/* Profile Information */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Avatar Section */}
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold text-gray-900">프로필 사진</h3>
+          
+          <div className="flex items-center space-x-6">
+            <div className="relative">
+              {profile.avatar ? (
+                <img
+                  src={profile.avatar}
+                  alt="프로필 사진"
+                  className="w-24 h-24 rounded-full object-cover border-4 border-gray-200"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-4 border-gray-200">
+                  <User className="w-12 h-12 text-gray-400" />
+                </div>
+              )}
+              
+              {isUploadingAvatar && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                </div>
+              )}
+            </div>
+            
+            <div className="space-y-3">
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="primary"
+                  size="sm"
+                  disabled={isUploadingAvatar}
+                >
+                  <Camera className="w-4 h-4 mr-2" />
+                  사진 업로드
+                </Button>
+                {profile.avatar && (
+                  <Button
+                    onClick={handleAvatarDelete}
+                    variant="danger"
+                    size="sm"
+                    disabled={isUploadingAvatar}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    삭제
+                  </Button>
+                )}
+              </div>
+              <p className="text-sm text-gray-500">
+                JPG, PNG, GIF 형식 지원
+              </p>
+            </div>
+          </div>
+          
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+        </div>
+
         {/* Basic Information */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold text-gray-900">기본 정보</h3>

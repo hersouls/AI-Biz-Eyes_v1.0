@@ -512,4 +512,52 @@ export class PersonalService {
       };
     }
   }
+
+  static async uploadAvatar(file: File): Promise<PersonalApiResponse<{ avatar: string; user: UserProfile }>> {
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const response = await axios.post(`${API_BASE_URL}/personal/profile/avatar`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log('API not available, using mock data');
+      await delay(1000);
+      
+      // Mock avatar URL 생성
+      const avatarUrl = `/uploads/avatars/mock_avatar_${Date.now()}.jpg`;
+      mockUserProfile.avatar = avatarUrl;
+      
+      return {
+        success: true,
+        data: {
+          avatar: avatarUrl,
+          user: mockUserProfile
+        },
+        message: '아바타 업로드 성공'
+      };
+    }
+  }
+
+  static async deleteAvatar(): Promise<PersonalApiResponse<UserProfile>> {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/personal/profile/avatar`);
+      return response.data;
+    } catch (error) {
+      console.log('API not available, using mock data');
+      await delay(500);
+      
+      mockUserProfile.avatar = undefined;
+      
+      return {
+        success: true,
+        data: mockUserProfile,
+        message: '아바타 삭제 성공'
+      };
+    }
+  }
 }

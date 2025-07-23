@@ -34,24 +34,14 @@ const fileFilter = (req, file, cb) => {
         cb(new Error('이미지 파일만 업로드 가능합니다.'));
     }
 };
-const limits = {
-    fileSize: 5 * 1024 * 1024
-};
+const limits = {};
 exports.uploadAvatar = (0, multer_1.default)({
     storage,
     fileFilter,
     limits
 }).single('avatar');
 const handleUploadError = (err, req, res, next) => {
-    if (err instanceof multer_1.default.MulterError) {
-        if (err.code === 'LIMIT_FILE_SIZE') {
-            return res.status(400).json({
-                success: false,
-                message: '파일 크기는 5MB를 초과할 수 없습니다.'
-            });
-        }
-    }
-    else if (err) {
+    if (err) {
         return res.status(400).json({
             success: false,
             message: err.message
