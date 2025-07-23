@@ -18,15 +18,17 @@ import statisticsRoutes from './routes/statistics';
 import integrationRoutes from './routes/integration';
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 
 // 보안 미들웨어
 app.use(helmet());
 
 // CORS 설정
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://bizeyes.moonwave.kr'],
-  credentials: true
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'https://bizeyes.moonwave.kr'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // 요청 제한 설정

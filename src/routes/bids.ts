@@ -128,9 +128,11 @@ router.get('/', [
   }
 });
 
-// 공고 상세 조회
-router.get('/:id', [
-  param('id').isInt({ min: 1 }).withMessage('유효한 공고 ID를 입력해주세요.')
+// 공고 통계
+router.get('/statistics', [
+  query('period').optional().isIn(['today', 'week', 'month', 'year']).withMessage('기간은 today, week, month, year 중 하나여야 합니다.'),
+  query('startDate').optional().isISO8601().withMessage('시작일은 유효한 날짜 형식이어야 합니다.'),
+  query('endDate').optional().isISO8601().withMessage('종료일은 유효한 날짜 형식이어야 합니다.')
 ], (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
@@ -143,18 +145,10 @@ router.get('/:id', [
       return res.status(422).json(errorResponse);
     }
 
-    const bidId = Number(req.params.id);
-    const bidDetail = initialMockBidDetails.find(bid => bid.id === bidId);
+    const { period, startDate, endDate } = req.query;
 
-    if (!bidDetail) {
-      const errorResponse = createErrorResponse(
-        'RESOURCE_NOT_FOUND',
-        '공고를 찾을 수 없습니다.'
-      );
-      return res.status(404).json(errorResponse);
-    }
-
-    const response = createSuccessResponse(bidDetail);
+    // Mock 통계 데이터 반환
+    const response = createSuccessResponse(mockBidStatistics);
     return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(
@@ -204,11 +198,9 @@ router.post('/sync', [
   }
 });
 
-// 공고 통계
-router.get('/statistics', [
-  query('period').optional().isIn(['today', 'week', 'month', 'year']).withMessage('기간은 today, week, month, year 중 하나여야 합니다.'),
-  query('startDate').optional().isISO8601().withMessage('시작일은 유효한 날짜 형식이어야 합니다.'),
-  query('endDate').optional().isISO8601().withMessage('종료일은 유효한 날짜 형식이어야 합니다.')
+// 공고 상세 조회
+router.get('/:id', [
+  param('id').isInt({ min: 1 }).withMessage('유효한 공고 ID를 입력해주세요.')
 ], (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
@@ -221,10 +213,18 @@ router.get('/statistics', [
       return res.status(422).json(errorResponse);
     }
 
-    const { period, startDate, endDate } = req.query;
+    const bidId = Number(req.params.id);
+    const bidDetail = initialMockBidDetails.find(bid => bid.id === bidId);
 
-    // Mock 통계 데이터 반환
-    const response = createSuccessResponse(mockBidStatistics);
+    if (!bidDetail) {
+      const errorResponse = createErrorResponse(
+        'RESOURCE_NOT_FOUND',
+        '공고를 찾을 수 없습니다.'
+      );
+      return res.status(404).json(errorResponse);
+    }
+
+    const response = createSuccessResponse(bidDetail);
     return res.json(response);
   } catch (error) {
     const errorResponse = createErrorResponse(

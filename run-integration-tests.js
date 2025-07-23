@@ -36,7 +36,7 @@ async function checkServers() {
   
   try {
     // API 서버 확인
-    const apiCheck = await execAsync('curl -s https://bizeyes.moonwave.kr/api/health');
+    const apiCheck = await execAsync('curl -s http://localhost:3003/health');
     if (apiCheck.stdout.includes('"success":true')) {
       log('API 서버가 실행 중입니다', 'success');
     } else {
@@ -46,7 +46,7 @@ async function checkServers() {
     }
     
     // React 앱 확인
-    const frontendCheck = await execAsync('curl -s https://bizeyes.moonwave.kr');
+    const frontendCheck = await execAsync('curl -s http://localhost:3000');
     if (frontendCheck.stdout.includes('<!DOCTYPE html>') || frontendCheck.stdout.includes('<html')) {
       log('React 앱이 실행 중입니다', 'success');
     } else {

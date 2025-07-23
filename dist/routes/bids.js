@@ -76,8 +76,10 @@ router.get('/', [
         return res.status(500).json(errorResponse);
     }
 });
-router.get('/:id', [
-    (0, express_validator_1.param)('id').isInt({ min: 1 }).withMessage('유효한 공고 ID를 입력해주세요.')
+router.get('/statistics', [
+    (0, express_validator_1.query)('period').optional().isIn(['today', 'week', 'month', 'year']).withMessage('기간은 today, week, month, year 중 하나여야 합니다.'),
+    (0, express_validator_1.query)('startDate').optional().isISO8601().withMessage('시작일은 유효한 날짜 형식이어야 합니다.'),
+    (0, express_validator_1.query)('endDate').optional().isISO8601().withMessage('종료일은 유효한 날짜 형식이어야 합니다.')
 ], (req, res) => {
     try {
         const errors = (0, express_validator_1.validationResult)(req);
@@ -85,13 +87,8 @@ router.get('/:id', [
             const errorResponse = (0, response_1.createErrorResponse)('VALIDATION_ERROR', '입력값이 올바르지 않습니다.', { errors: errors.array() });
             return res.status(422).json(errorResponse);
         }
-        const bidId = Number(req.params.id);
-        const bidDetail = mockData_1.initialMockBidDetails.find(bid => bid.id === bidId);
-        if (!bidDetail) {
-            const errorResponse = (0, response_1.createErrorResponse)('RESOURCE_NOT_FOUND', '공고를 찾을 수 없습니다.');
-            return res.status(404).json(errorResponse);
-        }
-        const response = (0, response_1.createSuccessResponse)(bidDetail);
+        const { period, startDate, endDate } = req.query;
+        const response = (0, response_1.createSuccessResponse)(mockData_1.mockBidStatistics);
         return res.json(response);
     }
     catch (error) {
@@ -126,10 +123,8 @@ router.post('/sync', [
         return res.status(500).json(errorResponse);
     }
 });
-router.get('/statistics', [
-    (0, express_validator_1.query)('period').optional().isIn(['today', 'week', 'month', 'year']).withMessage('기간은 today, week, month, year 중 하나여야 합니다.'),
-    (0, express_validator_1.query)('startDate').optional().isISO8601().withMessage('시작일은 유효한 날짜 형식이어야 합니다.'),
-    (0, express_validator_1.query)('endDate').optional().isISO8601().withMessage('종료일은 유효한 날짜 형식이어야 합니다.')
+router.get('/:id', [
+    (0, express_validator_1.param)('id').isInt({ min: 1 }).withMessage('유효한 공고 ID를 입력해주세요.')
 ], (req, res) => {
     try {
         const errors = (0, express_validator_1.validationResult)(req);
@@ -137,8 +132,13 @@ router.get('/statistics', [
             const errorResponse = (0, response_1.createErrorResponse)('VALIDATION_ERROR', '입력값이 올바르지 않습니다.', { errors: errors.array() });
             return res.status(422).json(errorResponse);
         }
-        const { period, startDate, endDate } = req.query;
-        const response = (0, response_1.createSuccessResponse)(mockData_1.mockBidStatistics);
+        const bidId = Number(req.params.id);
+        const bidDetail = mockData_1.initialMockBidDetails.find(bid => bid.id === bidId);
+        if (!bidDetail) {
+            const errorResponse = (0, response_1.createErrorResponse)('RESOURCE_NOT_FOUND', '공고를 찾을 수 없습니다.');
+            return res.status(404).json(errorResponse);
+        }
+        const response = (0, response_1.createSuccessResponse)(bidDetail);
         return res.json(response);
     }
     catch (error) {

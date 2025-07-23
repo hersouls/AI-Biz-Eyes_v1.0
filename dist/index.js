@@ -20,11 +20,13 @@ const personal_1 = __importDefault(require("./routes/personal"));
 const statistics_1 = __importDefault(require("./routes/statistics"));
 const integration_1 = __importDefault(require("./routes/integration"));
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['https://bizeyes.moonwave.kr'],
-    credentials: true
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000', 'https://bizeyes.moonwave.kr'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 const limiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
