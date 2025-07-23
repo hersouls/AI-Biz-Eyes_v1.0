@@ -1,8 +1,50 @@
 import { Request, Response } from 'express';
 import { BidStatistics, SystemStatistics, ApiResponse } from '../types';
 import { mockBidStatistics, mockSystemStatistics, initialMockReferences } from '../data/mockData';
+import { faker } from '@faker-js/faker';
 
 export class StatisticsController {
+  // 대시보드 통계 조회
+  static async getDashboardStatistics(req: Request, res: Response) {
+    try {
+      const dashboardStats = {
+        totalBids: faker.number.int({ min: 100, max: 500 }),
+        activeBids: faker.number.int({ min: 20, max: 100 }),
+        completedBids: faker.number.int({ min: 50, max: 200 }),
+        totalReferences: initialMockReferences.length,
+        successReferences: initialMockReferences.filter(ref => ref.status === 'success').length,
+        totalNotifications: faker.number.int({ min: 10, max: 50 }),
+        unreadNotifications: faker.number.int({ min: 1, max: 20 }),
+        successRate: Math.round((initialMockReferences.filter(ref => ref.status === 'success').length / initialMockReferences.length) * 100 * 10) / 10,
+        averageScore: faker.number.float({ min: 3.0, max: 4.5, fractionDigits: 1 }),
+        monthlyTrend: Array.from({ length: 12 }, () => faker.number.int({ min: 10, max: 50 })),
+        categoryDistribution: {
+          '공사': initialMockReferences.filter(ref => ref.projectType === '공사').length,
+          '용역': initialMockReferences.filter(ref => ref.projectType === '용역').length,
+          '물품': initialMockReferences.filter(ref => ref.projectType === '물품').length,
+          'AI': initialMockReferences.filter(ref => ref.projectType === 'AI').length,
+          'IT': initialMockReferences.filter(ref => ref.projectType === 'IT').length,
+          'CT': initialMockReferences.filter(ref => ref.projectType === 'CT').length
+        }
+      };
+
+      const response: ApiResponse<typeof dashboardStats> = {
+        success: true,
+        data: dashboardStats,
+        timestamp: new Date().toISOString()
+      };
+
+      return res.json(response);
+    } catch (error) {
+      console.error('Error fetching dashboard statistics:', error);
+      return res.status(500).json({
+        success: false,
+        message: '대시보드 통계 조회 중 오류가 발생했습니다.',
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
   // 공고 통계 조회
   static async getBidStatistics(req: Request, res: Response) {
     try {

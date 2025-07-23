@@ -2,7 +2,46 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatisticsController = void 0;
 const mockData_1 = require("../data/mockData");
+const faker_1 = require("@faker-js/faker");
 class StatisticsController {
+    static async getDashboardStatistics(req, res) {
+        try {
+            const dashboardStats = {
+                totalBids: faker_1.faker.number.int({ min: 100, max: 500 }),
+                activeBids: faker_1.faker.number.int({ min: 20, max: 100 }),
+                completedBids: faker_1.faker.number.int({ min: 50, max: 200 }),
+                totalReferences: mockData_1.initialMockReferences.length,
+                successReferences: mockData_1.initialMockReferences.filter(ref => ref.status === 'success').length,
+                totalNotifications: faker_1.faker.number.int({ min: 10, max: 50 }),
+                unreadNotifications: faker_1.faker.number.int({ min: 1, max: 20 }),
+                successRate: Math.round((mockData_1.initialMockReferences.filter(ref => ref.status === 'success').length / mockData_1.initialMockReferences.length) * 100 * 10) / 10,
+                averageScore: faker_1.faker.number.float({ min: 3.0, max: 4.5, fractionDigits: 1 }),
+                monthlyTrend: Array.from({ length: 12 }, () => faker_1.faker.number.int({ min: 10, max: 50 })),
+                categoryDistribution: {
+                    '공사': mockData_1.initialMockReferences.filter(ref => ref.projectType === '공사').length,
+                    '용역': mockData_1.initialMockReferences.filter(ref => ref.projectType === '용역').length,
+                    '물품': mockData_1.initialMockReferences.filter(ref => ref.projectType === '물품').length,
+                    'AI': mockData_1.initialMockReferences.filter(ref => ref.projectType === 'AI').length,
+                    'IT': mockData_1.initialMockReferences.filter(ref => ref.projectType === 'IT').length,
+                    'CT': mockData_1.initialMockReferences.filter(ref => ref.projectType === 'CT').length
+                }
+            };
+            const response = {
+                success: true,
+                data: dashboardStats,
+                timestamp: new Date().toISOString()
+            };
+            return res.json(response);
+        }
+        catch (error) {
+            console.error('Error fetching dashboard statistics:', error);
+            return res.status(500).json({
+                success: false,
+                message: '대시보드 통계 조회 중 오류가 발생했습니다.',
+                timestamp: new Date().toISOString()
+            });
+        }
+    }
     static async getBidStatistics(req, res) {
         try {
             const { period, startDate, endDate } = req.query;

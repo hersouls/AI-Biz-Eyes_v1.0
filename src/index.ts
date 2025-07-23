@@ -15,6 +15,7 @@ import fileRoutes from './routes/files';
 import webhookRoutes from './routes/webhooks';
 import personalRoutes from './routes/personal';
 import statisticsRoutes from './routes/statistics';
+import dashboardRoutes from './routes/dashboard';
 import integrationRoutes from './routes/integration';
 import dashboardRoutes from './routes/dashboard';
 
@@ -77,6 +78,7 @@ app.use('/api/files', fileRoutes);
 app.use('/api/webhooks', webhookRoutes);
 app.use('/api/personal', personalRoutes);
 app.use('/api/statistics', statisticsRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/integration', integrationRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
