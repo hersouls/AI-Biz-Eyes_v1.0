@@ -9,6 +9,7 @@ import { generateToken, generateRefreshToken, hashPassword, comparePassword } fr
 import { createSuccessResponse, createErrorResponse } from '../utils/response';
 import { mockUsers } from '../data/mockData';
 import { LoginRequest, RefreshTokenRequest } from '../types';
+import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
@@ -141,8 +142,8 @@ router.post('/refresh', [
   }
 });
 
-// 내 정보 조회
-router.get('/me', (req: Request, res: Response) => {
+// 내 정보 조회 (인증 필요)
+router.get('/me', authenticateToken, (req: Request, res: Response) => {
   try {
     // Mock 사용자 정보 반환
     const user = mockUsers[1]; // user@example.com
