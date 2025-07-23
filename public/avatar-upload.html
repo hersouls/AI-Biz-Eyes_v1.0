@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아바타 업로드 테스트</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .avatar-container {
+            position: relative;
+            margin-right: 20px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 24px;
+            border: 3px solid #dee2e6;
+        }
+        .upload-section {
+            flex: 1;
+        }
+        .file-input {
+            display: none;
+        }
+        .upload-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .upload-btn:hover {
+            background: #0056b3;
+        }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .delete-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .profile-info {
+            margin-top: 20px;
+        }
+        .profile-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .info-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+            width: 100px;
+            color: #555;
+        }
+        .info-value {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>아바타 업로드 테스트</h1>
+        
+        <div class="profile-section">
+            <div class="avatar-container">
+                <img id="avatar" class="avatar" style="display: none;" alt="프로필 이미지">
+                <div id="avatar-placeholder" class="avatar-placeholder">👤</div>
+            </div>
+            <div class="upload-section">
+                <input type="file" id="fileInput" class="file-input" accept="image/*">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    아바타 업로드
+                </button>
+                <button id="deleteBtn" class="delete-btn" onclick="deleteAvatar()" disabled>
+                    아바타 삭제
+                </button>
+                <div class="info">
+                    지원 형식: JPG, PNG, GIF<br>
+                    최대 크기: 5MB
+                </div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>업로드 중...</p>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="profile-info">
+            <h3>프로필 정보</h3>
+            <div id="profileData">
+                <div class="info-item">
+                    <span class="info-label">이름:</span>
+                    <span class="info-value" id="userName">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">이메일:</span>
+                    <span class="info-value" id="userEmail">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">소속:</span>
+                    <span class="info-value" id="userOrg">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let currentUser = null;
+
+        // 페이지 로드 시 프로필 정보 가져오기
+        window.onload = function() {
+            loadProfile();
+        };
+
+        // 파일 선택 시 업로드
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                uploadAvatar(file);
+            }
+        });
+
+        // 프로필 정보 로드
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/personal/profile`, {
+                    headers: {
+                        'Authorization': 'Bearer test-token'
+                    }
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    currentUser = result.data;
+                    updateProfileDisplay();
+                } else {
+                    showStatus('프로필 정보를 불러올 수 없습니다.', 'error');
+                }
+            } catch (error) {
+                showStatus('프로필 정보를 불러올 수 없습니다.', 'error');
+            }
+        }
+
+        // 프로필 표시 업데이트
+        function updateProfileDisplay() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userEmail').textContent = currentUser.email;
+                document.getElementById('userOrg').textContent = currentUser.organization || '-';
+
+                if (currentUser.avatar) {
+                    document.getElementById('avatar').src = `${API_BASE}${currentUser.avatar}`;
+                    document.getElementById('avatar').style.display = 'block';
+                    document.getElementById('avatar-placeholder').style.display = 'none';
+                    document.getElementById('deleteBtn').disabled = false;
+                } else {
+                    document.getElementById('avatar').style.display = 'none';
+                    document.getElementById('avatar-placeholder').style.display = 'flex';
+                    document.getElementById('deleteBtn').disabled = true;
+                }
+            }
+        }
+
+        // 아바타 업로드
+        async function uploadAvatar(file) {
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            showLoading(true);
+            hideStatus();
+
+            try {
+                const response = await fetch(`${API_BASE}/personal/profile/avatar`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer test-token'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    currentUser = result.data.user;
+                    updateProfileDisplay();
+                    showStatus('아바타가 성공적으로 업로드되었습니다.', 'success');
+                } else {
+                    showStatus(result.message || '업로드에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showStatus('업로드 중 오류가 발생했습니다.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // 아바타 삭제
+        async function deleteAvatar() {
+            if (!confirm('아바타를 삭제하시겠습니까?')) {
+                return;
+            }
+
+            showLoading(true);
+            hideStatus();
+
+            try {
+                const response = await fetch(`${API_BASE}/personal/profile/avatar`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer test-token'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    currentUser = result.data;
+                    updateProfileDisplay();
+                    showStatus('아바타가 성공적으로 삭제되었습니다.', 'success');
+                } else {
+                    showStatus(result.message || '삭제에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showStatus('삭제 중 오류가 발생했습니다.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // 로딩 표시
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        // 상태 메시지 표시
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            statusEl.style.display = 'block';
+        }
+
+        // 상태 메시지 숨기기
+        function hideStatus() {
+            document.getElementById('status').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

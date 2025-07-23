@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { mockUsers } from '../data/mockData';
+import fs from 'fs';
+import path from 'path';
 
 export class PersonalController {
   // 프로필 관리
@@ -60,6 +62,110 @@ export class PersonalController {
       return res.status(500).json({
         success: false,
         message: '프로필 업데이트 중 오류가 발생했습니다.'
+      });
+    }
+  }
+
+  // 아바타 업로드
+  static async uploadAvatar(req: Request, res: Response) {
+    try {
+      const userId = (req as any).user?.id || 1;
+      
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: '업로드할 파일이 없습니다.'
+        });
+      }
+
+      const userIndex = mockUsers.findIndex(u => u.id === userId);
+      if (userIndex === -1) {
+        return res.status(404).json({
+          success: false,
+          message: '사용자를 찾을 수 없습니다.'
+        });
+      }
+
+      // 기존 아바타 파일 삭제
+      const currentUser = mockUsers[userIndex];
+      if (currentUser.avatar) {
+        const oldAvatarPath = path.join(process.cwd(), 'public', currentUser.avatar);
+        if (fs.existsSync(oldAvatarPath)) {
+          fs.unlinkSync(oldAvatarPath);
+        }
+      }
+
+      // 새로운 아바타 경로 설정
+      const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+
+      // 사용자 정보 업데이트
+      mockUsers[userIndex] = {
+        ...mockUsers[userIndex],
+        avatar: avatarUrl,
+        updatedAt: new Date().toISOString()
+      };
+
+      return res.json({
+        success: true,
+        data: {
+          avatar: avatarUrl,
+          user: mockUsers[userIndex]
+        },
+        message: '아바타가 성공적으로 업로드되었습니다.'
+      });
+    } catch (error) {
+      console.error('아바타 업로드 오류:', error);
+      return res.status(500).json({
+        success: false,
+        message: '아바타 업로드 중 오류가 발생했습니다.'
+      });
+    }
+  }
+
+  // 아바타 삭제
+  static async deleteAvatar(req: Request, res: Response) {
+    try {
+      const userId = (req as any).user?.id || 1;
+
+      const userIndex = mockUsers.findIndex(u => u.id === userId);
+      if (userIndex === -1) {
+        return res.status(404).json({
+          success: false,
+          message: '사용자를 찾을 수 없습니다.'
+        });
+      }
+
+      const currentUser = mockUsers[userIndex];
+      if (!currentUser.avatar) {
+        return res.status(400).json({
+          success: false,
+          message: '삭제할 아바타가 없습니다.'
+        });
+      }
+
+      // 아바타 파일 삭제
+      const avatarPath = path.join(process.cwd(), 'public', currentUser.avatar);
+      if (fs.existsSync(avatarPath)) {
+        fs.unlinkSync(avatarPath);
+      }
+
+      // 사용자 정보에서 아바타 제거
+      mockUsers[userIndex] = {
+        ...mockUsers[userIndex],
+        avatar: undefined,
+        updatedAt: new Date().toISOString()
+      };
+
+      return res.json({
+        success: true,
+        data: mockUsers[userIndex],
+        message: '아바타가 성공적으로 삭제되었습니다.'
+      });
+    } catch (error) {
+      console.error('아바타 삭제 오류:', error);
+      return res.status(500).json({
+        success: false,
+        message: '아바타 삭제 중 오류가 발생했습니다.'
       });
     }
   }

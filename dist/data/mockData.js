@@ -10,6 +10,7 @@ exports.mockUsers = [
         organization: '테크컴퍼니',
         role: 'admin',
         isActive: true,
+        avatar: '/uploads/avatars/default-admin.png',
         lastLogin: '2024-07-22T10:30:00Z',
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-07-22T10:30:00Z'
@@ -32,6 +33,7 @@ exports.mockUsers = [
         organization: '테크컴퍼니',
         role: 'user',
         isActive: true,
+        avatar: '/uploads/avatars/default-manager.png',
         lastLogin: '2024-07-21T16:45:00Z',
         createdAt: '2024-02-01T00:00:00Z',
         updatedAt: '2024-07-21T16:45:00Z'
