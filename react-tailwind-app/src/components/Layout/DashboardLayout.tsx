@@ -18,6 +18,7 @@ import {
   BellRing,
   PieChart,
   Settings,
+  TestTube,
 } from 'lucide-react';
 import { ChevronDown, Search } from 'lucide-react';
 import { logout } from '../../utils/auth';
@@ -31,6 +32,7 @@ const navigation = [
   { name: '통계/분석', href: '/statistics', icon: PieChart, current: false },
   { name: '통합 관리', href: '/integration', icon: Settings, current: false },
   { name: '개인 설정', href: '/personal', icon: Users, current: false },
+  { name: '나라장터 API 테스트', href: '/nara-api-test', icon: TestTube, current: false },
 ];
 
 const teams = [

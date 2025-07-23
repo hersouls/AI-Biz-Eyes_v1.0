@@ -443,6 +443,7 @@ curl -X POST http://localhost:3001/api/references \
 - [배포 가이드](public/docs/배포_가이드.md)
 - [개발 기술명세서](public/docs/개발기술명세서.md)
 - [데이터베이스 설계서](public/docs/데이터베이스설계서.md)
+- [나라장터 API 가이드](react-tailwind-app/README_NARA_API.md)
 
 ### 🔧 개발 환경 설정
 ```bash

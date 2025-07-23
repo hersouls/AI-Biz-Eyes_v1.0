@@ -15,6 +15,7 @@ import { NotificationPage } from './components/Notification';
 import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';
 import { PersonalPage } from './components/Personal/PersonalPage';
+import NaraBidApiTest from './components/NaraBidApiTest';
 // import { LoginPage, ProtectedRoute } from './components/Auth'; // TODO: 나중에 구현 예정
 import { ProtectedRoute } from './components/Auth';
 import { 
@@ -101,6 +102,13 @@ function App() {
               <ProtectedRoute>
                 <DashboardLayout>
                   <PersonalPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/nara-api-test" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <NaraBidApiTest />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
