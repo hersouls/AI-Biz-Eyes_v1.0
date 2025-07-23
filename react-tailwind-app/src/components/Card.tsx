@@ -40,10 +40,10 @@ const Card: React.FC<CardProps> = ({
 
   const variantClasses = {
     // 🧾 기본 카드 스타일
-    default: 'bg-white border-gray',
+    default: 'bg-white border-grayscale-border',
     
     // 🧭 네비게이션 카드 스타일
-    nav: 'bg-navy text-white border-navy',
+    nav: 'bg-primary text-white border-primary',
   };
 
   const classes = clsx(
@@ -60,7 +60,7 @@ const Card: React.FC<CardProps> = ({
       {header && (
         <div className={clsx(
           'px-6 py-4 border-b',
-          variant === 'default' ? 'border-gray' : 'border-gray/20'
+          variant === 'default' ? 'border-grayscale-border' : 'border-white/20'
         )}>
           {header}
         </div>
@@ -73,7 +73,7 @@ const Card: React.FC<CardProps> = ({
       {footer && (
         <div className={clsx(
           'px-6 py-4 border-t rounded-b-5',
-          variant === 'default' ? 'border-gray bg-gray/10' : 'border-gray/20 bg-gray/10'
+          variant === 'default' ? 'border-grayscale-border bg-grayscale-light/10' : 'border-white/20 bg-white/10'
         )}>
           {footer}
         </div>
@@ -104,7 +104,7 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
           <h3 className="text-subtitle1 font-bold text-primary">{title}</h3>
         )}
         {subtitle && (
-          <p className="mt-1 text-body3 text-gray">{subtitle}</p>
+          <p className="mt-1 text-body3 text-grayscale-border">{subtitle}</p>
         )}
         {children}
       </div>

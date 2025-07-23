@@ -6,39 +6,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // 🎯 브랜드 중심 강조 (Primary)
-        primary: 'var(--primary)',
+        // 🎯 Primary 컬러
+        primary: '#031B4B',
         
-        // 🧭 정보 밀도 높은 배경 (Dark Background)
-        navy: 'var(--navy)',
+        // 🌊 Secondary 컬러
+        secondary: '#119891',
         
-        // 🌤 긍정·전환 유도 배경 (Light Accent)
-        sky: 'var(--sky)',
+        // 📊 State 컬러
+        state: {
+          red: '#EC193A',
+          violet: '#6d8be1',
+        },
         
-        // 📰 문서성, 보조 정보 전달용 (Sub Text / Border)
-        gray: 'var(--gray)',
-        
-        // 📢 주의/긴급/제휴 강조 태그 (Alert / Badge)
-        red: 'var(--red)',
-        
-        // 🧪 관리자/개발자 전용 UI 태그
-        purple: 'var(--purple)',
-        
-        // ⬛ 진중한 선택 유도 버튼 (Secondary CTA)
-        black: 'var(--black)',
-        
-        // 🧾 가독성 중심 텍스트 및 배경
-        white: 'var(--white)',
+        // 🎨 Grayscale/Border/BG 컬러
+        grayscale: {
+          light: '#edeff5',
+          border: '#e5e7eb',
+          bg: '#f9fafb',
+        },
         
         // 기존 호환성을 위한 별칭
-        secondary: 'var(--sky)',
-        state: {
-          red: 'var(--red)',
-          violet: 'var(--purple)',
-        },
-        background: {
-          light: 'var(--gray)',
-        }
+        navy: '#031B4B',
+        sky: '#119891',
+        red: '#EC193A',
+        purple: '#6d8be1',
+        gray: '#edeff5',
+        black: '#000000',
+        white: '#ffffff',
       },
       fontFamily: {
         'pretendard': ['Pretendard', 'sans-serif'],

@@ -59,8 +59,8 @@ const Table = <T extends Record<string, any> = any>({
   rowKey = 'id'
 }: TableProps<T>) => {
   const classes = clsx(
-    'min-w-full divide-y divide-gray',
-    bordered && 'border border-gray rounded-5',
+    'min-w-full divide-y divide-grayscale-border',
+    bordered && 'border border-grayscale-border rounded-5',
     className
   );
 
@@ -100,7 +100,7 @@ const Table = <T extends Record<string, any> = any>({
                       onSelectionChange?.([]);
                     }
                   }}
-                  className="rounded border-gray-300 text-primary focus:ring-primary"
+                  className="rounded border-grayscale-border text-primary focus:ring-primary"
                 />
               </TableHeaderCell>
             )}
@@ -117,7 +117,7 @@ const Table = <T extends Record<string, any> = any>({
             ))}
           </TableHeader>
           <tbody className={clsx(
-            'bg-white divide-y divide-gray-200',
+            'bg-white divide-y divide-grayscale-border',
             striped && 'divide-y-0'
           )}>
             {loading ? (
@@ -144,7 +144,7 @@ const Table = <T extends Record<string, any> = any>({
                           type="checkbox"
                           checked={isSelected}
                           onChange={() => handleRowSelection(record, rowIndex)}
-                          className="rounded border-gray-300 text-primary focus:ring-primary"
+                          className="rounded border-grayscale-border text-primary focus:ring-primary"
                         />
                       </TableCell>
                     )}
@@ -169,10 +169,10 @@ const Table = <T extends Record<string, any> = any>({
         
         {/* 페이지네이션 */}
         {pagination && onPageChange && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200">
-            <div className="text-sm text-gray-700">
-              총 {pagination.total}개 중 {(pagination.page - 1) * pagination.limit + 1}-
-              {Math.min(pagination.page * pagination.limit, pagination.total)}개
+          <div className="flex items-center justify-between px-6 py-3 bg-white border-t border-grayscale-border">
+            <div className="text-sm text-primary">
+              총 {pagination.total}개 중 {((pagination.page - 1) * pagination.limit) + 1}-
+              {Math.min(pagination.page * pagination.limit, pagination.total)}개 표시
             </div>
             <div className="flex space-x-2">
               <Button
@@ -183,7 +183,7 @@ const Table = <T extends Record<string, any> = any>({
               >
                 이전
               </Button>
-              <span className="px-3 py-1 text-sm text-gray-700">
+              <span className="px-3 py-1 text-sm text-primary">
                 {pagination.page} / {pagination.totalPages}
               </span>
               <Button
@@ -206,7 +206,7 @@ const Table = <T extends Record<string, any> = any>({
     <div className="overflow-hidden">
       <table className={classes}>
         <tbody className={clsx(
-          'bg-white divide-y divide-gray-200',
+          'bg-white divide-y divide-grayscale-border',
           striped && 'divide-y-0'
         )}>
           {React.Children.map(children, (child, index) => {
@@ -237,7 +237,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   className
 }) => {
   return (
-    <thead className="bg-gray">
+    <thead className="bg-grayscale-light">
       <tr className={clsx('', className)}>
         {children}
       </tr>
@@ -271,7 +271,7 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
   const classes = clsx(
     'px-6 py-3 text-body3 font-bold text-navy uppercase tracking-wider',
     alignClasses[align],
-    sortable && 'cursor-pointer hover:bg-gray/20',
+    sortable && 'cursor-pointer hover:bg-grayscale-light/20',
     className
   );
 
@@ -292,7 +292,7 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
               </svg>
             )}
             {!sortDirection && (
-              <svg className="w-4 h-4 text-gray" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 text-grayscale-border" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             )}
@@ -330,8 +330,8 @@ export const TableRow: React.FC<TableRowProps> = ({
 }) => {
   const classes = clsx(
     compact ? 'px-4 py-2' : 'px-6 py-4',
-    striped && index % 2 === 1 && 'bg-gray/10',
-    hover && 'hover:bg-gray/20',
+    striped && index % 2 === 1 && 'bg-grayscale-light/10',
+    hover && 'hover:bg-grayscale-light/20',
     selected && 'bg-primary/10 border-l-4 border-primary',
     onClick && 'cursor-pointer',
     'transition-colors duration-150',
@@ -368,7 +368,7 @@ export const TableCell: React.FC<TableCellProps> = ({
 
   const classes = clsx(
     compact ? 'px-4 py-2' : 'px-6 py-4',
-    'text-body3 text-gray-900',
+    'text-body3 text-primary',
     alignClasses[align],
     'whitespace-nowrap',
     className
@@ -397,11 +397,11 @@ export const TableEmpty: React.FC<TableEmptyProps> = ({
       <td colSpan={100} className="px-6 py-12 text-center">
         <div className="flex flex-col items-center">
           {icon && (
-            <div className="w-12 h-12 text-gray-400 mb-4">
+            <div className="w-12 h-12 text-grayscale-border mb-4">
               {icon}
             </div>
           )}
-          <p className="text-body2 text-gray-500 mb-4">{message}</p>
+          <p className="text-body2 text-grayscale-border mb-4">{message}</p>
           {action && (
             <div>{action}</div>
           )}
@@ -427,7 +427,7 @@ export const TableLoading: React.FC<TableLoadingProps> = ({
           {Array.from({ length: columns }).map((_, colIndex) => (
             <TableCell key={colIndex}>
               <div className="animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-grayscale-light rounded w-3/4"></div>
               </div>
             </TableCell>
           ))}

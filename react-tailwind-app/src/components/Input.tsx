@@ -35,20 +35,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
 
   const variantClasses = {
     // 🧾 기본 입력 스타일
-    default: 'border-gray focus:border-primary focus:ring-primary',
+    default: 'border-grayscale-border focus:border-primary focus:ring-primary',
     
     // 📰 채워진 입력 스타일
-    filled: 'bg-gray/10 border-gray focus:bg-white focus:border-primary focus:ring-primary',
+    filled: 'bg-grayscale-light/10 border-grayscale-border focus:bg-white focus:border-primary focus:ring-primary',
     
     // ⬛ 아웃라인 입력 스타일
-    outlined: 'border-2 border-gray focus:border-primary focus:ring-primary'
+    outlined: 'border-2 border-grayscale-border focus:border-primary focus:ring-primary'
   };
 
   const inputClasses = clsx(
     'block w-full rounded-5 border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-0',
     sizeClasses[size],
     variantClasses[variant],
-    error && 'border-red focus:border-red focus:ring-red',
+    error && 'border-state-red focus:border-state-red focus:ring-state-red',
     leftIcon && 'pl-10',
     rightIcon && 'pr-10',
     fullWidth && 'w-full',
@@ -60,7 +60,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-body3 font-medium text-navy"
+          className="block text-body3 font-medium text-primary"
         >
           {label}
         </label>
@@ -69,7 +69,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
       <div className="relative">
         {leftIcon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <div className="h-5 w-5 text-gray">
+            <div className="h-5 w-5 text-grayscale-border">
               {leftIcon}
             </div>
           </div>
@@ -84,7 +84,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         
         {rightIcon && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <div className="h-5 w-5 text-gray">
+            <div className="h-5 w-5 text-grayscale-border">
               {rightIcon}
             </div>
           </div>
@@ -92,13 +92,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
       </div>
       
       {error && (
-        <p className="text-detail1 text-red">
+        <p className="text-detail1 text-state-red">
           {error}
         </p>
       )}
       
       {helperText && !error && (
-        <p className="text-detail1 text-gray">
+        <p className="text-detail1 text-grayscale-border">
           {helperText}
         </p>
       )}
@@ -140,16 +140,16 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   };
 
   const variantClasses = {
-    default: 'border-gray-300 focus:border-primary-500 focus:ring-primary-500',
-    filled: 'bg-gray-50 border-gray-300 focus:bg-white focus:border-primary-500 focus:ring-primary-500',
-    outlined: 'border-2 border-gray-300 focus:border-primary-500 focus:ring-primary-500'
+    default: 'border-grayscale-border focus:border-primary focus:ring-primary',
+    filled: 'bg-grayscale-light/10 border-grayscale-border focus:bg-white focus:border-primary focus:ring-primary',
+    outlined: 'border-2 border-grayscale-border focus:border-primary focus:ring-primary'
   };
 
   const textareaClasses = clsx(
     'block w-full rounded-5 border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-0 resize-vertical',
     sizeClasses[size],
     variantClasses[variant],
-    error && 'border-red-300 focus:border-red-500 focus:ring-red-500',
+    error && 'border-state-red focus:border-state-red focus:ring-state-red',
     fullWidth && 'w-full',
     className
   );
@@ -159,7 +159,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
       {label && (
         <label
           htmlFor={textareaId}
-          className="block text-body3 font-medium text-gray-700"
+          className="block text-body3 font-medium text-primary"
         >
           {label}
         </label>
@@ -174,13 +174,13 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
       />
       
       {error && (
-        <p className="text-detail1 text-red-600">
+        <p className="text-detail1 text-state-red">
           {error}
         </p>
       )}
       
       {helperText && !error && (
-        <p className="text-detail1 text-gray-500">
+        <p className="text-detail1 text-grayscale-border">
           {helperText}
         </p>
       )}

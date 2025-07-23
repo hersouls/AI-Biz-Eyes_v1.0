@@ -26,8 +26,8 @@ const Badge: React.FC<BadgeProps> = ({
     // 🎯 브랜드 중심 강조 (Primary)
     primary: 'bg-primary text-white border-primary',
     
-    // 🌤 전환 유도용 강조 (Secondary)
-    secondary: 'bg-sky text-white border-sky',
+    // 🌊 전환 유도용 강조 (Secondary)
+    secondary: 'bg-secondary text-white border-secondary',
     
     // ✅ 성공 상태
     success: 'bg-green-100 text-green-800 border-green-200',
@@ -36,16 +36,16 @@ const Badge: React.FC<BadgeProps> = ({
     warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     
     // 📢 주의/경고 (Danger)
-    danger: 'bg-red text-white border-red',
+    danger: 'bg-state-red text-white border-state-red',
     
     // ℹ️ 정보 상태
     info: 'bg-blue-100 text-blue-800 border-blue-200',
     
     // 📰 보조 정보 (Gray)
-    gray: 'bg-gray text-navy border-gray',
+    gray: 'bg-grayscale-light text-primary border-grayscale-border',
     
     // 🧪 관리자/개발자 전용 (Admin)
-    admin: 'bg-purple text-white border-purple',
+    admin: 'bg-state-violet text-white border-state-violet',
   };
 
   const sizeClasses = {

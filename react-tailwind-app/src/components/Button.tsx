@@ -30,22 +30,22 @@ const Button: React.FC<ButtonProps> = ({
   
   const variantClasses = {
     // 🎯 브랜드 중심 강조 (Primary)
-    primary: 'bg-primary text-white hover:bg-sky focus:ring-primary shadow-sm',
+    primary: 'bg-primary text-white hover:bg-secondary focus:ring-primary shadow-sm',
     
-    // 🌤 전환 유도용 강조 (Secondary)
-    secondary: 'bg-sky text-white hover:bg-primary focus:ring-sky shadow-sm',
+    // 🌊 전환 유도용 강조 (Secondary)
+    secondary: 'bg-secondary text-white hover:bg-primary focus:ring-secondary shadow-sm',
     
     // ⬛ 진중한 선택 유도 (Outline)
-    outline: 'border border-gray text-navy bg-white hover:bg-gray hover:text-navy focus:ring-primary shadow-sm',
+    outline: 'border border-grayscale-border text-primary bg-white hover:bg-grayscale-light hover:text-primary focus:ring-primary shadow-sm',
     
     // 📰 보조 정보 전달 (Ghost)
-    ghost: 'text-navy hover:bg-gray focus:ring-gray',
+    ghost: 'text-primary hover:bg-grayscale-light focus:ring-grayscale-light',
     
     // 📢 주의/경고 액션 (Danger)
-    danger: 'bg-red text-white hover:bg-red/90 focus:ring-red shadow-sm',
+    danger: 'bg-state-red text-white hover:bg-state-red/90 focus:ring-state-red shadow-sm',
     
     // 🧪 관리자/개발자 전용 (Admin)
-    admin: 'bg-purple text-white hover:bg-purple/90 focus:ring-purple shadow-sm',
+    admin: 'bg-state-violet text-white hover:bg-state-violet/90 focus:ring-state-violet shadow-sm',
   };
 
   const sizeClasses = {
