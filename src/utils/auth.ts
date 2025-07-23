@@ -1,3 +1,8 @@
+/*
+ * TODO: 인증 유틸리티 함수들은 나중에 구현 예정
+ * 현재는 블록처리된 상태입니다.
+ */
+
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
@@ -10,6 +15,10 @@ interface JWTPayload {
   role?: string;
 }
 
+// ===== 블록처리된 인증 유틸리티 함수들 =====
+// TODO: 나중에 구현할 예정
+
+/*
 export const generateToken = (payload: JWTPayload): string => {
   return (jwt.sign as any)(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
@@ -43,4 +52,33 @@ export const extractTokenFromHeader = (authHeader: string): string | null => {
     return null;
   }
   return authHeader.substring(7);
+};
+*/
+
+// 임시로 더미 함수들
+export const generateToken = (payload: JWTPayload): string => {
+  return 'dummy-token';
+};
+
+export const generateRefreshToken = (payload: JWTPayload): string => {
+  return 'dummy-refresh-token';
+};
+
+export const verifyToken = (token: string): JWTPayload => {
+  return { id: 1, email: 'dummy@example.com', role: 'user' };
+};
+
+export const hashPassword = async (password: string): Promise<string> => {
+  return 'dummy-hashed-password';
+};
+
+export const comparePassword = async (
+  password: string,
+  hashedPassword: string
+): Promise<boolean> => {
+  return true;
+};
+
+export const extractTokenFromHeader = (authHeader: string): string | null => {
+  return 'dummy-token';
 };

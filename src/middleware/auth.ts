@@ -1,3 +1,8 @@
+/*
+ * TODO: 인증 미들웨어는 나중에 구현 예정
+ * 현재는 블록처리된 상태입니다.
+ */
+
 import { Request, Response, NextFunction } from 'express';
 import { verifyToken, extractTokenFromHeader } from '../utils/auth';
 import { createErrorResponse } from '../utils/response';
@@ -6,6 +11,10 @@ export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
+// ===== 블록처리된 인증 미들웨어 =====
+// TODO: 나중에 구현할 예정
+
+/*
 export const authenticateToken = (
   req: AuthenticatedRequest,
   res: Response,
@@ -63,4 +72,27 @@ export const requireRole = (roles: string[]) => {
 
 export const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   return requireRole(['admin'])(req, res, next);
+};
+*/
+
+// 임시로 더미 미들웨어 함수들
+export const authenticateToken = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): void => {
+  // 임시로 모든 요청을 통과시킴
+  next();
+};
+
+export const requireRole = (roles: string[]) => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+    // 임시로 모든 요청을 통과시킴
+    next();
+  };
+};
+
+export const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  // 임시로 모든 요청을 통과시킴
+  next();
 };

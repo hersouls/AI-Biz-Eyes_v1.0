@@ -12,7 +12,8 @@ import { NotificationPage } from './components/Notification';
 import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';
 import { PersonalPage } from './components/Personal/PersonalPage';
-import { LoginPage, ProtectedRoute } from './components/Auth';
+// import { LoginPage, ProtectedRoute } from './components/Auth'; // TODO: 나중에 구현 예정
+import { ProtectedRoute } from './components/Auth';
 import { 
   AdminLayout,
   AdminDashboard, 
@@ -35,8 +36,11 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Auth Routes */}
-          <Route path="/login" element={<LoginPage />} />
+          {/* Auth Routes - TODO: 나중에 구현 예정 */}
+          {/* <Route path="/login" element={<LoginPage />} /> */}
+          
+          {/* 로그인 페이지 접근 시 대시보드로 리다이렉트 */}
+          <Route path="/login" element={<Navigate to="/dashboard" replace />} />
           
           {/* Main Routes with DashboardLayout */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

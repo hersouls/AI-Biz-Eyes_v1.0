@@ -1,3 +1,12 @@
+/*
+ * TODO: 프론트엔드 인증 유틸리티 함수들은 나중에 구현 예정
+ * 현재는 블록처리된 상태입니다.
+ */
+
+// ===== 블록처리된 인증 유틸리티 함수들 =====
+// TODO: 나중에 구현할 예정
+
+/*
 // 로그아웃 기능을 위한 유틸리티 함수들
 
 export const logout = () => {
@@ -29,4 +38,26 @@ export const getCurrentUser = () => {
     }
   }
   return null;
+};
+*/
+
+// 임시로 더미 함수들
+export const logout = () => {
+  // 더미 로그아웃 - 아무것도 하지 않음
+  console.log('로그아웃 기능은 현재 구현되지 않았습니다.');
+};
+
+export const isAuthenticated = (): boolean => {
+  // 더미 인증 상태 - 항상 true 반환
+  return true;
+};
+
+export const getCurrentUser = () => {
+  // 더미 사용자 정보 반환
+  return {
+    id: 1,
+    email: 'dummy@example.com',
+    name: '더미 사용자',
+    role: 'user'
+  };
 };

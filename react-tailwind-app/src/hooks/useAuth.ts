@@ -1,3 +1,8 @@
+/*
+ * TODO: 인증 훅은 나중에 구현 예정
+ * 현재는 블록처리된 상태입니다.
+ */
+
 import { useState, useEffect } from 'react';
 
 interface User {
@@ -12,6 +17,10 @@ interface User {
   updatedAt: string;
 }
 
+// ===== 블록처리된 인증 훅 =====
+// TODO: 나중에 구현할 예정
+
+/*
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,6 +88,49 @@ export const useAuth = () => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === 'admin';
+
+  return {
+    user,
+    loading,
+    isAuthenticated,
+    isAdmin,
+    login,
+    logout,
+    fetchUserInfo
+  };
+};
+*/
+
+// 임시로 더미 인증 훅
+export const useAuth = () => {
+  const [user, setUser] = useState<User | null>({
+    id: 1,
+    email: 'dummy@example.com',
+    name: '더미 사용자',
+    role: 'user',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+  const [loading, setLoading] = useState(false);
+
+  const fetchUserInfo = async () => {
+    // 더미 사용자 정보 반환
+    return;
+  };
+
+  const login = async (email: string, password: string) => {
+    // 더미 로그인 성공
+    return { success: true };
+  };
+
+  const logout = () => {
+    // 더미 로그아웃
     setUser(null);
   };
 

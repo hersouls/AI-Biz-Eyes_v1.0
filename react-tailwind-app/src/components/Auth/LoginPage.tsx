@@ -1,7 +1,16 @@
+/*
+ * TODO: 로그인 페이지는 나중에 구현 예정
+ * 현재는 블록처리된 상태입니다.
+ */
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
 
+// ===== 블록처리된 로그인 페이지 =====
+// TODO: 나중에 구현할 예정
+
+/*
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -146,6 +155,31 @@ export const LoginPage: React.FC = () => {
             </p>
           </div>
         </form>
+      </div>
+    </div>
+  );
+};
+*/
+
+// 임시로 더미 로그인 페이지
+export const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    // 로그인 페이지 접근 시 자동으로 대시보드로 리다이렉트
+    navigate('/dashboard');
+  }, [navigate]);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          로그인 기능은 현재 구현되지 않았습니다
+        </h2>
+        <p className="text-gray-600 mb-4">
+          자동으로 대시보드로 이동합니다...
+        </p>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
       </div>
     </div>
   );
