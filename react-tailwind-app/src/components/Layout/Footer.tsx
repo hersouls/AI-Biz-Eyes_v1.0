@@ -6,7 +6,7 @@ const navigation = {
     { name: '이용약관', href: 'https://share.google/A2FmU0Hq8QGHO0Bb0' },
     { name: '기업상품약관', href: 'https://share.google/q0Lvec3P6Gxr9Qsmf' },
     { name: '법적고지', href: 'https://share.google/MqyQqMEEW2CfATo9w' },
-    { name: '개인정보처리방침', href: 'https://share.google/BbD6aKx9vJl4z3ZMC' },
+    { name: '개인정보방침', href: 'https://share.google/BbD6aKx9vJl4z3ZMC' },
     { name: '윤리경영', href: 'https://share.google/HDDjovRXkalYkY5as' },
   ],
   social: [
