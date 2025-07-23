@@ -5,21 +5,14 @@
 
 ## 📌 Foundation
 
-### 🎨 Color System
-(*CSS Custom Properties + Tailwind 확장 적용*)
+### 🎨 Color  
+(*Tailwind Custom Color 적용/확장*)
 
-#### **컬러 시스템 맵핑**
-
-| 용도 | 설명 | HEX 코드 | CSS 변수명 |
-|------|------|----------|------------|
-| Primary Main | 브랜드 중심 강조 | #005BAC | --primary |
-| Primary Dark | 정보 밀도 높은 배경 | #1B2233 | --navy |
-| Primary Light | 전환 유도용 강조 배경 | #0073CE | --sky |
-| Text Main | 기본 텍스트/배경 | #FFFFFF | --white |
-| Text Sub | 보조 텍스트/라인 | #D0D4DA | --gray |
-| Button Black | 보조 CTA 버튼 배경 | #000000 | --black |
-| Badge Red | 주의/제휴/경고용 태그 | #ED1C24 | --red |
-| Badge Purple | 관리자/개발자 UI 태그 | #4A3AFF | --purple |
+- **Primary**: #031B4B (tailwind: `bg-[#031B4B]`, `text-[#031B4B]`)
+- **Secondary**: #119891 (`bg-[#119891]`)
+- **Grayscale/Border/BG**: 기존값 Tailwind 확장(`bg-[#edeff5]` 등)
+- **State**: Red(#EC193A), Violet(#6d8be1)  
+  → Tailwind config 확장/alias 활용
 
 #### **CSS Custom Properties 정의**
 ```css
