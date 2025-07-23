@@ -22,6 +22,7 @@ import {
 import { ChevronDown, Search } from 'lucide-react';
 import { logout } from '../../utils/auth';
 import { useUser } from '../../contexts/UserContext';
+import Footer from './Footer';
 
 const navigation = [
   { name: '대시보드', href: '/dashboard', icon: Home, current: true },
@@ -86,7 +87,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="h-full bg-background-light font-pretendard">
+    <div className="min-h-screen bg-background-light font-pretendard flex flex-col">
       {/* 기존 Dialog 구조 제거 - 새로운 모바일 사이드바로 대체됨 */}
 
       {/* Static sidebar for desktop */}
@@ -229,7 +230,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </div>
 
-      <div className="lg:pl-240">
+      <div className="lg:pl-240 flex flex-col flex-1">
         <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           {/* 햄버거 메뉴 버튼 - 모든 화면에서 보이도록 수정 */}
           <button 
@@ -322,11 +323,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        <main className="py-10">
+        <main className="py-10 flex-1">
           <div className="px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
+        
+        <Footer />
       </div>
     </div>
   );
