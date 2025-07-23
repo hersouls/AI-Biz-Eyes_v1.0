@@ -9,7 +9,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 const generateToken = (payload) => {
-    return jsonwebtoken_1.default.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+    return jsonwebtoken_1.default.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
 exports.generateToken = generateToken;
 const generateRefreshToken = (payload) => {

@@ -151,6 +151,162 @@ export const generateMockReferences = (count: number): Reference[] => {
   return references;
 };
 
+// IT 사업유형 레퍼런스 데이터 생성 함수
+export const generateITReferences = (count: number): Reference[] => {
+  const references: Reference[] = [];
+  const organizations = ['한국산업기술진흥원', '중소기업진흥공단', '정보통신산업진흥원', '한국정보산업연합회'];
+  const itProjectTypes = ['시스템 구축', '소프트웨어 개발', '인프라 구축', '클라우드 마이그레이션', '보안 시스템'];
+  const statuses = ['success', 'failure', 'ongoing'] as const;
+  const scores = ['A', 'B', 'C', 'D'];
+
+  for (let i = 1; i <= count; i++) {
+    const reference: Reference = {
+      id: 1000 + i, // IT 레퍼런스는 1000번대 ID 사용
+      projectName: faker.helpers.arrayElement([
+        '전자정부 시스템 구축',
+        '기업 ERP 시스템 개발',
+        '클라우드 인프라 구축',
+        '보안 솔루션 도입',
+        '데이터베이스 마이그레이션',
+        '웹 애플리케이션 개발',
+        '모바일 앱 개발',
+        'API 서버 구축',
+        '모니터링 시스템 구축',
+        '백업 시스템 구축'
+      ]),
+      projectType: 'IT',
+      bidNtceNo: `IT2023${String(i).padStart(4, '0')}`,
+      organization: faker.helpers.arrayElement(organizations),
+      participationYear: faker.number.int({ min: 2020, max: 2024 }),
+      contractAmount: faker.number.int({ min: 50000000, max: 500000000 }),
+      status: faker.helpers.arrayElement(statuses),
+      score: faker.helpers.arrayElement(scores),
+      description: faker.lorem.paragraph(3),
+      files: [
+        {
+          name: 'IT사업완료보고서.pdf',
+          url: faker.internet.url(),
+          size: faker.number.int({ min: 2000000, max: 15000000 })
+        },
+        {
+          name: '기술문서.zip',
+          url: faker.internet.url(),
+          size: faker.number.int({ min: 1000000, max: 5000000 })
+        }
+      ],
+      createdBy: faker.number.int({ min: 1, max: 3 }),
+      createdAt: faker.date.recent({ days: 365 }).toISOString(),
+      updatedAt: faker.date.recent({ days: 30 }).toISOString()
+    };
+    references.push(reference);
+  }
+  return references;
+};
+
+// CT 사업유형 레퍼런스 데이터 생성 함수
+export const generateCTReferences = (count: number): Reference[] => {
+  const references: Reference[] = [];
+  const organizations = ['한국산업기술진흥원', '중소기업진흥공단', '정보통신산업진흥원', '한국통신산업협회'];
+  const ctProjectTypes = ['통신망 구축', '네트워크 인프라', '5G 기반 서비스', 'IoT 플랫폼', '통신장비 설치'];
+  const statuses = ['success', 'failure', 'ongoing'] as const;
+  const scores = ['A', 'B', 'C', 'D'];
+
+  for (let i = 1; i <= count; i++) {
+    const reference: Reference = {
+      id: 2000 + i, // CT 레퍼런스는 2000번대 ID 사용
+      projectName: faker.helpers.arrayElement([
+        '5G 네트워크 구축 사업',
+        '광통신망 설치 공사',
+        'IoT 센서 네트워크 구축',
+        '통신장비 교체 사업',
+        '네트워크 보안 시스템 구축',
+        '데이터센터 네트워크 구축',
+        '무선통신 시스템 구축',
+        '통신선로 설치 공사',
+        '네트워크 모니터링 시스템',
+        '통신인프라 현대화 사업'
+      ]),
+      projectType: 'CT',
+      bidNtceNo: `CT2023${String(i).padStart(4, '0')}`,
+      organization: faker.helpers.arrayElement(organizations),
+      participationYear: faker.number.int({ min: 2020, max: 2024 }),
+      contractAmount: faker.number.int({ min: 100000000, max: 1000000000 }),
+      status: faker.helpers.arrayElement(statuses),
+      score: faker.helpers.arrayElement(scores),
+      description: faker.lorem.paragraph(3),
+      files: [
+        {
+          name: 'CT사업완료보고서.pdf',
+          url: faker.internet.url(),
+          size: faker.number.int({ min: 3000000, max: 20000000 })
+        },
+        {
+          name: '통신장비명세서.pdf',
+          url: faker.internet.url(),
+          size: faker.number.int({ min: 1000000, max: 8000000 })
+        }
+      ],
+      createdBy: faker.number.int({ min: 1, max: 3 }),
+      createdAt: faker.date.recent({ days: 365 }).toISOString(),
+      updatedAt: faker.date.recent({ days: 30 }).toISOString()
+    };
+    references.push(reference);
+  }
+  return references;
+};
+
+// AI 사업유형 레퍼런스 데이터 생성 함수
+export const generateAIReferences = (count: number): Reference[] => {
+  const references: Reference[] = [];
+  const organizations = ['한국산업기술진흥원', '중소기업진흥공단', '정보통신산업진흥원', '한국인공지능협회'];
+  const aiProjectTypes = ['AI 모델 개발', '머신러닝 시스템', '딥러닝 솔루션', 'AI 플랫폼 구축', '데이터 분석 시스템'];
+  const statuses = ['success', 'failure', 'ongoing'] as const;
+  const scores = ['A', 'B', 'C', 'D'];
+
+  for (let i = 1; i <= count; i++) {
+    const reference: Reference = {
+      id: 3000 + i, // AI 레퍼런스는 3000번대 ID 사용
+      projectName: faker.helpers.arrayElement([
+        'AI 기반 예측 모델 개발',
+        '머신러닝 데이터 분석 시스템',
+        '딥러닝 이미지 인식 시스템',
+        'AI 챗봇 개발',
+        '자연어 처리 시스템 구축',
+        'AI 기반 추천 시스템',
+        '컴퓨터 비전 시스템 개발',
+        'AI 플랫폼 구축',
+        '데이터 마이닝 시스템',
+        'AI 기반 의사결정 시스템'
+      ]),
+      projectType: 'AI',
+      bidNtceNo: `AI2023${String(i).padStart(4, '0')}`,
+      organization: faker.helpers.arrayElement(organizations),
+      participationYear: faker.number.int({ min: 2020, max: 2024 }),
+      contractAmount: faker.number.int({ min: 30000000, max: 300000000 }),
+      status: faker.helpers.arrayElement(statuses),
+      score: faker.helpers.arrayElement(scores),
+      description: faker.lorem.paragraph(3),
+      files: [
+        {
+          name: 'AI사업완료보고서.pdf',
+          url: faker.internet.url(),
+          size: faker.number.int({ min: 2500000, max: 18000000 })
+        },
+        {
+          name: 'AI모델성능평가서.pdf',
+          url: faker.internet.url(),
+          size: faker.number.int({ min: 1500000, max: 10000000 })
+        }
+      ],
+      createdBy: faker.number.int({ min: 1, max: 3 }),
+      createdAt: faker.date.recent({ days: 365 }).toISOString(),
+      updatedAt: faker.date.recent({ days: 30 }).toISOString()
+    };
+    references.push(reference);
+  }
+  return references;
+};
+
 // Mock 알림 데이터 생성 함수
 export const generateMockNotifications = (count: number): Notification[] => {
   const notifications: Notification[] = [];
@@ -260,7 +416,12 @@ export const mockSystemStatistics: SystemStatistics = {
 // 초기 Mock 데이터
 export const initialMockBids = generateMockBids(150);
 export const initialMockBidDetails = generateMockBidDetails(150);
-export const initialMockReferences = generateMockReferences(50);
+export const initialMockReferences = [
+  ...generateMockReferences(50),
+  ...generateITReferences(10),
+  ...generateCTReferences(10),
+  ...generateAIReferences(10)
+];
 export const initialMockNotifications = generateMockNotifications(25);
 export const initialMockSystemLogs = generateMockSystemLogs(100);
 
