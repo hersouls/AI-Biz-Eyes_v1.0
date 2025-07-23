@@ -5,6 +5,7 @@ import Card from '../Card';
 import Badge from '../Badge';
 import Button from '../Button';
 import Select from '../Select';
+import { AlertTriangle, Clock, AlertCircle, RefreshCw, Megaphone, Edit, MapPin } from 'lucide-react';
 
 interface NotificationListProps {
   onNotificationClick?: (notification: Notification) => void;
@@ -100,19 +101,19 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'urgent':
-        return '🚨';
+        return <AlertTriangle className="text-red-500" size={20} />;
       case 'deadline':
-        return '⏰';
+        return <Clock className="text-orange-500" size={20} />;
       case 'missing':
-        return '⚠️';
+        return <AlertCircle className="text-yellow-500" size={20} />;
       case 'duplicate':
-        return '🔄';
+        return <RefreshCw className="text-blue-500" size={20} />;
       case 'new':
-        return '📢';
+        return <Megaphone className="text-green-500" size={20} />;
       case 'update':
-        return '📝';
+        return <Edit className="text-purple-500" size={20} />;
       default:
-        return '📌';
+        return <MapPin className="text-gray-500" size={20} />;
     }
   };
 
@@ -302,7 +303,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
                     
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-lg">{getNotificationIcon(notification.type)}</span>
+                        {getNotificationIcon(notification.type)}
                         <h3 className="font-medium text-gray-900">{notification.title}</h3>
                         <Badge variant={getPriorityColor(notification.priority)}>
                           {notification.priority}
