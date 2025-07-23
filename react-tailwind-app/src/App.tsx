@@ -8,10 +8,13 @@ import { UserProvider } from './contexts/UserContext';
 // Components
 import DashboardLayout from './components/Layout/DashboardLayout';
 import Dashboard from './components/Dashboard/Dashboard';
+import EnhancedDashboard from './components/Dashboard/EnhancedDashboard';
 import { BidList } from './components/BidList/BidList';
+import EnhancedBidList from './components/BidList/EnhancedBidList';
 import { BidDetail } from './components/BidDetail/BidDetail';
 import { ReferenceManager } from './components/Reference';
 import { NotificationPage } from './components/Notification';
+import EnhancedNotification from './components/Notification/EnhancedNotification';
 import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';
 import { PersonalPage } from './components/Personal/PersonalPage';
@@ -52,14 +55,14 @@ function App() {
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <DashboardLayout>
-                  <Dashboard />
+                  <EnhancedDashboard />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
             <Route path="/bid-list" element={
               <ProtectedRoute>
                 <DashboardLayout>
-                  <BidList />
+                  <EnhancedBidList />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
@@ -80,7 +83,7 @@ function App() {
             <Route path="/notifications" element={
               <ProtectedRoute>
                 <DashboardLayout>
-                  <NotificationPage />
+                  <EnhancedNotification />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
