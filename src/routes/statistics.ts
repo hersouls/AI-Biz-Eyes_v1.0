@@ -4,6 +4,9 @@ import { authenticateToken, requireRole } from '../middleware/auth';
 
 const router = Router();
 
+// 통계 대시보드 (루트 경로)
+router.get('/', authenticateToken, StatisticsController.getDashboardStatistics);
+
 // 공고 통계 조회
 router.get('/bids', authenticateToken, StatisticsController.getBidStatistics);
 

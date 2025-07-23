@@ -18,6 +18,7 @@ const files_1 = __importDefault(require("./routes/files"));
 const webhooks_1 = __importDefault(require("./routes/webhooks"));
 const personal_1 = __importDefault(require("./routes/personal"));
 const statistics_1 = __importDefault(require("./routes/statistics"));
+const dashboard_1 = __importDefault(require("./routes/dashboard"));
 const integration_1 = __importDefault(require("./routes/integration"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3003;
@@ -64,6 +65,7 @@ app.use('/api/files', files_1.default);
 app.use('/api/webhooks', webhooks_1.default);
 app.use('/api/personal', personal_1.default);
 app.use('/api/statistics', statistics_1.default);
+app.use('/api/dashboard', dashboard_1.default);
 app.use('/api/integration', integration_1.default);
 app.use('*', (req, res) => {
     res.status(404).json({
