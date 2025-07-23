@@ -92,7 +92,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-240 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#1B2233] px-6 pb-4">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#005BAC] px-6 pb-4">
           <nav className="flex flex-1 flex-col">
             <ul className="flex flex-1 flex-col gap-y-7">
               <li>
@@ -155,8 +155,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* 모바일 사이드바 오버레이 - z-index 증가 */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-[#1B2233]">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#1B2233] px-6 pb-4">
+        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-[#005BAC]">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#005BAC] px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center justify-end">
               <button
                 type="button"
