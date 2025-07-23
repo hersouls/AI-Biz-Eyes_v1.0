@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Menu,
+  Menu as HeadlessMenu,
   MenuButton,
   MenuItem,
   MenuItems,
@@ -252,8 +252,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
 
               {/* Profile dropdown */}
-              <Menu as="div" className="relative">
-                <MenuButton className="-m-1.5 flex items-center p-1.5">
+                      <HeadlessMenu as="div" className="relative">
+          <MenuButton className="-m-1.5 flex items-center p-1.5">
                   <span className="sr-only">사용자 메뉴 열기</span>
                   <img
                     className="h-8 w-8 rounded-full bg-gray-50"
@@ -292,9 +292,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         )}
                       </MenuItem>
                     ))}
-                  </MenuItems>
-                </Transition>
-              </Menu>
+                              </MenuItems>
+          </Transition>
+        </HeadlessMenu>
             </div>
           </div>
         </div>

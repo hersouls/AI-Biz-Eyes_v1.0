@@ -339,7 +339,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <ServerIcon className="h-5 w-5 text-purple-600" />
+                <Server className="h-5 w-5 text-purple-600" />
                 <span className="text-sm font-medium text-gray-700">메모리 사용량</span>
               </div>
               <span className={`text-sm font-semibold ${
@@ -353,7 +353,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <UsersIcon className="h-5 w-5 text-blue-600" />
+                <Users className="h-5 w-5 text-blue-600" />
                 <span className="text-sm font-medium text-gray-700">활성 사용자</span>
               </div>
               <span className="text-sm font-semibold text-gray-900">
@@ -363,7 +363,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <DocumentTextIcon className="h-5 w-5 text-green-600" />
+                <FileText className="h-5 w-5 text-green-600" />
                 <span className="text-sm font-medium text-gray-700">동기화 성공률</span>
               </div>
               <span className="text-sm font-semibold text-gray-900">{stats.bids.syncSuccess}%</span>
@@ -371,7 +371,7 @@ const SystemStatistics: React.FC<SystemStatisticsProps> = ({ period }) => {
 
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <ClockIcon className="h-5 w-5 text-orange-600" />
+                <Clock className="h-5 w-5 text-orange-600" />
                 <span className="text-sm font-medium text-gray-700">마지막 백업</span>
               </div>
               <span className="text-sm font-semibold text-gray-900">

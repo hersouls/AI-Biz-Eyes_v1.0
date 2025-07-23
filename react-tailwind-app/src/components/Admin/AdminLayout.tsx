@@ -12,8 +12,7 @@ import {
   // 품질/감사 기능 아이콘 추가
   PieChart,
   ClipboardList,
-  FileBarChart,
-  Settings
+  FileBarChart
 } from 'lucide-react';
 
 interface AdminLayoutProps {
