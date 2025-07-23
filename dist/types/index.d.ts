@@ -21,6 +21,7 @@ export interface User {
     organization?: string;
     role: 'admin' | 'user' | 'guest';
     isActive: boolean;
+    avatar?: string;
     lastLogin?: string;
     createdAt: string;
     updatedAt: string;

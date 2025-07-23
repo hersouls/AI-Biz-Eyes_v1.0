@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 export declare class PersonalController {
     static getProfile(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     static updateProfile(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+    static uploadAvatar(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
+    static deleteAvatar(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     static getNotificationSettings(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     static updateNotificationSettings(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     static getReportSettings(req: Request, res: Response): Promise<Response<any, Record<string, any>>>;

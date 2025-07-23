@@ -1,7 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PersonalController = void 0;
 const mockData_1 = require("../data/mockData");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 class PersonalController {
     static async getProfile(req, res) {
         try {
@@ -55,6 +60,92 @@ class PersonalController {
             return res.status(500).json({
                 success: false,
                 message: '프로필 업데이트 중 오류가 발생했습니다.'
+            });
+        }
+    }
+    static async uploadAvatar(req, res) {
+        try {
+            const userId = req.user?.id || 1;
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: '업로드할 파일이 없습니다.'
+                });
+            }
+            const userIndex = mockData_1.mockUsers.findIndex(u => u.id === userId);
+            if (userIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: '사용자를 찾을 수 없습니다.'
+                });
+            }
+            const currentUser = mockData_1.mockUsers[userIndex];
+            if (currentUser.avatar) {
+                const oldAvatarPath = path_1.default.join(process.cwd(), 'public', currentUser.avatar);
+                if (fs_1.default.existsSync(oldAvatarPath)) {
+                    fs_1.default.unlinkSync(oldAvatarPath);
+                }
+            }
+            const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+            mockData_1.mockUsers[userIndex] = {
+                ...mockData_1.mockUsers[userIndex],
+                avatar: avatarUrl,
+                updatedAt: new Date().toISOString()
+            };
+            return res.json({
+                success: true,
+                data: {
+                    avatar: avatarUrl,
+                    user: mockData_1.mockUsers[userIndex]
+                },
+                message: '아바타가 성공적으로 업로드되었습니다.'
+            });
+        }
+        catch (error) {
+            console.error('아바타 업로드 오류:', error);
+            return res.status(500).json({
+                success: false,
+                message: '아바타 업로드 중 오류가 발생했습니다.'
+            });
+        }
+    }
+    static async deleteAvatar(req, res) {
+        try {
+            const userId = req.user?.id || 1;
+            const userIndex = mockData_1.mockUsers.findIndex(u => u.id === userId);
+            if (userIndex === -1) {
+                return res.status(404).json({
+                    success: false,
+                    message: '사용자를 찾을 수 없습니다.'
+                });
+            }
+            const currentUser = mockData_1.mockUsers[userIndex];
+            if (!currentUser.avatar) {
+                return res.status(400).json({
+                    success: false,
+                    message: '삭제할 아바타가 없습니다.'
+                });
+            }
+            const avatarPath = path_1.default.join(process.cwd(), 'public', currentUser.avatar);
+            if (fs_1.default.existsSync(avatarPath)) {
+                fs_1.default.unlinkSync(avatarPath);
+            }
+            mockData_1.mockUsers[userIndex] = {
+                ...mockData_1.mockUsers[userIndex],
+                avatar: undefined,
+                updatedAt: new Date().toISOString()
+            };
+            return res.json({
+                success: true,
+                data: mockData_1.mockUsers[userIndex],
+                message: '아바타가 성공적으로 삭제되었습니다.'
+            });
+        }
+        catch (error) {
+            console.error('아바타 삭제 오류:', error);
+            return res.status(500).json({
+                success: false,
+                message: '아바타 삭제 중 오류가 발생했습니다.'
             });
         }
     }

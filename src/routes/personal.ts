@@ -1,6 +1,7 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { PersonalController } from '../controllers/personalController';
+import { uploadAvatar, handleUploadError } from '../middleware/upload';
 
 const router = express.Router();
 
@@ -10,6 +11,8 @@ router.use(authenticateToken);
 // 프로필 관리
 router.get('/profile', PersonalController.getProfile);
 router.put('/profile', PersonalController.updateProfile);
+router.post('/profile/avatar', uploadAvatar, handleUploadError, PersonalController.uploadAvatar);
+router.delete('/profile/avatar', PersonalController.deleteAvatar);
 
 // 알림 설정
 router.get('/notifications/settings', PersonalController.getNotificationSettings);
