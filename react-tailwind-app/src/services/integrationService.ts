@@ -47,7 +47,7 @@ const mockIntegrationSystems: IntegrationSystem[] = [
     description: '조달청 나라장터 입찰공고정보 OpenAPI 연동',
     config: {
       baseUrl: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
-      apiKey: 'w8uFE%2fALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDoADaTMcg%3D%3D',
+      apiKey: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDoADaTMcg%3D%3D',
       timeout: 30000,
       endpoints: {
         getBidList: '/getBidPblancListInfoServc',

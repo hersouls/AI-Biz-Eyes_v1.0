@@ -53,7 +53,7 @@ export interface NaraBidResponse {
 const NARA_API_CONFIG = {
   baseUrl: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
   serviceKey: {
-    encoding: 'w8uFE%2fALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDoADaTMcg%3D%3D',
+    encoding: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDoADaTMcg%3D%3D',
     decoding: 'w8uFE+fALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM/qByWrt9gZ406/ITajbX1Q8/ESHI1LDoADaTMcg=='
   },
   endpoints: {

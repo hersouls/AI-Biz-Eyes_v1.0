@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 // 나라장터 API 설정
 const NARA_API_CONFIG = {
   baseUrl: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
-  serviceKey: 'w8uFE%2fALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDoADaTMcg%3D%3D',
+  serviceKey: 'w8uFE+fALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM/qByWrt9gZ406/ITajbX1Q8/ESHI1LDoADaTMcg==',
   endpoints: {
     getBidList: '/getBidPblancListInfoServc',
     getBidDetail: '/getBidPblancDtlInfoServc',
@@ -28,10 +28,13 @@ class NaraApiTester {
         ...params
       };
 
-      // URL 파라미터 추가
-      Object.entries(defaultParams).forEach(([key, value]) => {
+      // URL 파라미터 추가 (serviceKey는 직접 설정)
+      url.searchParams.set('serviceKey', this.serviceKey);
+      url.searchParams.set('type', 'json');
+      
+      Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-          url.searchParams.append(key, value.toString());
+          url.searchParams.set(key, value.toString());
         }
       });
 
