@@ -132,7 +132,7 @@ export const ProfileSection: React.FC = () => {
   };
 
   const handleAvatarDelete = async () => {
-    if (!confirm('아바타를 삭제하시겠습니까?')) {
+    if (!window.confirm('아바타를 삭제하시겠습니까?')) {
       return;
     }
 
