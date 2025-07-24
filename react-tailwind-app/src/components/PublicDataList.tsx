@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PublicDataService } from '../services/publicDataService';
 import { PublicDataItem, PublicDataFilters } from '../types/publicData';
 
@@ -19,11 +19,7 @@ const PublicDataList: React.FC<PublicDataListProps> = ({
   const [filters, setFilters] = useState<PublicDataFilters>({});
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    loadPublicData();
-  }, [filters, limit]);
-
-  const loadPublicData = async () => {
+  const loadPublicData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -41,7 +37,11 @@ const PublicDataList: React.FC<PublicDataListProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters, limit]);
+
+  useEffect(() => {
+    loadPublicData();
+  }, [loadPublicData]);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
