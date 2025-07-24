@@ -1,18 +1,18 @@
 const axios = require('axios');
 
-// 나라장터 API 설정 (수정된 버전)
+// 조달청 API 설정 (올바른 엔드포인트로 수정)
 const G2B_API_CONFIG = {
-  // 나라장터 OpenAPI 기본 URL (올바른 엔드포인트)
-  BASE_URL: 'https://openapi.g2b.go.kr/openapi/service/rest/CpcpBidInfoService',
+  // 조달청 공공데이터포털 API 기본 URL
+  BASE_URL: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
   
-  // 나라장터 입찰공고정보서비스 API URL (올바른 엔드포인트)
-  BID_INFO_URL: 'https://openapi.g2b.go.kr/openapi/service/rest/CpcpBidInfoService',
+  // 조달청 입찰공고정보서비스 API URL
+  BID_INFO_URL: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
   
-  // 나라장터 계약정보서비스 API URL
-  CONTRACT_INFO_URL: 'https://openapi.g2b.go.kr/openapi/service/rest/CntrctInfoService',
+  // 조달청 계약정보서비스 API URL (필요시 별도 설정)
+  CONTRACT_INFO_URL: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
   
-  // 환경변수에서 API 키 가져오기
-  SERVICE_KEY: process.env.G2B_SERVICE_KEY || 'test-key',
+  // 환경변수에서 API 키 가져오기 (인코딩된 키 사용)
+  SERVICE_KEY: process.env.G2B_API_KEY_ENCODED || process.env.G2B_SERVICE_KEY || 'test-key',
   
   // API 타임아웃 설정
   TIMEOUT: 15000
