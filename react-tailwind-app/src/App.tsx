@@ -7,13 +7,10 @@ import { UserProvider } from './contexts/UserContext';
 
 // Components
 import DashboardLayout from './components/Layout/DashboardLayout';
-import Dashboard from './components/Dashboard/Dashboard';
 import EnhancedDashboard from './components/Dashboard/EnhancedDashboard';
-import { BidList } from './components/BidList/BidList';
 import EnhancedBidList from './components/BidList/EnhancedBidList';
 import { BidDetail } from './components/BidDetail/BidDetail';
 import { ReferenceManager } from './components/Reference';
-import { NotificationPage } from './components/Notification';
 import EnhancedNotification from './components/Notification/EnhancedNotification';
 import { StatisticsPage } from './components/Statistics';
 import IntegrationPage from './components/integration/IntegrationPage';

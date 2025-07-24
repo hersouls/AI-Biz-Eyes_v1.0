@@ -6,18 +6,9 @@ import {
   Eye, 
   Edit, 
   Trash2,
-  Calendar,
-  MapPin,
-  DollarSign,
   Users,
-  Clock,
   CheckCircle,
   AlertCircle,
-  XCircle,
-  ChevronDown,
-  ChevronUp,
-  SortAsc,
-  SortDesc,
   FileText,
   Plus
 } from 'lucide-react';

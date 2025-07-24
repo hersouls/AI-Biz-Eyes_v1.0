@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { 
   TrendingUp, 
-  TrendingDown, 
   Users, 
-  Calendar,
   FileText,
   Award,
   Clock,
   CheckCircle,
   AlertCircle,
-  BarChart3,
-  PieChart,
   Activity,
   RefreshCw,
   Download,
@@ -20,7 +16,7 @@ import {
   Filter
 } from 'lucide-react';
 import { AdvancedCard, AdvancedButton, AdvancedModal } from '../ui';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, PieChart as RechartsPieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Mock data for charts
 const trendData = [
