@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import { initializeSentry, sentryErrorHandler } from './utils/monitoring';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 // 라우터 임포트
 import authRoutes from './routes/auth';
@@ -22,6 +24,9 @@ import g2bRoutes from './routes/g2b';
 
 const app = express();
 const PORT = process.env.PORT || 3003;
+
+// Sentry 초기화
+initializeSentry(app);
 
 // 보안 미들웨어
 app.use(helmet());
@@ -85,31 +90,13 @@ app.use('/api/integration', integrationRoutes);
 app.use('/api/g2b', g2bRoutes);
 
 // 404 핸들러
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    error: {
-      code: 'ENDPOINT_NOT_FOUND',
-      message: '요청한 엔드포인트를 찾을 수 없습니다.'
-    },
-    timestamp: new Date().toISOString()
-  });
-});
+app.use(notFoundHandler);
 
-// 전역 에러 핸들러
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Global error handler:', err);
+// Sentry 에러 핸들러 (커스텀 에러 핸들러 전에)
+app.use(sentryErrorHandler);
 
-  res.status(err.status || 500).json({
-    success: false,
-    error: {
-      code: err.code || 'INTERNAL_SERVER_ERROR',
-      message: err.message || '서버 오류가 발생했습니다.',
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-    },
-    timestamp: new Date().toISOString()
-  });
-});
+// 커스텀 에러 핸들러
+app.use(errorHandler);
 
 // 서버 시작
 app.listen(PORT, () => {
