@@ -506,8 +506,8 @@ exports.mockSystemConfigs = [
     {
         id: 1,
         key: 'api_key',
-        value: 'encrypted_api_key_here',
-        description: '나라장터 OpenAPI 인증키',
+        value: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDOADaTMcg%3D%3D',
+        description: '나라장터 입찰공고정보서비스 인증키 (인코딩)',
         category: 'api',
         isEncrypted: true,
         createdAt: '2024-01-01T00:00:00Z',

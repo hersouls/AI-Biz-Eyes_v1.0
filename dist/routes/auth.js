@@ -5,6 +5,7 @@ const express_validator_1 = require("express-validator");
 const auth_1 = require("../utils/auth");
 const response_1 = require("../utils/response");
 const mockData_1 = require("../data/mockData");
+const auth_2 = require("../middleware/auth");
 const router = (0, express_1.Router)();
 router.post('/login', [
     (0, express_validator_1.body)('email').isEmail().withMessage('유효한 이메일을 입력해주세요.'),
@@ -90,7 +91,7 @@ router.post('/refresh', [
         return res.status(500).json(errorResponse);
     }
 });
-router.get('/me', (req, res) => {
+router.get('/me', auth_2.authenticateToken, (req, res) => {
     try {
         const user = mockData_1.mockUsers[1];
         const response = (0, response_1.createSuccessResponse)({
