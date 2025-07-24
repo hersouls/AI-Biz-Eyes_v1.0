@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PublicDataService } from '../services/publicDataService';
-import { PublicDataStats } from '../types/publicData';
+import { PublicDataStats as PublicDataStatsType } from '../types/publicData';
 
 interface PublicDataStatsProps {
   title?: string;
@@ -11,7 +11,7 @@ const PublicDataStats: React.FC<PublicDataStatsProps> = ({
   title = "공공데이터 통계", 
   showDetails = true 
 }) => {
-  const [stats, setStats] = useState<PublicDataStats | null>(null);
+  const [stats, setStats] = useState<PublicDataStatsType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

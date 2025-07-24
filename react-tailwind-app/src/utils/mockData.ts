@@ -117,7 +117,8 @@ export const mockNotificationConfigs: NotificationConfig[] = [
     frequency: 'immediate',
     recipients: ['admin@example.com', 'user1@example.com'],
     isActive: true,
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z'
   },
   {
     id: 2,
@@ -126,7 +127,8 @@ export const mockNotificationConfigs: NotificationConfig[] = [
     frequency: 'immediate',
     recipients: ['admin@example.com'],
     isActive: true,
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z'
   },
   {
     id: 3,
@@ -135,7 +137,8 @@ export const mockNotificationConfigs: NotificationConfig[] = [
     frequency: 'daily',
     recipients: ['user1@example.com', 'user2@example.com'],
     isActive: false,
-    createdAt: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z'
   }
 ];
 
