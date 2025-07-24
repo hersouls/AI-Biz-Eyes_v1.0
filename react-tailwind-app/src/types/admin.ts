@@ -50,7 +50,7 @@ export interface SystemLog {
 
 export interface NotificationConfig {
   id: number;
-  type: 'new_bid' | 'urgent' | 'deadline';
+  type: 'new_bid' | 'urgent' | 'deadline' | 'achievement';
   channel: 'web' | 'email' | 'push';
   frequency: 'immediate' | 'daily' | 'weekly';
   recipients: string[];

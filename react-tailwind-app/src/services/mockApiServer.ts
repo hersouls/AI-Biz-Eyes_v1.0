@@ -28,12 +28,8 @@ const createApiResponse = <T>(data: T, success: boolean = true, message: string 
 const createErrorResponse = (message: string, code: string = 'API_ERROR') => {
   return {
     success: false,
-    error: {
-      code,
-      message,
-      timestamp: new Date().toISOString()
-    },
-    data: null
+    data: null,
+    message
   };
 };
 
@@ -421,7 +417,7 @@ export class MockApiServer {
       return {
         status: 'unhealthy',
         timestamp: new Date().toISOString(),
-        error: error.message
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
