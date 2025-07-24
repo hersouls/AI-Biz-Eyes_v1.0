@@ -140,6 +140,7 @@ export interface BidListResponse {
     };
   };
   message: string;
+  isUsingMockData?: boolean;
 }
 
 export interface BidDetailResponse {

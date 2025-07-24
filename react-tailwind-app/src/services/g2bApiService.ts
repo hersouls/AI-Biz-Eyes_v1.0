@@ -1,8 +1,41 @@
 import axios from 'axios';
 import { BID_API_CONFIG, ApiUtils, BidApiParams, BidApiResponse, BidItem } from '../config/apiConfig';
 
-// API 기본 설정
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3003/api';
+// Mock data for development
+const mockBids: BidInfo[] = [
+  {
+    bidNtceNo: '2024001',
+    bidNtceNm: 'AI 기반 품질관리 시스템 구축 사업',
+    dminsttNm: '한국표준과학연구원',
+    bidMethdNm: '일반입찰',
+    presmptPrce: '350000000',
+    bidNtceDt: '2024-07-22',
+    opengDt: '2024-08-20',
+    bidNtceUrl: 'https://www.g2b.go.kr:8101/ep/main/main.do'
+  },
+  {
+    bidNtceNo: '2024002',
+    bidNtceNm: '스마트팩토리 구축 사업',
+    dminsttNm: '한국산업기술진흥원',
+    bidMethdNm: '일반입찰',
+    presmptPrce: '500000000',
+    bidNtceDt: '2024-07-20',
+    opengDt: '2024-07-30',
+    bidNtceUrl: 'https://www.g2b.go.kr:8101/ep/main/main.do'
+  },
+  {
+    bidNtceNo: '2024003',
+    bidNtceNm: '클라우드 인프라 구축 사업',
+    dminsttNm: '정보통신산업진흥원',
+    bidMethdNm: '일반입찰',
+    presmptPrce: '200000000',
+    bidNtceDt: '2024-07-18',
+    opengDt: '2024-08-10',
+    bidNtceUrl: 'https://www.g2b.go.kr:8101/ep/main/main.do'
+  }
+];
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // 조달청 API 응답 타입
 export interface G2BApiResponse<T> {
@@ -49,6 +82,7 @@ export interface BidListResponse {
   bids: BidInfo[];
   pagination: PaginationInfo;
   timestamp: string;
+  isUsingMockData?: boolean;
 }
 
 // 계약 정보 목록 응답 타입
@@ -187,20 +221,57 @@ class G2BApiService {
 
   // 입찰공고 목록 조회 (실제 조달청 API 호출)
   async getBidList(params: BidSearchParams = {}): Promise<BidListResponse> {
-    const apiParams: BidApiParams = {
-      pageNo: params.pageNo || 1,
-      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
-      bidNtceNm: params.bidNtceNm,
-      ntceInsttNm: params.dminsttNm,
-      bidNtceDate: params.fromDt
-    };
+    try {
+      const apiParams: BidApiParams = {
+        pageNo: params.pageNo || 1,
+        numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+        bidNtceNm: params.bidNtceNm,
+        ntceInsttNm: params.dminsttNm,
+        bidNtceDate: params.fromDt
+      };
 
-    const response = await this.callG2BApi<BidApiResponse>(
-      BID_API_CONFIG.ENDPOINTS.BID_LIST, 
-      apiParams
-    );
+      const response = await this.callG2BApi<BidApiResponse>(
+        BID_API_CONFIG.ENDPOINTS.BID_LIST, 
+        apiParams
+      );
 
-    return this.transformBidResponse(response);
+      return this.transformBidResponse(response);
+    } catch (error) {
+      console.log('조달청 API not available, using mock data');
+      
+      // Fallback to mock data
+      await delay(500);
+      
+      let filteredBids = [...mockBids];
+      
+      if (params.bidNtceNm) {
+        filteredBids = filteredBids.filter(bid => 
+          bid.bidNtceNm.toLowerCase().includes(params.bidNtceNm!.toLowerCase())
+        );
+      }
+      if (params.dminsttNm) {
+        filteredBids = filteredBids.filter(bid => 
+          bid.dminsttNm.toLowerCase().includes(params.dminsttNm!.toLowerCase())
+        );
+      }
+      
+      const pageNo = params.pageNo || 1;
+      const numOfRows = params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE;
+      const startIndex = (pageNo - 1) * numOfRows;
+      const endIndex = startIndex + numOfRows;
+      const paginatedBids = filteredBids.slice(startIndex, endIndex);
+      
+      return {
+        bids: paginatedBids,
+        pagination: {
+          pageNo,
+          numOfRows,
+          totalCount: filteredBids.length
+        },
+        timestamp: new Date().toISOString(),
+        isUsingMockData: true
+      };
+    }
   }
 
   // 입찰공고 상세 조회
@@ -233,50 +304,138 @@ class G2BApiService {
 
   // 키워드로 입찰공고 검색
   async searchBidsByKeyword(keyword: string, params: BidSearchParams = {}): Promise<BidListResponse> {
-    const apiParams: BidApiParams = {
-      pageNo: params.pageNo || 1,
-      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
-      bidNtceNm: keyword
-    };
+    try {
+      const apiParams: BidApiParams = {
+        pageNo: params.pageNo || 1,
+        numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+        bidNtceNm: keyword
+      };
 
-    const response = await this.callG2BApi<BidApiResponse>(
-      BID_API_CONFIG.ENDPOINTS.BID_SEARCH, 
-      apiParams
-    );
+      const response = await this.callG2BApi<BidApiResponse>(
+        BID_API_CONFIG.ENDPOINTS.BID_SEARCH, 
+        apiParams
+      );
 
-    return this.transformBidResponse(response);
+      return this.transformBidResponse(response);
+    } catch (error) {
+      console.log('조달청 API not available, using mock data for search');
+      
+      // Fallback to mock data
+      await delay(500);
+      
+      const filteredBids = mockBids.filter(bid => 
+        bid.bidNtceNm.toLowerCase().includes(keyword.toLowerCase())
+      );
+      
+      const pageNo = params.pageNo || 1;
+      const numOfRows = params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE;
+      const startIndex = (pageNo - 1) * numOfRows;
+      const endIndex = startIndex + numOfRows;
+      const paginatedBids = filteredBids.slice(startIndex, endIndex);
+      
+      return {
+        bids: paginatedBids,
+        pagination: {
+          pageNo,
+          numOfRows,
+          totalCount: filteredBids.length
+        },
+        timestamp: new Date().toISOString(),
+        isUsingMockData: true
+      };
+    }
   }
 
   // 기관별 입찰공고 조회
   async getBidsByInstitution(institutionName: string, params: BidSearchParams = {}): Promise<BidListResponse> {
-    const apiParams: BidApiParams = {
-      pageNo: params.pageNo || 1,
-      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
-      ntceInsttNm: institutionName
-    };
+    try {
+      const apiParams: BidApiParams = {
+        pageNo: params.pageNo || 1,
+        numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+        ntceInsttNm: institutionName
+      };
 
-    const response = await this.callG2BApi<BidApiResponse>(
-      BID_API_CONFIG.ENDPOINTS.BID_LIST, 
-      apiParams
-    );
+      const response = await this.callG2BApi<BidApiResponse>(
+        BID_API_CONFIG.ENDPOINTS.BID_LIST, 
+        apiParams
+      );
 
-    return this.transformBidResponse(response);
+      return this.transformBidResponse(response);
+    } catch (error) {
+      console.log('조달청 API not available, using mock data for institution search');
+      
+      // Fallback to mock data
+      await delay(500);
+      
+      const filteredBids = mockBids.filter(bid => 
+        bid.dminsttNm.toLowerCase().includes(institutionName.toLowerCase())
+      );
+      
+      const pageNo = params.pageNo || 1;
+      const numOfRows = params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE;
+      const startIndex = (pageNo - 1) * numOfRows;
+      const endIndex = startIndex + numOfRows;
+      const paginatedBids = filteredBids.slice(startIndex, endIndex);
+      
+      return {
+        bids: paginatedBids,
+        pagination: {
+          pageNo,
+          numOfRows,
+          totalCount: filteredBids.length
+        },
+        timestamp: new Date().toISOString(),
+        isUsingMockData: true
+      };
+    }
   }
 
   // 날짜 범위로 입찰공고 조회
   async getBidsByDateRange(fromDate: string, toDate: string, params: BidSearchParams = {}): Promise<BidListResponse> {
-    const apiParams: BidApiParams = {
-      pageNo: params.pageNo || 1,
-      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
-      bidNtceDate: fromDate
-    };
+    try {
+      const apiParams: BidApiParams = {
+        pageNo: params.pageNo || 1,
+        numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+        bidNtceDate: fromDate
+      };
 
-    const response = await this.callG2BApi<BidApiResponse>(
-      BID_API_CONFIG.ENDPOINTS.BID_LIST, 
-      apiParams
-    );
+      const response = await this.callG2BApi<BidApiResponse>(
+        BID_API_CONFIG.ENDPOINTS.BID_LIST, 
+        apiParams
+      );
 
-    return this.transformBidResponse(response);
+      return this.transformBidResponse(response);
+    } catch (error) {
+      console.log('조달청 API not available, using mock data for date range search');
+      
+      // Fallback to mock data
+      await delay(500);
+      
+      // Simple date filtering for mock data
+      const filteredBids = mockBids.filter(bid => {
+        const bidDate = new Date(bid.bidNtceDt);
+        const from = new Date(fromDate);
+        const to = new Date(toDate);
+        return bidDate >= from && bidDate <= to;
+      });
+      
+      const pageNo = params.pageNo || 1;
+      const numOfRows = params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE;
+      const startIndex = (pageNo - 1) * numOfRows;
+      const endIndex = startIndex + numOfRows;
+      const paginatedBids = filteredBids.slice(startIndex, endIndex);
+      
+      return {
+        bids: paginatedBids,
+        pagination: {
+          pageNo,
+          numOfRows,
+          totalCount: filteredBids.length
+        },
+        timestamp: new Date().toISOString(),
+        isUsingMockData: true
+      };
+    }
   }
 
   // 계약 정보 목록 조회 (현재는 입찰공고로 대체)
