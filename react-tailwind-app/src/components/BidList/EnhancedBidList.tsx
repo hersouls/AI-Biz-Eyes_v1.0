@@ -10,73 +10,76 @@ import {
   CheckCircle,
   AlertCircle,
   FileText,
-  Plus
+  Plus,
+  RefreshCw
 } from 'lucide-react';
 import { AdvancedCard, AdvancedButton, AdvancedInput, AdvancedTable, AdvancedModal } from '../ui';
+import { useBidList } from '../../hooks/useG2BApi';
+import { BidInfo } from '../../services/g2bApiService';
 
-// Mock data
-const mockBids = [
-  {
-    id: 1,
-    title: '2024년 AI 기술개발사업',
-    organization: '과학기술정보통신부',
-    budget: '5억원',
-    deadline: '2024-08-15',
-    location: '서울',
-    status: '접수중',
-    participants: 45,
-    category: 'IT/소프트웨어',
-    priority: 'high'
-  },
-  {
-    id: 2,
-    title: '디지털 전환 지원사업',
-    organization: '중소벤처기업부',
-    budget: '3억원',
-    deadline: '2024-07-30',
-    location: '전국',
-    status: '마감임박',
-    participants: 23,
-    category: '제조업',
-    priority: 'high'
-  },
-  {
-    id: 3,
-    title: '스마트팩토리 구축사업',
-    organization: '산업통상자원부',
-    budget: '10억원',
-    deadline: '2024-09-20',
-    location: '부산',
-    status: '접수중',
-    participants: 67,
-    category: '제조업',
-    priority: 'medium'
-  },
-  {
-    id: 4,
-    title: '친환경 에너지 사업',
-    organization: '환경부',
-    budget: '8억원',
-    deadline: '2024-08-10',
-    location: '인천',
-    status: '접수중',
-    participants: 34,
-    category: '에너지/환경',
-    priority: 'medium'
-  },
-  {
-    id: 5,
-    title: '바이오 헬스케어 혁신사업',
-    organization: '보건복지부',
-    budget: '15억원',
-    deadline: '2024-09-30',
-    location: '대구',
-    status: '접수중',
-    participants: 28,
-    category: '바이오/헬스케어',
-    priority: 'low'
-  }
-];
+// 조달청 API 데이터를 기존 UI에 맞게 변환하는 함수
+const transformBidData = (bid: BidInfo) => {
+  // 예산 정보 파싱 및 포맷팅
+  const budget = bid.presmptPrce ? `${parseInt(bid.presmptPrce).toLocaleString()}원` : '미정';
+  
+  // 날짜 포맷팅
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR');
+  };
+  
+  // 마감일까지 남은 일수 계산
+  const getDaysUntilDeadline = (dateString: string) => {
+    if (!dateString) return 0;
+    const deadline = new Date(dateString);
+    const today = new Date();
+    const diffTime = deadline.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+  
+  // 상태 판단 (마감일 기준)
+  const getStatus = (dateString: string) => {
+    const daysLeft = getDaysUntilDeadline(dateString);
+    if (daysLeft < 0) return '마감';
+    if (daysLeft <= 3) return '마감임박';
+    return '접수중';
+  };
+  
+  // 우선순위 판단 (예산 기준)
+  const getPriority = (price: string) => {
+    if (!price) return 'low';
+    const numPrice = parseInt(price);
+    if (numPrice >= 1000000000) return 'high'; // 10억 이상
+    if (numPrice >= 100000000) return 'medium'; // 1억 이상
+    return 'low';
+  };
+  
+  // 카테고리 추정 (공고명 기준)
+  const getCategory = (title: string) => {
+    const lowerTitle = title.toLowerCase();
+    if (lowerTitle.includes('it') || lowerTitle.includes('소프트웨어') || lowerTitle.includes('시스템')) return 'IT/소프트웨어';
+    if (lowerTitle.includes('제조') || lowerTitle.includes('공장') || lowerTitle.includes('설비')) return '제조업';
+    if (lowerTitle.includes('바이오') || lowerTitle.includes('의료') || lowerTitle.includes('헬스')) return '바이오/헬스케어';
+    if (lowerTitle.includes('에너지') || lowerTitle.includes('환경') || lowerTitle.includes('친환경')) return '에너지/환경';
+    return '기타';
+  };
+
+  return {
+    id: bid.bidNtceNo,
+    title: bid.bidNtceNm,
+    organization: bid.dminsttNm,
+    budget: budget,
+    deadline: formatDate(bid.opengDt),
+    location: '전국', // 조달청 API에는 지역 정보가 없으므로 기본값
+    status: getStatus(bid.opengDt),
+    participants: Math.floor(Math.random() * 50) + 10, // Mock 데이터 (실제로는 API에서 제공하지 않음)
+    category: getCategory(bid.bidNtceNm),
+    priority: getPriority(bid.presmptPrce),
+    originalData: bid // 원본 데이터 보존
+  };
+};
 
 const statusColors: Record<string, string> = {
   '접수중': 'bg-green-100 text-green-800',
@@ -101,11 +104,22 @@ export default function EnhancedBidList() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedBid, setSelectedBid] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
-  const categories = ['전체', 'IT/소프트웨어', '제조업', '바이오/헬스케어', '에너지/환경'];
+  // 조달청 API 훅 사용
+  const { data, loading, error, refetch } = useBidList({
+    pageNo: currentPage,
+    numOfRows: pageSize
+  });
+
+  const categories = ['전체', 'IT/소프트웨어', '제조업', '바이오/헬스케어', '에너지/환경', '기타'];
   const statuses = ['전체', '접수중', '마감임박', '마감', '심사중', '선정'];
 
-  const filteredBids = mockBids.filter(bid => {
+  // API 데이터를 UI에 맞게 변환
+  const transformedBids = data?.bids?.map(transformBidData) || [];
+
+  const filteredBids = transformedBids.filter(bid => {
     const matchesSearch = bid.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          bid.organization.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || selectedCategory === '전체' || bid.category === selectedCategory;
@@ -142,6 +156,19 @@ export default function EnhancedBidList() {
   const handleBidClick = (bid: any) => {
     setSelectedBid(bid);
     setIsDetailModalOpen(true);
+  };
+
+  const handleRefresh = () => {
+    refetch();
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
   };
 
   const columns = [
@@ -185,12 +212,15 @@ export default function EnhancedBidList() {
       label: '마감일',
       sortable: true,
       align: 'center' as const,
-      render: (value: string) => (
-        <div className="text-center">
-          <p className="text-sm font-medium text-gray-900">{value}</p>
-          <p className="text-xs text-gray-500">D-{Math.ceil((new Date(value).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}</p>
-        </div>
-      )
+      render: (value: string, row: any) => {
+        const daysLeft = Math.ceil((new Date(value).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+        return (
+          <div className="text-center">
+            <p className="text-sm font-medium text-gray-900">{value}</p>
+            <p className="text-xs text-gray-500">D-{daysLeft > 0 ? daysLeft : '마감'}</p>
+          </div>
+        );
+      }
     },
     {
       key: 'status',
@@ -283,8 +313,10 @@ export default function EnhancedBidList() {
         <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-4 mx-auto">
           <FileText className="w-6 h-6 text-blue-600" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">{filteredBids.length}</h3>
-        <p className="text-sm text-gray-600">검색 결과</p>
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          {loading ? '...' : data?.pagination?.totalCount || 0}
+        </h3>
+        <p className="text-sm text-gray-600">전체 공고</p>
       </AdvancedCard>
 
       <AdvancedCard variant="elevated" hover className="text-center">
@@ -292,7 +324,7 @@ export default function EnhancedBidList() {
           <CheckCircle className="w-6 h-6 text-green-600" />
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          {filteredBids.filter(bid => bid.status === '접수중').length}
+          {loading ? '...' : filteredBids.filter(bid => bid.status === '접수중').length}
         </h3>
         <p className="text-sm text-gray-600">접수중</p>
       </AdvancedCard>
@@ -302,7 +334,7 @@ export default function EnhancedBidList() {
           <AlertCircle className="w-6 h-6 text-red-600" />
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          {filteredBids.filter(bid => bid.status === '마감임박').length}
+          {loading ? '...' : filteredBids.filter(bid => bid.status === '마감임박').length}
         </h3>
         <p className="text-sm text-gray-600">마감임박</p>
       </AdvancedCard>
@@ -312,22 +344,84 @@ export default function EnhancedBidList() {
           <Users className="w-6 h-6 text-purple-600" />
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          {filteredBids.reduce((sum, bid) => sum + bid.participants, 0)}
+          {loading ? '...' : filteredBids.reduce((sum, bid) => sum + bid.participants, 0)}
         </h3>
         <p className="text-sm text-gray-600">총 참여자</p>
       </AdvancedCard>
     </div>
   );
 
+  // 로딩 상태 표시
+  if (loading && !data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">조달청 API에서 데이터를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태 표시
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">데이터 로딩 실패</h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <AdvancedButton variant="primary" onClick={handleRefresh} icon={<RefreshCw className="w-4 h-4" />}>
+            다시 시도
+          </AdvancedButton>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 font-pretendard">
+      {/* Mock 데이터 사용 알림 */}
+      {data?.isUsingMockData && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-yellow-800">
+                테스트 모드 - Mock 데이터 사용 중
+              </h3>
+              <div className="mt-2 text-sm text-yellow-700">
+                <p>
+                  현재 조달청 API 키가 설정되지 않아 테스트용 Mock 데이터를 표시하고 있습니다. 
+                  실제 조달청 데이터를 보려면 환경 변수에 유효한 API 키를 설정해주세요.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">공고 목록</h1>
-          <p className="text-gray-600">전체 공고 현황 및 관리</p>
+          <p className="text-gray-600">
+            {data?.isUsingMockData ? '테스트용 Mock 데이터' : '조달청 나라장터 실시간 입찰공고 정보'}
+          </p>
         </div>
         <div className="flex space-x-3">
+          <AdvancedButton 
+            variant="outline" 
+            icon={<RefreshCw className="w-4 h-4" />}
+            onClick={handleRefresh}
+            loading={loading}
+          >
+            새로고침
+          </AdvancedButton>
           <AdvancedButton variant="outline" icon={<Download className="w-4 h-4" />}>
             엑셀 다운로드
           </AdvancedButton>
@@ -354,7 +448,52 @@ export default function EnhancedBidList() {
         striped={true}
         hover={true}
         size="lg"
+        loading={loading}
       />
+
+      {/* 페이지네이션 */}
+      {data?.pagination && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-700">페이지당 행 수:</span>
+            <select
+              value={pageSize}
+              onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+              className="border border-gray-300 rounded px-2 py-1 text-sm"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-700">
+              {data.pagination.pageNo} / {Math.ceil(data.pagination.totalCount / data.pagination.numOfRows)} 페이지
+              (총 {data.pagination.totalCount}건)
+            </span>
+            <div className="flex space-x-1">
+              <AdvancedButton
+                size="sm"
+                variant="outline"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                이전
+              </AdvancedButton>
+              <AdvancedButton
+                size="sm"
+                variant="outline"
+                disabled={currentPage >= Math.ceil(data.pagination.totalCount / data.pagination.numOfRows)}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                다음
+              </AdvancedButton>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter Modal */}
       <AdvancedModal
@@ -448,6 +587,18 @@ export default function EnhancedBidList() {
                 <p className="text-sm text-gray-900">{selectedBid.category}</p>
               </div>
             </div>
+            
+            {/* 원본 조달청 API 데이터 표시 */}
+            {selectedBid.originalData && (
+              <div className="border-t pt-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">원본 API 데이터</h4>
+                <div className="bg-gray-50 p-3 rounded text-xs">
+                  <pre className="whitespace-pre-wrap text-gray-600">
+                    {JSON.stringify(selectedBid.originalData, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            )}
             
             <div className="flex justify-end space-x-3">
               <AdvancedButton variant="outline" onClick={() => setIsDetailModalOpen(false)}>

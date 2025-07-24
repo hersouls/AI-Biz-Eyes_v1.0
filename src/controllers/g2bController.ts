@@ -6,11 +6,13 @@ export const checkG2BApiStatus = async (req: Request, res: Response) => {
   try {
     const isAvailable = await g2bApiService.checkApiStatus();
     const config = g2bApiService.getConfig();
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     res.json({
       success: true,
       data: {
         isAvailable,
+        isUsingMockData,
         config,
         timestamp: new Date().toISOString()
       }
@@ -51,6 +53,7 @@ export const getBidList = async (req: Request, res: Response) => {
     };
 
     const result = await g2bApiService.getBidList(params);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     res.json({
       success: true,
@@ -61,6 +64,7 @@ export const getBidList = async (req: Request, res: Response) => {
           numOfRows: result.response.body.numOfRows,
           totalCount: result.response.body.totalCount
         },
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
@@ -93,11 +97,13 @@ export const getBidDetail = async (req: Request, res: Response) => {
     }
 
     const result = await g2bApiService.getBidDetail(bidNtceNo);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     return res.json({
       success: true,
       data: {
         bid: result.response.body.items[0],
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
@@ -139,6 +145,7 @@ export const searchBidsByKeyword = async (req: Request, res: Response) => {
     };
 
     const result = await g2bApiService.searchBidsByKeyword(keyword, params);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     return res.json({
       success: true,
@@ -150,6 +157,7 @@ export const searchBidsByKeyword = async (req: Request, res: Response) => {
           numOfRows: result.response.body.numOfRows,
           totalCount: result.response.body.totalCount
         },
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
@@ -191,6 +199,7 @@ export const getBidsByInstitution = async (req: Request, res: Response) => {
     };
 
     const result = await g2bApiService.getBidsByInstitution(institutionName, params);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     return res.json({
       success: true,
@@ -202,6 +211,7 @@ export const getBidsByInstitution = async (req: Request, res: Response) => {
           numOfRows: result.response.body.numOfRows,
           totalCount: result.response.body.totalCount
         },
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
@@ -243,6 +253,7 @@ export const getBidsByDateRange = async (req: Request, res: Response) => {
     };
 
     const result = await g2bApiService.getBidsByDateRange(fromDate, toDate, params);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     return res.json({
       success: true,
@@ -255,6 +266,7 @@ export const getBidsByDateRange = async (req: Request, res: Response) => {
           numOfRows: result.response.body.numOfRows,
           totalCount: result.response.body.totalCount
         },
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
@@ -292,6 +304,7 @@ export const getContractList = async (req: Request, res: Response) => {
     };
 
     const result = await g2bApiService.getContractList(params);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     res.json({
       success: true,
@@ -302,6 +315,7 @@ export const getContractList = async (req: Request, res: Response) => {
           numOfRows: result.response.body.numOfRows,
           totalCount: result.response.body.totalCount
         },
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
@@ -334,11 +348,13 @@ export const getContractDetail = async (req: Request, res: Response) => {
     }
 
     const result = await g2bApiService.getContractDetail(cntrctNo);
+    const isUsingMockData = g2bApiService.isUsingMockData();
 
     return res.json({
       success: true,
       data: {
         contract: result.response.body.items[0],
+        isUsingMockData,
         timestamp: new Date().toISOString()
       }
     });
