@@ -28,7 +28,7 @@ const navigation = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#1B2233] text-sm text-gray-300">
+    <footer className="bg-[#1B2233] text-sm text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:px-8">
         <nav className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm">
           {navigation.main.map((item) => (
@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-200 hover:text-white transition-colors duration-200"
             >
               {item.name}
             </a>
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-200 hover:text-white transition-colors duration-200"
             >
               <span className="sr-only">{item.name}</span>
               <item.icon className="w-6 h-6" aria-hidden="true" />
@@ -59,13 +59,13 @@ const Footer: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-10 text-center text-xs text-gray-400 leading-relaxed">
-          <p><strong>기업 상담전화</strong> &nbsp; 1588-0114 (유료)</p>
+        <div className="mt-10 text-center text-xs text-gray-200 leading-relaxed">
+          <p><strong className="text-white">기업 상담전화</strong> &nbsp; 1588-0114 (유료)</p>
           <p className="mt-1">(주)케이티 &nbsp; 대표이사 김영섭 &nbsp; 경기도 성남시 분당구 불정로 90 (정자동)</p>
           <p className="mt-1">사업자등록번호: 102-81-42945 &nbsp; | &nbsp; 통신판매업신고: 2002-경기성남-0048 &nbsp;
-            <button type="button" className="underline hover:text-white bg-transparent border-none p-0 cursor-pointer">사업자정보확인</button>
+            <button type="button" className="underline hover:text-white bg-transparent border-none p-0 cursor-pointer transition-colors duration-200">사업자정보확인</button>
           </p>
-          <p className="mt-2 text-gray-500">&copy; 2024 KT corp. All rights reserved.</p>
+          <p className="mt-2 text-gray-300">&copy; 2024 KT corp. All rights reserved.</p>
         </div>
       </div>
     </footer>
