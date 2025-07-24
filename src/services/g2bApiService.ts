@@ -218,7 +218,7 @@ class G2BApiService {
   }
 
   // 기본 API 요청 헬퍼 함수
-  private async makeRequest<T>(
+  private async makeRequest<T extends BidInfo | ContractInfo>(
     url: string, 
     params: Record<string, any>
   ): Promise<G2BApiResponse<T>> {
@@ -226,7 +226,7 @@ class G2BApiService {
     if (this.useMockData) {
       console.log('Using Mock Data for G2B API');
       const mockBids = generateMockBidData(params.pageNo || 1, params.numOfRows || 10);
-      return this.createMockResponse<BidInfo>(
+      return this.createMockResponse<T>(
         mockBids as T[],
         params.pageNo || 1,
         params.numOfRows || 10,

@@ -9,10 +9,12 @@ const checkG2BApiStatus = async (req, res) => {
     try {
         const isAvailable = await g2bApiService_1.default.checkApiStatus();
         const config = g2bApiService_1.default.getConfig();
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         res.json({
             success: true,
             data: {
                 isAvailable,
+                isUsingMockData,
                 config,
                 timestamp: new Date().toISOString()
             }
@@ -43,6 +45,7 @@ const getBidList = async (req, res) => {
             toDt: toDt
         };
         const result = await g2bApiService_1.default.getBidList(params);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         res.json({
             success: true,
             data: {
@@ -52,6 +55,7 @@ const getBidList = async (req, res) => {
                     numOfRows: result.response.body.numOfRows,
                     totalCount: result.response.body.totalCount
                 },
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
@@ -82,10 +86,12 @@ const getBidDetail = async (req, res) => {
             });
         }
         const result = await g2bApiService_1.default.getBidDetail(bidNtceNo);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         return res.json({
             success: true,
             data: {
                 bid: result.response.body.items[0],
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
@@ -121,6 +127,7 @@ const searchBidsByKeyword = async (req, res) => {
             numOfRows: Number(numOfRows)
         };
         const result = await g2bApiService_1.default.searchBidsByKeyword(keyword, params);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         return res.json({
             success: true,
             data: {
@@ -131,6 +138,7 @@ const searchBidsByKeyword = async (req, res) => {
                     numOfRows: result.response.body.numOfRows,
                     totalCount: result.response.body.totalCount
                 },
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
@@ -166,6 +174,7 @@ const getBidsByInstitution = async (req, res) => {
             numOfRows: Number(numOfRows)
         };
         const result = await g2bApiService_1.default.getBidsByInstitution(institutionName, params);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         return res.json({
             success: true,
             data: {
@@ -176,6 +185,7 @@ const getBidsByInstitution = async (req, res) => {
                     numOfRows: result.response.body.numOfRows,
                     totalCount: result.response.body.totalCount
                 },
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
@@ -211,6 +221,7 @@ const getBidsByDateRange = async (req, res) => {
             numOfRows: Number(numOfRows)
         };
         const result = await g2bApiService_1.default.getBidsByDateRange(fromDate, toDate, params);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         return res.json({
             success: true,
             data: {
@@ -222,6 +233,7 @@ const getBidsByDateRange = async (req, res) => {
                     numOfRows: result.response.body.numOfRows,
                     totalCount: result.response.body.totalCount
                 },
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
@@ -250,6 +262,7 @@ const getContractList = async (req, res) => {
             toDt: toDt
         };
         const result = await g2bApiService_1.default.getContractList(params);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         res.json({
             success: true,
             data: {
@@ -259,6 +272,7 @@ const getContractList = async (req, res) => {
                     numOfRows: result.response.body.numOfRows,
                     totalCount: result.response.body.totalCount
                 },
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
@@ -289,10 +303,12 @@ const getContractDetail = async (req, res) => {
             });
         }
         const result = await g2bApiService_1.default.getContractDetail(cntrctNo);
+        const isUsingMockData = g2bApiService_1.default.isUsingMockData();
         return res.json({
             success: true,
             data: {
                 contract: result.response.body.items[0],
+                isUsingMockData,
                 timestamp: new Date().toISOString()
             }
         });
