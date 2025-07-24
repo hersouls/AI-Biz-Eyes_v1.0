@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BID_API_CONFIG, ApiUtils, BidApiParams, BidApiResponse, BidItem } from '../config/apiConfig';
 
 // API 기본 설정
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3003/api';
@@ -94,72 +95,228 @@ class G2BApiService {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = `${API_BASE_URL}/g2b`;
+    this.baseURL = BID_API_CONFIG.BASE_URL;
   }
 
-  // 기본 API 요청 헬퍼 함수
-  private async makeRequest<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+  // 실제 조달청 API 호출 헬퍼 함수
+  private async callG2BApi<T>(endpoint: string, params: BidApiParams = {}): Promise<T> {
     try {
-      const response = await axios.get(`${this.baseURL}${endpoint}`, {
-        params,
+      const url = ApiUtils.buildApiUrl(endpoint, {
+        ...params,
+        serviceKey: ApiUtils.getEncodedServiceKey()
+      });
+
+      const response = await axios.get(url, {
+        timeout: BID_API_CONFIG.TIMEOUT,
         headers: {
           'Content-Type': 'application/json',
-        },
+          'Accept': 'application/json',
+          'User-Agent': 'AI-Biz-Eyes/1.0'
+        }
       });
 
       return response.data;
     } catch (error: any) {
-      console.error('G2B API 요청 오류:', error);
-      throw new Error(error.response?.data?.error?.message || 'API 요청에 실패했습니다.');
+      console.error('조달청 API 요청 오류:', error);
+      throw new Error(error.response?.data?.message || '조달청 API 요청에 실패했습니다.');
     }
+  }
+
+  // 조달청 API 응답을 내부 형식으로 변환
+  private transformBidResponse(apiResponse: BidApiResponse): BidListResponse {
+    const items = Array.isArray(apiResponse.response.body.items.item) 
+      ? apiResponse.response.body.items.item 
+      : [apiResponse.response.body.items.item];
+
+    const bids: BidInfo[] = items.map((item: BidItem) => ({
+      bidNtceNo: item.bidNtceNo,
+      bidNtceNm: item.bidNtceNm,
+      dminsttNm: item.dminsttNm,
+      bidMethdNm: this.getBidMethodName(item.bidMethd),
+      presmptPrce: item.presmptPrce,
+      bidNtceDt: item.bidNtceDate,
+      opengDt: item.presnatnOprtnDt,
+      bidNtceUrl: item.bidNtceUrl
+    }));
+
+    return {
+      bids,
+      pagination: {
+        pageNo: apiResponse.response.body.pageNo,
+        numOfRows: apiResponse.response.body.numOfRows,
+        totalCount: apiResponse.response.body.totalCount
+      },
+      timestamp: new Date().toISOString()
+    };
   }
 
   // 조달청 API 상태 확인
   async checkApiStatus(): Promise<G2BApiStatusResponse> {
-    const response = await this.makeRequest<G2BApiResponse<G2BApiStatusResponse>>('/status');
-    return response.data;
+    try {
+      // 간단한 API 호출로 상태 확인
+      await this.callG2BApi<BidApiResponse>(BID_API_CONFIG.ENDPOINTS.BID_LIST, {
+        pageNo: 1,
+        numOfRows: 1
+      });
+
+      return {
+        isAvailable: true,
+        config: {
+          BASE_URL: BID_API_CONFIG.BASE_URL,
+          BID_INFO_URL: `${BID_API_CONFIG.BASE_URL}/${BID_API_CONFIG.ENDPOINTS.BID_LIST}`,
+          CONTRACT_INFO_URL: `${BID_API_CONFIG.BASE_URL}/${BID_API_CONFIG.ENDPOINTS.BID_DETAIL}`,
+          SERVICE_KEY: ApiUtils.getEncodedServiceKey(),
+          TIMEOUT: BID_API_CONFIG.TIMEOUT
+        },
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      return {
+        isAvailable: false,
+        config: {
+          BASE_URL: BID_API_CONFIG.BASE_URL,
+          BID_INFO_URL: `${BID_API_CONFIG.BASE_URL}/${BID_API_CONFIG.ENDPOINTS.BID_LIST}`,
+          CONTRACT_INFO_URL: `${BID_API_CONFIG.BASE_URL}/${BID_API_CONFIG.ENDPOINTS.BID_DETAIL}`,
+          SERVICE_KEY: ApiUtils.getEncodedServiceKey(),
+          TIMEOUT: BID_API_CONFIG.TIMEOUT
+        },
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 
-  // 입찰공고 목록 조회
+  // 입찰공고 목록 조회 (실제 조달청 API 호출)
   async getBidList(params: BidSearchParams = {}): Promise<BidListResponse> {
-    const response = await this.makeRequest<G2BApiResponse<BidListResponse>>('/bids', params);
-    return response.data;
+    const apiParams: BidApiParams = {
+      pageNo: params.pageNo || 1,
+      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+      bidNtceNm: params.bidNtceNm,
+      ntceInsttNm: params.dminsttNm,
+      bidNtceDate: params.fromDt
+    };
+
+    const response = await this.callG2BApi<BidApiResponse>(
+      BID_API_CONFIG.ENDPOINTS.BID_LIST, 
+      apiParams
+    );
+
+    return this.transformBidResponse(response);
   }
 
   // 입찰공고 상세 조회
   async getBidDetail(bidNtceNo: string): Promise<BidInfo> {
-    const response = await this.makeRequest<G2BApiResponse<{ bid: BidInfo }>>(`/bids/${bidNtceNo}`);
-    return response.data.bid;
+    const response = await this.callG2BApi<BidApiResponse>(
+      BID_API_CONFIG.ENDPOINTS.BID_DETAIL, 
+      { bidNtceNo }
+    );
+
+    const items = Array.isArray(response.response.body.items.item) 
+      ? response.response.body.items.item 
+      : [response.response.body.items.item];
+
+    if (items.length === 0) {
+      throw new Error('입찰공고 정보를 찾을 수 없습니다.');
+    }
+
+    const item = items[0];
+    return {
+      bidNtceNo: item.bidNtceNo,
+      bidNtceNm: item.bidNtceNm,
+      dminsttNm: item.dminsttNm,
+      bidMethdNm: this.getBidMethodName(item.bidMethd),
+      presmptPrce: item.presmptPrce,
+      bidNtceDt: item.bidNtceDate,
+      opengDt: item.presnatnOprtnDt,
+      bidNtceUrl: item.bidNtceUrl
+    };
   }
 
   // 키워드로 입찰공고 검색
   async searchBidsByKeyword(keyword: string, params: BidSearchParams = {}): Promise<BidListResponse> {
-    const response = await this.makeRequest<G2BApiResponse<BidListResponse>>(`/bids/search/${encodeURIComponent(keyword)}`, params);
-    return response.data;
+    const apiParams: BidApiParams = {
+      pageNo: params.pageNo || 1,
+      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+      bidNtceNm: keyword
+    };
+
+    const response = await this.callG2BApi<BidApiResponse>(
+      BID_API_CONFIG.ENDPOINTS.BID_SEARCH, 
+      apiParams
+    );
+
+    return this.transformBidResponse(response);
   }
 
   // 기관별 입찰공고 조회
   async getBidsByInstitution(institutionName: string, params: BidSearchParams = {}): Promise<BidListResponse> {
-    const response = await this.makeRequest<G2BApiResponse<BidListResponse>>(`/bids/institution/${encodeURIComponent(institutionName)}`, params);
-    return response.data;
+    const apiParams: BidApiParams = {
+      pageNo: params.pageNo || 1,
+      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+      ntceInsttNm: institutionName
+    };
+
+    const response = await this.callG2BApi<BidApiResponse>(
+      BID_API_CONFIG.ENDPOINTS.BID_LIST, 
+      apiParams
+    );
+
+    return this.transformBidResponse(response);
   }
 
   // 날짜 범위로 입찰공고 조회
   async getBidsByDateRange(fromDate: string, toDate: string, params: BidSearchParams = {}): Promise<BidListResponse> {
-    const response = await this.makeRequest<G2BApiResponse<BidListResponse>>(`/bids/date-range/${fromDate}/${toDate}`, params);
-    return response.data;
+    const apiParams: BidApiParams = {
+      pageNo: params.pageNo || 1,
+      numOfRows: params.numOfRows || BID_API_CONFIG.DEFAULT_PAGE_SIZE,
+      bidNtceDate: fromDate
+    };
+
+    const response = await this.callG2BApi<BidApiResponse>(
+      BID_API_CONFIG.ENDPOINTS.BID_LIST, 
+      apiParams
+    );
+
+    return this.transformBidResponse(response);
   }
 
-  // 계약 정보 목록 조회
+  // 계약 정보 목록 조회 (현재는 입찰공고로 대체)
   async getContractList(params: ContractSearchParams = {}): Promise<ContractListResponse> {
-    const response = await this.makeRequest<G2BApiResponse<ContractListResponse>>('/contracts', params);
-    return response.data;
+    // 조달청 API에는 계약 정보 엔드포인트가 없으므로 입찰공고로 대체
+    const bidResponse = await this.getBidList({
+      pageNo: params.pageNo,
+      numOfRows: params.numOfRows
+    });
+
+    const contracts: ContractInfo[] = bidResponse.bids.map(bid => ({
+      cntrctNo: bid.bidNtceNo,
+      cntrctNm: bid.bidNtceNm,
+      dminsttNm: bid.dminsttNm,
+      cntrctMthdNm: bid.bidMethdNm,
+      cntrctPrce: bid.presmptPrce,
+      cntrctDt: bid.bidNtceDt,
+      cntrctUrl: bid.bidNtceUrl
+    }));
+
+    return {
+      contracts,
+      pagination: bidResponse.pagination,
+      timestamp: new Date().toISOString()
+    };
   }
 
   // 계약 정보 상세 조회
   async getContractDetail(cntrctNo: string): Promise<ContractInfo> {
-    const response = await this.makeRequest<G2BApiResponse<{ contract: ContractInfo }>>(`/contracts/${cntrctNo}`);
-    return response.data.contract;
+    const bidInfo = await this.getBidDetail(cntrctNo);
+    
+    return {
+      cntrctNo: bidInfo.bidNtceNo,
+      cntrctNm: bidInfo.bidNtceNm,
+      dminsttNm: bidInfo.dminsttNm,
+      cntrctMthdNm: bidInfo.bidMethdNm,
+      cntrctPrce: bidInfo.presmptPrce,
+      cntrctDt: bidInfo.bidNtceDt,
+      cntrctUrl: bidInfo.bidNtceUrl
+    };
   }
 
   // 가격 포맷팅 헬퍼 함수
