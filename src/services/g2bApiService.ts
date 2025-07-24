@@ -197,4 +197,5 @@ class G2BApiService {
   }
 }
 
-export default new G2BApiService();
+const g2bApiService = new G2BApiService();
+export default g2bApiService;
