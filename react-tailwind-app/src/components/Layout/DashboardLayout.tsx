@@ -105,7 +105,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                           group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6
                           ${item.current
                             ? 'bg-primary-700 text-white'
-                            : 'text-primary-200 hover:bg-primary-700 hover:text-white'
+                            : 'text-gray-200 hover:bg-primary-700 hover:text-white'
                           }
                         `}
                       >
@@ -117,7 +117,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </ul>
               </li>
               <li>
-                <div className="text-xs font-semibold leading-6 text-primary-200">팀</div>
+                <div className="text-xs font-semibold leading-6 text-gray-200">팀</div>
                 <ul className="-mx-2 mt-2 space-y-1">
                   {teams.map((team) => (
                     <li key={team.name}>
@@ -127,7 +127,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                           group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6
                           ${team.current
                             ? 'bg-primary-700 text-white'
-                            : 'text-primary-200 hover:bg-primary-700 hover:text-white'
+                            : 'text-gray-200 hover:bg-primary-700 hover:text-white'
                           }
                         `}
                       >
@@ -192,7 +192,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   </ul>
                 </li>
                 <li>
-                  <div className="text-xs font-semibold leading-6 text-primary-200">팀</div>
+                  <div className="text-xs font-semibold leading-6 text-gray-200">팀</div>
                   <ul className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
@@ -202,7 +202,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                             group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6
                             ${team.current
                               ? 'bg-primary-700 text-white'
-                              : 'text-primary-200 hover:bg-primary-700 hover:text-white'
+                              : 'text-gray-200 hover:bg-primary-700 hover:text-white'
                             }
                           `}
                         >
