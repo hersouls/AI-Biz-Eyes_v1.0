@@ -16,12 +16,21 @@
 - `src/services/dashboardService.ts` - 대시보드 Mock 데이터
 - `src/services/bidService.ts` - 입찰 기능 Mock 데이터
 - `src/services/statisticsService.ts` - 통계 기능 Mock 데이터
+- `src/services/publicDataService.ts` - 공공데이터포털 Mock 데이터
+- `src/services/mockApiServer.ts` - Mock API 서버 (새로 추가)
 
 ### 타입 정의 파일들
 
 - `src/types/dashboard.ts` - 대시보드 관련 타입
 - `src/types/bid.ts` - 입찰 관련 타입
 - `src/types/statistics.ts` - 통계 관련 타입
+- `src/types/publicData.ts` - 공공데이터포털 관련 타입 (새로 추가)
+
+### 컴포넌트 파일들
+
+- `src/components/PublicDataList.tsx` - 공공데이터 목록 컴포넌트
+- `src/components/PublicDataStats.tsx` - 공공데이터 통계 컴포넌트
+- `src/components/PublicData/PublicDataPage.tsx` - 공공데이터 페이지
 
 ## Mock 데이터 특징
 
@@ -36,6 +45,12 @@
 
 ### 4. 에러 처리
 API 호출 실패 시 자동으로 Mock 데이터로 fallback되며, 콘솔에 로그가 출력됩니다.
+
+### 5. Mock API 서버 (새로 추가)
+- 실제 API 서버와 유사한 응답 구조
+- 에러 시뮬레이션 기능
+- Health check 엔드포인트
+- API 통계 엔드포인트
 
 ## 환경 설정
 
@@ -59,6 +74,16 @@ REACT_APP_ENABLE_STATISTICS=true
 
 # Debug Mode
 REACT_APP_DEBUG=true
+
+# G2B API Configuration (Mock mode)
+REACT_APP_G2B_API_ENABLED=false
+REACT_APP_G2B_API_URL=https://openapi.g2b.go.kr/openapi/service/rest/CmmnCdService
+REACT_APP_G2B_API_KEY=your_api_key_here
+
+# Public Data Portal Configuration (Mock mode)
+REACT_APP_PUBLIC_DATA_ENABLED=false
+REACT_APP_PUBLIC_DATA_URL=https://api.odcloud.kr/api
+REACT_APP_PUBLIC_DATA_KEY=your_api_key_here
 ```
 
 ## 사용 방법
@@ -103,12 +128,56 @@ REACT_APP_DEBUG=true
 - 웹사이트 구축 프로젝트
 - 모바일 앱 개발
 
+### 공공데이터포털 데이터 (새로 추가)
+- 2024년 IT 시스템 구축 사업 현황
+- 스마트시티 구축 사업 데이터
+- 기업 입찰 참여 현황 통계
+- AI 기술 개발 사업 현황
+- 환경 친화적 건설 사업 데이터
+- 디지털 헬스케어 서비스 현황
+- 교육 디지털 전환 현황
+- 블록체인 기술 활용 사례
+
+## 공공데이터포털 Mock API
+
+### 제공 기능
+1. **데이터 목록 조회** - 카테고리, 기관, 검색어 필터링 지원
+2. **데이터 상세 조회** - 개별 데이터 상세 정보
+3. **데이터 검색** - 제목, 설명, 태그, 기관명 검색
+4. **데이터 다운로드** - 다운로드 링크 생성
+5. **통계 정보** - 전체 통계 및 카테고리별 통계
+
+### Mock API 서버 엔드포인트
+- `GET /public-data` - 데이터 목록 조회
+- `GET /public-data/:id` - 데이터 상세 조회
+- `GET /public-data/search` - 데이터 검색
+- `POST /public-data/:id/download` - 다운로드 링크 생성
+- `GET /health` - 서버 상태 확인
+- `GET /stats` - API 통계
+
+### 데이터 형식
+- JSON, CSV, XML, XLSX 형식 지원
+- UTF-8 인코딩
+- CC BY 4.0 라이선스
+- 무료 다운로드
+
 ## 컴포넌트 업데이트
 
 ### KPICards 컴포넌트
 - DashboardService를 사용하여 실제 데이터를 표시
 - 로딩 상태 처리
 - 에러 상태 처리
+
+### PublicDataList 컴포넌트
+- 공공데이터 목록 표시
+- 검색 및 필터링 기능
+- 다운로드 기능
+- 반응형 디자인
+
+### PublicDataStats 컴포넌트
+- 공공데이터 통계 표시
+- 카테고리별 분포
+- 기관별 데이터 현황
 
 ### 기타 컴포넌트들
 모든 컴포넌트가 해당 서비스를 사용하도록 업데이트되었습니다.
@@ -130,10 +199,16 @@ REACT_APP_DEBUG=true
 2. Mock 데이터 정의
 3. try-catch 구조로 실제 API 호출 후 Mock 데이터 fallback
 
+### Mock API 서버 확장
+1. `mockApiServer.ts`에 새로운 엔드포인트 추가
+2. 응답 구조 정의
+3. 에러 시뮬레이션 추가
+
 ### 디버깅
 - 브라우저 개발자 도구 콘솔에서 "API not available, using mock data" 메시지 확인
 - Mock 데이터 사용 여부 확인
+- Mock API 서버 로그 확인
 
 ## 결론
 
-이 Mock 서버 API 적용으로 인해 실제 Open API 연동 없이도 프론트엔드 개발과 테스트가 가능해졌습니다. 실제 API가 준비되면 환경 변수만 변경하여 쉽게 전환할 수 있습니다.
+이 Mock 서버 API 적용으로 인해 실제 Open API 연동 없이도 프론트엔드 개발과 테스트가 가능해졌습니다. 공공데이터포털 API 승인 전까지 Mock 데이터를 사용하여 완전한 기능을 테스트할 수 있으며, 실제 API가 준비되면 환경 변수만 변경하여 쉽게 전환할 수 있습니다.
