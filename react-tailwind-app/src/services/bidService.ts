@@ -521,7 +521,8 @@ export class BidService {
           totalPages: Math.ceil(filteredBids.length / limit)
         }
       },
-      message: '입찰 목록 조회 성공'
+      message: '입찰 목록 조회 성공',
+      isUsingMockData: true
     };
   }
 
