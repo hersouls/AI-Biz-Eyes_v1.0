@@ -1,33 +1,46 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const auth_1 = require("../middleware/auth");
-const personalController_1 = require("../controllers/personalController");
-const upload_1 = require("../middleware/upload");
-const router = express_1.default.Router();
-router.use(auth_1.authenticateToken);
-router.get('/profile', personalController_1.PersonalController.getProfile);
-router.put('/profile', personalController_1.PersonalController.updateProfile);
-router.post('/profile/avatar', upload_1.uploadAvatar, upload_1.handleUploadError, personalController_1.PersonalController.uploadAvatar);
-router.delete('/profile/avatar', personalController_1.PersonalController.deleteAvatar);
-router.get('/notifications/settings', personalController_1.PersonalController.getNotificationSettings);
-router.put('/notifications/settings', personalController_1.PersonalController.updateNotificationSettings);
-router.get('/reports/settings', personalController_1.PersonalController.getReportSettings);
-router.put('/reports/settings', personalController_1.PersonalController.updateReportSettings);
-router.get('/dashboard/settings', personalController_1.PersonalController.getDashboardSettings);
-router.put('/dashboard/settings', personalController_1.PersonalController.updateDashboardSettings);
-router.get('/settings', personalController_1.PersonalController.getPersonalSettings);
-router.put('/settings', personalController_1.PersonalController.updatePersonalSettings);
-router.get('/activity', personalController_1.PersonalController.getActivityHistory);
-router.get('/activity/:id', personalController_1.PersonalController.getActivityDetail);
-router.post('/export', personalController_1.PersonalController.exportData);
-router.get('/export/history', personalController_1.PersonalController.getExportHistory);
-router.get('/export/:id/download', personalController_1.PersonalController.downloadExport);
-router.get('/security', personalController_1.PersonalController.getSecuritySettings);
-router.put('/security/password', personalController_1.PersonalController.updatePassword);
-router.put('/security/two-factor', personalController_1.PersonalController.updateTwoFactor);
+const express_1 = require("express");
+const response_1 = require("../utils/response");
+const mockData_1 = require("../data/mockData");
+const router = (0, express_1.Router)();
+router.get('/profile', (req, res) => {
+    try {
+        const user = mockData_1.mockUsers[0];
+        const profile = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            organization: user.organization,
+            role: user.role,
+            isActive: user.isActive,
+            lastLogin: user.lastLogin,
+            createdAt: user.createdAt,
+            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            phone: '010-1234-5678',
+            department: 'IT 개발팀',
+            position: '시니어 개발자',
+            skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Python'],
+            experience: '8년',
+            education: '컴퓨터공학 학사',
+            certifications: ['AWS Certified Developer', 'Google Cloud Professional'],
+            preferences: {
+                notifications: {
+                    email: true,
+                    push: true,
+                    sms: false
+                },
+                language: 'ko',
+                timezone: 'Asia/Seoul'
+            }
+        };
+        const response = (0, response_1.createSuccessResponse)(profile, '프로필을 성공적으로 조회했습니다.');
+        return res.json(response);
+    }
+    catch (error) {
+        const errorResponse = (0, response_1.createErrorResponse)('INTERNAL_SERVER_ERROR', '서버 오류가 발생했습니다.');
+        return res.status(500).json(errorResponse);
+    }
+});
 exports.default = router;
 //# sourceMappingURL=personal.js.map

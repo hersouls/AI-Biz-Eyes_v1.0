@@ -20,6 +20,7 @@ const personal_1 = __importDefault(require("./routes/personal"));
 const statistics_1 = __importDefault(require("./routes/statistics"));
 const dashboard_1 = __importDefault(require("./routes/dashboard"));
 const integration_1 = __importDefault(require("./routes/integration"));
+const g2b_1 = __importDefault(require("./routes/g2b"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3003;
 app.use((0, helmet_1.default)());
@@ -67,6 +68,7 @@ app.use('/api/personal', personal_1.default);
 app.use('/api/statistics', statistics_1.default);
 app.use('/api/dashboard', dashboard_1.default);
 app.use('/api/integration', integration_1.default);
+app.use('/api/g2b', g2b_1.default);
 app.use('*', (req, res) => {
     res.status(404).json({
         success: false,
@@ -119,6 +121,12 @@ app.listen(PORT, () => {
     console.log(`   GET  /api/files/:id/download - 파일 다운로드`);
     console.log(`   POST /api/webhooks - 웹훅 등록`);
     console.log(`   GET  /api/webhooks - 웹훅 목록`);
+    console.log(`   GET  /api/g2b/status - 조달청 API 상태 확인`);
+    console.log(`   GET  /api/g2b/bids - 입찰공고 목록`);
+    console.log(`   GET  /api/g2b/bids/:id - 입찰공고 상세`);
+    console.log(`   GET  /api/g2b/bids/search/:keyword - 키워드 검색`);
+    console.log(`   GET  /api/g2b/contracts - 계약 정보 목록`);
+    console.log(`   GET  /api/g2b/contracts/:id - 계약 정보 상세`);
     console.log(`\n🔑 Test Credentials:`);
     console.log(`   Admin: admin@example.com / password123`);
     console.log(`   User: user@example.com / password123`);

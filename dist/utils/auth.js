@@ -20,7 +20,7 @@ const verifyToken = (token) => {
             role: parts[4] || 'user'
         };
     }
-    return { id: 1, email: 'dummy@example.com', role: 'user' };
+    throw new Error('Invalid token');
 };
 exports.verifyToken = verifyToken;
 const hashPassword = async (password) => {

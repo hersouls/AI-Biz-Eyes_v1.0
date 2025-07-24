@@ -17,6 +17,7 @@ import IntegrationPage from './components/integration/IntegrationPage';
 import { PersonalPage } from './components/Personal/PersonalPage';
 import ColorSystemDemo from './components/ColorSystemDemo';
 import UIComponentsDemo from './components/Demo/UIComponentsDemo';
+import G2BPage from './components/G2B/G2BPage';
 // import { LoginPage, ProtectedRoute } from './components/Auth'; // TODO: 나중에 구현 예정
 import { ProtectedRoute } from './components/Auth';
 import { 
@@ -96,6 +97,13 @@ function App() {
               <ProtectedRoute>
                 <DashboardLayout>
                   <IntegrationPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/g2b" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <G2BPage />
                 </DashboardLayout>
               </ProtectedRoute>
             } />

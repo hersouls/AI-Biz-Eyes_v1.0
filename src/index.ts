@@ -17,7 +17,7 @@ import personalRoutes from './routes/personal';
 import statisticsRoutes from './routes/statistics';
 import dashboardRoutes from './routes/dashboard';
 import integrationRoutes from './routes/integration';
-import dashboardRoutes from './routes/dashboard';
+import g2bRoutes from './routes/g2b';
 
 const app = express();
 const PORT = process.env.PORT || 3003;
@@ -80,7 +80,7 @@ app.use('/api/personal', personalRoutes);
 app.use('/api/statistics', statisticsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/integration', integrationRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/g2b', g2bRoutes);
 
 // 404 핸들러
 app.use('*', (req, res) => {
@@ -140,6 +140,12 @@ console.log(`🏥 Health Check: https://bizeyes.moonwave.kr/api/health`);
   console.log(`   GET  /api/files/:id/download - 파일 다운로드`);
   console.log(`   POST /api/webhooks - 웹훅 등록`);
   console.log(`   GET  /api/webhooks - 웹훅 목록`);
+  console.log(`   GET  /api/g2b/status - 조달청 API 상태 확인`);
+  console.log(`   GET  /api/g2b/bids - 입찰공고 목록`);
+  console.log(`   GET  /api/g2b/bids/:id - 입찰공고 상세`);
+  console.log(`   GET  /api/g2b/bids/search/:keyword - 키워드 검색`);
+  console.log(`   GET  /api/g2b/contracts - 계약 정보 목록`);
+  console.log(`   GET  /api/g2b/contracts/:id - 계약 정보 상세`);
   console.log(`\n🔑 Test Credentials:`);
   console.log(`   Admin: admin@example.com / password123`);
   console.log(`   User: user@example.com / password123`);

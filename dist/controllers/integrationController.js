@@ -4,11 +4,11 @@ exports.testIntegrationSystem = exports.getIntegrationStats = exports.createFiel
 let integrationSystems = [
     {
         id: '1',
-        name: '나라장터 OpenAPI',
+        name: '나라장터 입찰공고정보서비스',
         type: 'OpenAPI',
         status: 'active',
-        apiKey: 'sample-api-key-123',
-        url: 'https://openapi.g2b.go.kr/openapi/service/rest/CntrctInfoService',
+        apiKey: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDOADaTMcg%3D%3D',
+        url: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
         syncInterval: '5분',
         lastSyncAt: new Date('2024-01-15T10:30:00Z'),
         createdAt: new Date('2024-01-01T00:00:00Z'),
@@ -42,7 +42,7 @@ let integrationLogs = [
         id: '1',
         systemId: '1',
         type: 'success',
-        message: '나라장터 API 데이터 수집 성공',
+        message: '나라장터 입찰공고정보서비스 데이터 수집 성공',
         dataCount: 150,
         duration: 2500,
         createdAt: new Date('2024-01-15T10:30:00Z')
