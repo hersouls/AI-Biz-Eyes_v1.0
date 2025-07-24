@@ -19,6 +19,26 @@ import {
   SystemConfig,
   BackupInfo
 } from '../types';
+import { 
+  createNotificationConfig, 
+  createReportConfig, 
+  createSystemConfig,
+  UpdateNotificationConfigDto,
+  UpdateReportConfigDto,
+  UpdateSystemConfigDto
+} from '../types/admin';
+import { 
+  validateNotificationConfig, 
+  validateReportConfig, 
+  validateSystemConfig,
+  validateUserCreate,
+  validateUserUpdate,
+  validateIdParam,
+  validatePagination,
+  validateSearchQuery,
+  validateDateRange
+} from '../middleware/validation';
+import { TypedRequest } from '../types/express';
 
 // 사용자 관리
 export const getUsers = async (req: Request, res: Response) => {
@@ -88,30 +108,24 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
+// 타입 안전한 사용자 생성 함수
+export const createUser = async (
+  req: TypedRequest<UserCreateRequest>,
+  res: Response
+) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json(createErrorResponse(
-        'VALIDATION_ERROR',
-        '입력값이 올바르지 않습니다.',
-        { errors: errors.array() }
-      ));
-    }
-
     const userData: UserCreateRequest = req.body;
 
     // 이메일 중복 확인
     const existingUser = mockUsers.find(user => user.email === userData.email);
     if (existingUser) {
-      return res.status(422).json(createErrorResponse(
-        'VALIDATION_DUPLICATE_EMAIL',
-        '이미 존재하는 이메일입니다.'
-      ));
+      return res.status(409).json(
+        createErrorResponse('DUPLICATE_EMAIL', '이미 존재하는 이메일 주소입니다.')
+      );
     }
 
-    // Mock 사용자 생성
-    const newUser = {
+    // 타입 안전한 사용자 생성
+    const newUser: User = {
       id: mockUsers.length + 1,
       email: userData.email,
       name: userData.name,
@@ -122,58 +136,52 @@ export const createUser = async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString()
     };
 
-    return res.status(201).json(createSuccessResponse({
-      id: newUser.id,
-      email: newUser.email,
-      name: newUser.name,
-      createdAt: newUser.createdAt
-    }, '사용자가 등록되었습니다.'));
+    mockUsers.push(newUser);
+
+    return res.status(201).json(
+      createSuccessResponse(newUser, '사용자가 생성되었습니다.')
+    );
   } catch (error) {
-    return res.status(500).json(createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    ));
+    console.error('Error creating user:', error);
+    return res.status(500).json(
+      createErrorResponse('INTERNAL_SERVER_ERROR', '서버 오류가 발생했습니다.')
+    );
   }
 };
 
-export const updateUser = async (req: Request, res: Response) => {
+// 타입 안전한 사용자 수정 함수
+export const updateUser = async (
+  req: TypedRequest<UserUpdateRequest, { id: string }>,
+  res: Response
+) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json(createErrorResponse(
-        'VALIDATION_ERROR',
-        '입력값이 올바르지 않습니다.',
-        { errors: errors.array() }
-      ));
-    }
-
     const userId = Number(req.params.id);
     const updateData: UserUpdateRequest = req.body;
 
     const userIndex = mockUsers.findIndex(user => user.id === userId);
     if (userIndex === -1) {
-      return res.status(404).json(createErrorResponse(
-        'RESOURCE_NOT_FOUND',
-        '사용자를 찾을 수 없습니다.'
-      ));
+      return res.status(404).json(
+        createErrorResponse('RESOURCE_NOT_FOUND', '사용자를 찾을 수 없습니다.')
+      );
     }
 
-    // Mock 사용자 업데이트
-    const updatedUser = {
+    // 타입 안전한 사용자 업데이트
+    const updatedUser: User = {
       ...mockUsers[userIndex],
       ...updateData,
       updatedAt: new Date().toISOString()
     };
 
-    return res.json(createSuccessResponse({
-      id: updatedUser.id,
-      updatedAt: updatedUser.updatedAt
-    }, '사용자 정보가 수정되었습니다.'));
+    mockUsers[userIndex] = updatedUser;
+
+    return res.json(
+      createSuccessResponse(updatedUser, '사용자 정보가 수정되었습니다.')
+    );
   } catch (error) {
-    return res.status(500).json(createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    ));
+    console.error('Error updating user:', error);
+    return res.status(500).json(
+      createErrorResponse('INTERNAL_SERVER_ERROR', '서버 오류가 발생했습니다.')
+    );
   }
 };
 
@@ -361,49 +369,59 @@ export const getNotificationConfigs = async (req: Request, res: Response) => {
   }
 };
 
-export const updateNotificationConfig = async (req: Request, res: Response) => {
+// 타입 안전한 알림 설정 업데이트 함수
+export const updateNotificationConfig = async (
+  req: TypedRequest<UpdateNotificationConfigDto, { id: string }>,
+  res: Response
+) => {
   try {
     const configId = Number(req.params.id);
-    const updateData = req.body;
+    const updateData: UpdateNotificationConfigDto = req.body;
 
     if (configId === 0) {
-      // 새 설정 생성 - 타입을 정확히 맞춤
-      const newConfig = {
-        id: mockNotificationConfigs.length + 1,
-        type: updateData.type as 'new_bid' | 'urgent' | 'deadline',
-        channel: updateData.channel as 'web' | 'email' | 'push',
-        frequency: updateData.frequency as 'immediate' | 'daily' | 'weekly',
-        recipients: updateData.recipients as string[],
-        isActive: updateData.isActive as boolean,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      } as any; // 타입 단언으로 해결
+      // ✅ 타입 안전한 객체 생성
+      const newConfig = createNotificationConfig({
+        ...updateData,
+        id: mockNotificationConfigs.length + 1
+      });
+      
+      // 이제 newConfig는 완벽하게 타입이 보장됨
       mockNotificationConfigs.push(newConfig);
       
-      return res.status(201).json(createSuccessResponse(newConfig, '알림 설정이 생성되었습니다.'));
+      return res.status(201).json(
+        createSuccessResponse(newConfig, '알림 설정이 생성되었습니다.')
+      );
     } else {
       // 기존 설정 수정
-      const configIndex = mockNotificationConfigs.findIndex(config => config.id === configId);
+      const configIndex = mockNotificationConfigs.findIndex(
+        config => config.id === configId
+      );
+      
       if (configIndex === -1) {
-        return res.status(404).json(createErrorResponse(
-          'RESOURCE_NOT_FOUND',
-          '알림 설정을 찾을 수 없습니다.'
-        ));
+        return res.status(404).json(
+          createErrorResponse('RESOURCE_NOT_FOUND', '알림 설정을 찾을 수 없습니다.')
+        );
       }
 
-      mockNotificationConfigs[configIndex] = {
+      // 기존 설정과 병합하여 타입 안전하게 업데이트
+      const updatedConfig = createNotificationConfig({
         ...mockNotificationConfigs[configIndex],
         ...updateData,
+        id: configId,  // ID는 변경하지 않음
         updatedAt: new Date().toISOString()
-      };
+      });
 
-      return res.json(createSuccessResponse(mockNotificationConfigs[configIndex], '알림 설정이 수정되었습니다.'));
+      mockNotificationConfigs[configIndex] = updatedConfig;
+
+      return res.json(
+        createSuccessResponse(updatedConfig, '알림 설정이 수정되었습니다.')
+      );
     }
   } catch (error) {
-    return res.status(500).json(createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    ));
+    console.error('Error updating notification config:', error);
+    return res.status(500).json(
+      createErrorResponse('INTERNAL_SERVER_ERROR', '서버 오류가 발생했습니다.')
+    );
   }
 };
 
@@ -419,31 +437,40 @@ export const getReportConfigs = async (req: Request, res: Response) => {
   }
 };
 
-export const updateReportConfig = async (req: Request, res: Response) => {
+// 타입 안전한 리포트 설정 업데이트 함수
+export const updateReportConfig = async (
+  req: TypedRequest<UpdateReportConfigDto, { id: string }>,
+  res: Response
+) => {
   try {
     const configId = Number(req.params.id);
-    const updateData = req.body;
+    const updateData: UpdateReportConfigDto = req.body;
 
     const configIndex = mockReportConfigs.findIndex(config => config.id === configId);
     if (configIndex === -1) {
-      return res.status(404).json(createErrorResponse(
-        'RESOURCE_NOT_FOUND',
-        '리포트 설정을 찾을 수 없습니다.'
-      ));
+      return res.status(404).json(
+        createErrorResponse('RESOURCE_NOT_FOUND', '리포트 설정을 찾을 수 없습니다.')
+      );
     }
 
-    mockReportConfigs[configIndex] = {
+    // 타입 안전한 객체 생성
+    const updatedConfig = createReportConfig({
       ...mockReportConfigs[configIndex],
       ...updateData,
+      id: configId,  // ID는 변경하지 않음
       updatedAt: new Date().toISOString()
-    };
+    });
 
-    return res.json(createSuccessResponse(mockReportConfigs[configIndex], '리포트 설정이 수정되었습니다.'));
+    mockReportConfigs[configIndex] = updatedConfig;
+
+    return res.json(
+      createSuccessResponse(updatedConfig, '리포트 설정이 수정되었습니다.')
+    );
   } catch (error) {
-    return res.status(500).json(createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    ));
+    console.error('Error updating report config:', error);
+    return res.status(500).json(
+      createErrorResponse('INTERNAL_SERVER_ERROR', '서버 오류가 발생했습니다.')
+    );
   }
 };
 
@@ -459,31 +486,40 @@ export const getSystemConfigs = async (req: Request, res: Response) => {
   }
 };
 
-export const updateSystemConfig = async (req: Request, res: Response) => {
+// 타입 안전한 시스템 설정 업데이트 함수
+export const updateSystemConfig = async (
+  req: TypedRequest<UpdateSystemConfigDto, { id: string }>,
+  res: Response
+) => {
   try {
     const configId = Number(req.params.id);
-    const updateData = req.body;
+    const updateData: UpdateSystemConfigDto = req.body;
 
     const configIndex = mockSystemConfigs.findIndex(config => config.id === configId);
     if (configIndex === -1) {
-      return res.status(404).json(createErrorResponse(
-        'RESOURCE_NOT_FOUND',
-        '시스템 설정을 찾을 수 없습니다.'
-      ));
+      return res.status(404).json(
+        createErrorResponse('RESOURCE_NOT_FOUND', '시스템 설정을 찾을 수 없습니다.')
+      );
     }
 
-    mockSystemConfigs[configIndex] = {
+    // 타입 안전한 객체 생성
+    const updatedConfig = createSystemConfig({
       ...mockSystemConfigs[configIndex],
       ...updateData,
+      id: configId,  // ID는 변경하지 않음
       updatedAt: new Date().toISOString()
-    };
+    });
 
-    return res.json(createSuccessResponse(mockSystemConfigs[configIndex], '시스템 설정이 수정되었습니다.'));
+    mockSystemConfigs[configIndex] = updatedConfig;
+
+    return res.json(
+      createSuccessResponse(updatedConfig, '시스템 설정이 수정되었습니다.')
+    );
   } catch (error) {
-    return res.status(500).json(createErrorResponse(
-      'INTERNAL_SERVER_ERROR',
-      '서버 오류가 발생했습니다.'
-    ));
+    console.error('Error updating system config:', error);
+    return res.status(500).json(
+      createErrorResponse('INTERNAL_SERVER_ERROR', '서버 오류가 발생했습니다.')
+    );
   }
 };
 

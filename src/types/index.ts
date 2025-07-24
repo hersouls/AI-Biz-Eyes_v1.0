@@ -432,6 +432,18 @@ export interface BackupInfo {
   downloadUrl?: string;
 }
 
+// 타입 안전성을 위한 추가 타입들
+export interface ValidationError {
+  field: string;
+  message: string;
+  value?: any;
+}
+
+export interface ValidationResult {
+  isValid: boolean;
+  errors: ValidationError[];
+}
+
 export interface PaginationInfo {
   page: number;
   limit: number;
