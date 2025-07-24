@@ -60,7 +60,9 @@ export interface ContractSearchParams {
 }
 declare class G2BApiService {
     private config;
+    private useMockData;
     constructor();
+    private createMockResponse;
     private makeRequest;
     getBidList(params?: BidSearchParams): Promise<G2BApiResponse<BidInfo>>;
     getBidDetail(bidNtceNo: string): Promise<G2BApiResponse<BidInfo>>;
@@ -71,7 +73,8 @@ declare class G2BApiService {
     getBidsByDateRange(fromDate: string, toDate: string, params?: BidSearchParams): Promise<G2BApiResponse<BidInfo>>;
     checkApiStatus(): Promise<boolean>;
     getConfig(): Omit<G2BApiConfig, 'SERVICE_KEY'>;
+    isUsingMockData(): boolean;
 }
-declare const _default: G2BApiService;
-export default _default;
+declare const g2bApiService: G2BApiService;
+export default g2bApiService;
 //# sourceMappingURL=g2bApiService.d.ts.map
