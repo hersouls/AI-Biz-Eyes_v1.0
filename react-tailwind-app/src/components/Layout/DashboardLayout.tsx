@@ -92,7 +92,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Static sidebar for desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-240 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#1B2233] px-6 pb-4">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-100 px-6 pb-4">
           <nav className="flex flex-1 flex-col">
             <ul className="flex flex-1 flex-col gap-y-7">
               <li>
@@ -102,10 +102,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       <Link
                         to={item.href}
                         className={`
-                          group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6
+                          group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6 transition-all duration-200
                           ${item.current
-                            ? 'bg-primary-700 text-white'
-                            : 'text-white hover:bg-primary-700 hover:text-white'
+                            ? 'bg-primary-600 text-white shadow-md'
+                            : 'text-gray-700 hover:bg-primary-100 hover:text-primary-700'
                           }
                         `}
                       >
@@ -117,17 +117,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </ul>
               </li>
               <li>
-                                  <div className="text-xs font-semibold leading-6 text-white">팀</div>
+                                  <div className="text-xs font-semibold leading-6 text-gray-600">팀</div>
                 <ul className="-mx-2 mt-2 space-y-1">
                   {teams.map((team) => (
                     <li key={team.name}>
                       <a
                         href={team.href}
                         className={`
-                          group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6
+                          group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6 transition-all duration-200
                           ${team.current
-                            ? 'bg-primary-700 text-white'
-                            : 'text-white hover:bg-primary-700 hover:text-white'
+                            ? 'bg-primary-600 text-white shadow-md'
+                            : 'text-gray-700 hover:bg-primary-100 hover:text-primary-700'
                           }
                         `}
                       >
@@ -155,12 +155,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* 모바일 사이드바 오버레이 - z-index 증가 */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-[#1B2233]">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-[#1B2233] px-6 pb-4">
+        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-gray-100">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-100 px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center justify-end">
               <button
                 type="button"
-                className="-m-2.5 p-2.5 text-white hover:text-gray-300"
+                className="-m-2.5 p-2.5 text-gray-700 hover:text-gray-900"
                 onClick={() => setSidebarOpen(false)}
               >
                 <span className="sr-only">Close sidebar</span>
@@ -175,13 +175,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       <li key={item.name}>
                         <Link
                           to={item.href}
-                          className={`
-                            group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6
-                            ${item.current
-                              ? 'bg-primary-700 text-white'
-                              : 'text-white hover:bg-primary-700 hover:text-white'
-                            }
-                          `}
+                                                  className={`
+                          group flex gap-x-3 rounded-5 px-2 py-2 text-body2 font-medium leading-6 transition-all duration-200
+                          ${item.current
+                            ? 'bg-primary-600 text-white shadow-md'
+                            : 'text-gray-700 hover:bg-primary-100 hover:text-primary-700'
+                          }
+                        `}
                           onClick={() => setSidebarOpen(false)}
                         >
                           <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
@@ -192,19 +192,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   </ul>
                 </li>
                 <li>
-                  <div className="text-xs font-semibold leading-6 text-white">팀</div>
+                  <div className="text-xs font-semibold leading-6 text-gray-600">팀</div>
                   <ul className="-mx-2 mt-2 space-y-1">
                     {teams.map((team) => (
                       <li key={team.name}>
                         <a
                           href={team.href}
-                          className={`
-                            group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6
-                            ${team.current
-                              ? 'bg-primary-700 text-white'
-                              : 'text-white hover:bg-primary-700 hover:text-white'
-                            }
-                          `}
+                                                  className={`
+                          group flex gap-x-3 rounded-5 px-2 py-2 text-body3 font-medium leading-6 transition-all duration-200
+                          ${team.current
+                            ? 'bg-primary-600 text-white shadow-md'
+                            : 'text-gray-700 hover:bg-primary-100 hover:text-primary-700'
+                          }
+                        `}
                         >
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-500 text-body3 font-medium text-white">
                             {team.initial}
