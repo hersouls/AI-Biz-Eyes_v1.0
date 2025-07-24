@@ -50,14 +50,28 @@ export interface SystemLog {
 
 export interface NotificationConfig {
   id: number;
-  type: 'new_bid' | 'urgent' | 'deadline' | 'achievement';
+  type: 'new_bid' | 'urgent' | 'deadline';
   channel: 'web' | 'email' | 'push';
   frequency: 'immediate' | 'daily' | 'weekly';
   recipients: string[];
   isActive: boolean;
   createdAt: string;
-  updatedAt?: string;
+  updatedAt: string;
 }
+
+// 타입 단언 제거
+export const createNotificationConfig = (data: Partial<NotificationConfig>): NotificationConfig => {
+  return {
+    id: data.id ?? 0,
+    type: data.type ?? 'new_bid',
+    channel: data.channel ?? 'web',
+    frequency: data.frequency ?? 'immediate',
+    recipients: data.recipients ?? [],
+    isActive: data.isActive ?? true,
+    createdAt: data.createdAt ?? new Date().toISOString(),
+    updatedAt: data.updatedAt ?? new Date().toISOString()
+  };
+};
 
 export interface ReportConfig {
   id: number;
