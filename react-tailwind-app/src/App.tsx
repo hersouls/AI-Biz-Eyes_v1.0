@@ -2,13 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// 개발 환경에서 API 테스트 함수 import
-if (process.env.NODE_ENV === 'development') {
-  import('./test-g2b-api').then(module => {
-    (window as any).testG2BApi = module.default;
-  });
-}
-
 // Context
 import { UserProvider } from './contexts/UserContext';
 
@@ -43,6 +36,13 @@ import {
   QualityReport,
   AuditSettings
 } from './components/Admin';
+
+// 개발 환경에서 API 테스트 함수 import
+if (process.env.NODE_ENV === 'development') {
+  import('./test-g2b-api').then(module => {
+    (window as any).testG2BApi = module.default;
+  });
+}
 
 function App() {
   return (
