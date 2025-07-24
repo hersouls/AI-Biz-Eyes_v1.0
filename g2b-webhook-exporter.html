@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조달청 API 웹훅 내보내기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 1px solid #e1e8ed;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .webhook-url {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+            word-break: break-all;
+        }
+
+        .json-schema {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>조달청 API 웹훅 내보내기</h1>
+            <p>조달청 API 데이터를 Power Automate 웹훅으로 전송하는 도구</p>
+        </div>
+
+        <div class="content">
+            <!-- 웹훅 설정 섹션 -->
+            <div class="section">
+                <h2>🔗 웹훅 설정</h2>
+                <div class="form-group">
+                    <label for="webhookUrl">Power Automate 웹훅 URL:</label>
+                    <input type="url" id="webhookUrl" placeholder="https://prod-17.southeastasia.logic.azure.com:443/workflows/..." />
+                </div>
+                <div class="form-group">
+                    <label for="apiKey">조달청 API 키 (선택사항):</label>
+                    <input type="password" id="apiKey" placeholder="API 키를 입력하세요" />
+                </div>
+                <button class="btn" onclick="testWebhook()">웹훅 연결 테스트</button>
+                <div id="webhookStatus"></div>
+            </div>
+
+            <!-- API 설정 섹션 -->
+            <div class="section">
+                <h2>📊 조달청 API 설정</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="apiType">API 유형:</label>
+                        <select id="apiType" onchange="updateApiFields()">
+                            <option value="bid">입찰정보</option>
+                            <option value="contract">계약정보</option>
+                            <option value="company">업체정보</option>
+                            <option value="notice">공고정보</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataLimit">데이터 제한:</label>
+                        <select id="dataLimit">
+                            <option value="10">10건</option>
+                            <option value="50">50건</option>
+                            <option value="100" selected>100건</option>
+                            <option value="500">500건</option>
+                            <option value="1000">1000건</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="searchKeyword">검색 키워드 (선택사항):</label>
+                    <input type="text" id="searchKeyword" placeholder="검색할 키워드를 입력하세요" />
+                </div>
+                <div class="form-group">
+                    <label for="dateRange">날짜 범위:</label>
+                    <select id="dateRange">
+                        <option value="1">최근 1일</option>
+                        <option value="7" selected>최근 7일</option>
+                        <option value="30">최근 30일</option>
+                        <option value="90">최근 90일</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 스케줄링 섹션 -->
+            <div class="section">
+                <h2>⏰ 자동 실행 설정</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="scheduleType">실행 주기:</label>
+                        <select id="scheduleType" onchange="toggleScheduleOptions()">
+                            <option value="manual">수동 실행</option>
+                            <option value="hourly">매시간</option>
+                            <option value="daily">매일</option>
+                            <option value="weekly">매주</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="scheduleTimeGroup" style="display: none;">
+                        <label for="scheduleTime">실행 시간:</label>
+                        <input type="time" id="scheduleTime" value="09:00" />
+                    </div>
+                </div>
+                <div class="form-group" id="scheduleDayGroup" style="display: none;">
+                    <label for="scheduleDay">실행 요일:</label>
+                    <select id="scheduleDay">
+                        <option value="1">월요일</option>
+                        <option value="2">화요일</option>
+                        <option value="3">수요일</option>
+                        <option value="4">목요일</option>
+                        <option value="5">금요일</option>
+                        <option value="6">토요일</option>
+                        <option value="0">일요일</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- JSON 스키마 섹션 -->
+            <div class="section">
+                <h2>📋 JSON 스키마</h2>
+                <p>Power Automate에서 사용할 JSON 스키마입니다:</p>
+                <div class="json-schema" id="jsonSchema">
+{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "API 데이터 유형"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "데이터 생성 시간"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "고유 식별자"
+          },
+          "title": {
+            "type": "string",
+            "description": "제목"
+          },
+          "description": {
+            "type": "string",
+            "description": "설명"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "상세 페이지 URL"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date",
+            "description": "공고일"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date",
+            "description": "마감일"
+          },
+          "budget": {
+            "type": "number",
+            "description": "예산 (원)"
+          },
+          "category": {
+            "type": "string",
+            "description": "카테고리"
+          },
+          "location": {
+            "type": "string",
+            "description": "지역"
+          },
+          "status": {
+            "type": "string",
+            "description": "상태"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "type": "number",
+          "description": "총 데이터 수"
+        },
+        "newCount": {
+          "type": "number",
+          "description": "새로운 데이터 수"
+        },
+        "updatedCount": {
+          "type": "number",
+          "description": "업데이트된 데이터 수"
+        }
+      }
+    }
+  },
+  "required": ["type", "timestamp", "data"]
+}
+                </div>
+                <button class="btn btn-secondary copy-btn" onclick="copySchema()">스키마 복사</button>
+            </div>
+
+            <!-- 실행 섹션 -->
+            <div class="section">
+                <h2>🚀 실행</h2>
+                <button class="btn btn-success" onclick="startExport()">데이터 내보내기 시작</button>
+                <button class="btn btn-secondary" onclick="stopExport()">중지</button>
+                <button class="btn btn-danger" onclick="clearLog()">로그 지우기</button>
+                
+                <div id="exportStatus"></div>
+                <div id="exportLog" style="margin-top: 20px; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let exportInterval = null;
+        let isExporting = false;
+
+        function updateApiFields() {
+            const apiType = document.getElementById('apiType').value;
+            const schemaElement = document.getElementById('jsonSchema');
+            
+            let schema = '';
+            switch(apiType) {
+                case 'bid':
+                    schema = getBidSchema();
+                    break;
+                case 'contract':
+                    schema = getContractSchema();
+                    break;
+                case 'company':
+                    schema = getCompanySchema();
+                    break;
+                case 'notice':
+                    schema = getNoticeSchema();
+                    break;
+            }
+            schemaElement.textContent = schema;
+        }
+
+        function getBidSchema() {
+            return `{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "입찰정보"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "bidId": {
+            "type": "string",
+            "description": "입찰번호"
+          },
+          "title": {
+            "type": "string",
+            "description": "입찰명"
+          },
+          "agency": {
+            "type": "string",
+            "description": "수요기관"
+          },
+          "bidType": {
+            "type": "string",
+            "description": "입찰방식"
+          },
+          "budget": {
+            "type": "number",
+            "description": "예정가격"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date"
+          },
+          "category": {
+            "type": "string",
+            "description": "업종분류"
+          },
+          "location": {
+            "type": "string",
+            "description": "사업장소"
+          },
+          "status": {
+            "type": "string",
+            "description": "입찰상태"
+          }
+        }
+      }
+    }
+  }
+}`;
+        }
+
+        function getContractSchema() {
+            return `{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "계약정보"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "contractId": {
+            "type": "string",
+            "description": "계약번호"
+          },
+          "title": {
+            "type": "string",
+            "description": "계약명"
+          },
+          "agency": {
+            "type": "string",
+            "description": "수요기관"
+          },
+          "supplier": {
+            "type": "string",
+            "description": "공급업체"
+          },
+          "contractAmount": {
+            "type": "number",
+            "description": "계약금액"
+          },
+          "contractDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "completionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "category": {
+            "type": "string",
+            "description": "업종분류"
+          }
+        }
+      }
+    }
+  }
+}`;
+        }
+
+        function getCompanySchema() {
+            return `{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "업체정보"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "업체번호"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "업체명"
+          },
+          "businessNumber": {
+            "type": "string",
+            "description": "사업자등록번호"
+          },
+          "representative": {
+            "type": "string",
+            "description": "대표자명"
+          },
+          "address": {
+            "type": "string",
+            "description": "주소"
+          },
+          "phone": {
+            "type": "string",
+            "description": "전화번호"
+          },
+          "category": {
+            "type": "string",
+            "description": "업종분류"
+          },
+          "registrationDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}`;
+        }
+
+        function getNoticeSchema() {
+            return `{
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "공고정보"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "noticeId": {
+            "type": "string",
+            "description": "공고번호"
+          },
+          "title": {
+            "type": "string",
+            "description": "공고제목"
+          },
+          "agency": {
+            "type": "string",
+            "description": "공고기관"
+          },
+          "noticeType": {
+            "type": "string",
+            "description": "공고유형"
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date"
+          },
+          "content": {
+            "type": "string",
+            "description": "공고내용"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "첨부파일 목록"
+          }
+        }
+      }
+    }
+  }
+}`;
+        }
+
+        function toggleScheduleOptions() {
+            const scheduleType = document.getElementById('scheduleType').value;
+            const timeGroup = document.getElementById('scheduleTimeGroup');
+            const dayGroup = document.getElementById('scheduleDayGroup');
+            
+            timeGroup.style.display = 'none';
+            dayGroup.style.display = 'none';
+            
+            if (scheduleType === 'daily' || scheduleType === 'weekly') {
+                timeGroup.style.display = 'block';
+            }
+            
+            if (scheduleType === 'weekly') {
+                dayGroup.style.display = 'block';
+            }
+        }
+
+        function testWebhook() {
+            const webhookUrl = document.getElementById('webhookUrl').value;
+            const statusDiv = document.getElementById('webhookStatus');
+            
+            if (!webhookUrl) {
+                statusDiv.innerHTML = '<div class="status error">웹훅 URL을 입력해주세요.</div>';
+                return;
+            }
+            
+            const testData = {
+                type: "test",
+                timestamp: new Date().toISOString(),
+                data: [{
+                    id: "test-001",
+                    title: "웹훅 연결 테스트",
+                    description: "조달청 API 웹훅 연결이 정상적으로 작동합니다.",
+                    status: "success"
+                }],
+                summary: {
+                    totalCount: 1,
+                    newCount: 1,
+                    updatedCount: 0
+                }
+            };
+            
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(testData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    statusDiv.innerHTML = '<div class="status success">✅ 웹훅 연결 성공! 테스트 데이터가 정상적으로 전송되었습니다.</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="status error">❌ 웹훅 연결 실패. HTTP 상태: ' + response.status + '</div>';
+                }
+            })
+            .catch(error => {
+                statusDiv.innerHTML = '<div class="status error">❌ 웹훅 연결 오류: ' + error.message + '</div>';
+            });
+        }
+
+        function startExport() {
+            if (isExporting) {
+                addLog('이미 내보내기가 실행 중입니다.');
+                return;
+            }
+            
+            const webhookUrl = document.getElementById('webhookUrl').value;
+            if (!webhookUrl) {
+                addLog('❌ 웹훅 URL을 입력해주세요.', 'error');
+                return;
+            }
+            
+            isExporting = true;
+            addLog('🚀 조달청 API 데이터 내보내기를 시작합니다...', 'info');
+            
+            // 즉시 한 번 실행
+            executeExport();
+            
+            // 스케줄링 설정
+            const scheduleType = document.getElementById('scheduleType').value;
+            if (scheduleType !== 'manual') {
+                let interval = null;
+                switch(scheduleType) {
+                    case 'hourly':
+                        interval = 60 * 60 * 1000; // 1시간
+                        break;
+                    case 'daily':
+                        interval = 24 * 60 * 60 * 1000; // 24시간
+                        break;
+                    case 'weekly':
+                        interval = 7 * 24 * 60 * 60 * 1000; // 7일
+                        break;
+                }
+                
+                if (interval) {
+                    exportInterval = setInterval(executeExport, interval);
+                    addLog(`⏰ 자동 실행이 설정되었습니다. (${scheduleType})`, 'info');
+                }
+            }
+        }
+
+        function stopExport() {
+            if (exportInterval) {
+                clearInterval(exportInterval);
+                exportInterval = null;
+            }
+            isExporting = false;
+            addLog('⏹️ 데이터 내보내기가 중지되었습니다.', 'info');
+        }
+
+        function executeExport() {
+            const webhookUrl = document.getElementById('webhookUrl').value;
+            const apiType = document.getElementById('apiType').value;
+            const dataLimit = parseInt(document.getElementById('dataLimit').value);
+            const searchKeyword = document.getElementById('searchKeyword').value;
+            const dateRange = parseInt(document.getElementById('dateRange').value);
+            
+            addLog(`📊 ${apiType} 데이터를 조회 중... (${dataLimit}건)`, 'info');
+            
+            // 실제 API 호출 시뮬레이션
+            setTimeout(() => {
+                const mockData = generateMockData(apiType, dataLimit);
+                
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(mockData)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        addLog(`✅ ${mockData.data.length}건의 데이터가 성공적으로 전송되었습니다.`, 'success');
+                        updateExportStatus(`마지막 전송: ${new Date().toLocaleString()} (${mockData.data.length}건)`);
+                    } else {
+                        addLog(`❌ 데이터 전송 실패. HTTP 상태: ${response.status}`, 'error');
+                    }
+                })
+                .catch(error => {
+                    addLog(`❌ 데이터 전송 오류: ${error.message}`, 'error');
+                });
+            }, 2000);
+        }
+
+        function generateMockData(apiType, limit) {
+            const now = new Date();
+            const data = [];
+            
+            for (let i = 0; i < limit; i++) {
+                const baseData = {
+                    id: `${apiType}-${String(i + 1).padStart(3, '0')}`,
+                    title: `${getApiTypeName(apiType)} 샘플 데이터 ${i + 1}`,
+                    publishDate: new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    status: ['진행중', '완료', '대기중'][Math.floor(Math.random() * 3)]
+                };
+                
+                switch(apiType) {
+                    case 'bid':
+                        data.push({
+                            ...baseData,
+                            bidId: `BID-${String(i + 1).padStart(6, '0')}`,
+                            agency: `기관명 ${i + 1}`,
+                            bidType: ['공개입찰', '지명입찰', '제한입찰'][Math.floor(Math.random() * 3)],
+                            budget: Math.floor(Math.random() * 1000000000) + 10000000,
+                            category: ['건설', 'IT', '서비스'][Math.floor(Math.random() * 3)],
+                            location: ['서울', '부산', '대구', '인천', '광주'][Math.floor(Math.random() * 5)]
+                        });
+                        break;
+                    case 'contract':
+                        data.push({
+                            ...baseData,
+                            contractId: `CON-${String(i + 1).padStart(6, '0')}`,
+                            agency: `기관명 ${i + 1}`,
+                            supplier: `공급업체 ${i + 1}`,
+                            contractAmount: Math.floor(Math.random() * 1000000000) + 10000000,
+                            contractDate: new Date(now.getTime() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                            category: ['건설', 'IT', '서비스'][Math.floor(Math.random() * 3)]
+                        });
+                        break;
+                    case 'company':
+                        data.push({
+                            ...baseData,
+                            companyId: `COM-${String(i + 1).padStart(6, '0')}`,
+                            companyName: `업체명 ${i + 1}`,
+                            businessNumber: `${String(Math.floor(Math.random() * 999999999) + 100000000)}`,
+                            representative: `대표자 ${i + 1}`,
+                            address: `주소 ${i + 1}`,
+                            phone: `02-${String(Math.floor(Math.random() * 9999) + 1000)}-${String(Math.floor(Math.random() * 9999) + 1000)}`,
+                            category: ['건설', 'IT', '서비스'][Math.floor(Math.random() * 3)],
+                            registrationDate: new Date(now.getTime() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                        });
+                        break;
+                    case 'notice':
+                        data.push({
+                            ...baseData,
+                            noticeId: `NOT-${String(i + 1).padStart(6, '0')}`,
+                            agency: `기관명 ${i + 1}`,
+                            noticeType: ['일반공고', '긴급공고', '수정공고'][Math.floor(Math.random() * 3)],
+                            content: `공고 내용 ${i + 1}`,
+                            attachments: [`첨부파일1.pdf`, `첨부파일2.xlsx`]
+                        });
+                        break;
+                }
+            }
+            
+            return {
+                type: apiType,
+                timestamp: now.toISOString(),
+                data: data,
+                summary: {
+                    totalCount: data.length,
+                    newCount: Math.floor(data.length * 0.7),
+                    updatedCount: Math.floor(data.length * 0.3)
+                }
+            };
+        }
+
+        function getApiTypeName(apiType) {
+            const names = {
+                'bid': '입찰정보',
+                'contract': '계약정보',
+                'company': '업체정보',
+                'notice': '공고정보'
+            };
+            return names[apiType] || apiType;
+        }
+
+        function addLog(message, type = 'info') {
+            const logDiv = document.getElementById('exportLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.color = type === 'error' ? '#e74c3c' : type === 'success' ? '#27ae60' : '#3498db';
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function updateExportStatus(message) {
+            const statusDiv = document.getElementById('exportStatus');
+            statusDiv.innerHTML = `<div class="status success">${message}</div>`;
+        }
+
+        function clearLog() {
+            document.getElementById('exportLog').innerHTML = '';
+            document.getElementById('exportStatus').innerHTML = '';
+        }
+
+        function copySchema() {
+            const schemaText = document.getElementById('jsonSchema').textContent;
+            navigator.clipboard.writeText(schemaText).then(() => {
+                alert('JSON 스키마가 클립보드에 복사되었습니다.');
+            }).catch(err => {
+                console.error('클립보드 복사 실패:', err);
+                alert('클립보드 복사에 실패했습니다.');
+            });
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            updateApiFields();
+            addLog('🔧 조달청 API 웹훅 내보내기 도구가 준비되었습니다.', 'info');
+        });
+    </script>
+</body>
+</html>
