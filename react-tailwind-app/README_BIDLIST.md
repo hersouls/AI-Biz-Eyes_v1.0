@@ -114,19 +114,21 @@ interface BidData {
 
 ## API 연동
 
-### 나라장터 OpenAPI 설정
+### 나라장터 입찰공고정보서비스 설정
 ```typescript
 const API_CONFIG = {
-  BASE_URL: 'https://openapi.g2b.go.kr:8090/openapi/service/rest/CpcpBidInfoService',
-  SERVICE_KEY: process.env.REACT_APP_G2B_SERVICE_KEY,
-  DEFAULT_PAGE_SIZE: 20
+  BASE_URL: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
+  SERVICE_KEY: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDOADaTMcg%3D%3D',
+  DEFAULT_PAGE_SIZE: 20,
+  DATA_FORMAT: 'JSON+XML'
 };
 ```
 
 ### 주요 API 엔드포인트
 - **공고 목록 조회**: `getBidPblancListInfoServc`
 - **공고 상세 조회**: `getBidPblancDetailInfoServc`
-- **응답 형식**: JSON
+- **응답 형식**: JSON+XML
+- **참고문서**: 조달청 OpenAPI참고자료 나라장터 입찰 공고정보서비스 1.0.docx
 
 ## 사용법
 
@@ -166,7 +168,8 @@ const sort = {
 ### 1. 환경 변수
 ```bash
 # .env 파일
-REACT_APP_G2B_SERVICE_KEY=your_service_key_here
+REACT_APP_BID_SERVICE_KEY=w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDOADaTMcg%3D%3D
+REACT_APP_BID_API_URL=https://apis.data.go.kr/1230000/ad/BidPublicInfoService
 ```
 
 ### 2. 의존성 설치

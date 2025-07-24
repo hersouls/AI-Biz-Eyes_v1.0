@@ -1,547 +1,337 @@
-# AI Biz Eyes 공모사업 자동화 관리 웹서비스
+# AI Biz Eyes - B2G 공모사업 자동화 관리 시스템
 
-<div align="center">
+## 📋 프로젝트 개요
 
-![AI Biz Eyes Logo](https://img.shields.io/badge/AI%20Biz%20Eyes-v1.0.0-blue?style=for-the-badge&logo=eye)
-![Node.js](https://img.shields.io/badge/Node.js-18.x-green?style=for-the-badge&logo=node.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=for-the-badge&logo=typescript)
-![React](https://img.shields.io/badge/React-18.x-blue?style=for-the-badge&logo=react)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15.x-blue?style=for-the-badge&logo=postgresql)
-
-**정부/공공기관 공모·입찰·사업 공고 자동 수집·구조화·분석·알림 시스템**
-
-[🚀 라이브 데모](https://bizeyes.moonwave.kr) | [📚 API 문서](https://docs.ai-biz-eyes.com) | [🐛 이슈 리포트](https://github.com/ai-biz-eyes/issues)
-
-</div>
-
----
-
-## 📋 목차
-
-- [프로젝트 개요](#-프로젝트-개요)
-- [주요 기능](#-주요-기능)
-- [기술 스택](#-기술-스택)
-- [빠른 시작](#-빠른-시작)
-- [프로젝트 구조](#-프로젝트-구조)
-- [API 문서](#-api-문서)
-- [개발 가이드](#-개발-가이드)
-- [배포 가이드](#-배포-가이드)
-- [기여하기](#-기여하기)
-- [라이선스](#-라이선스)
-
----
-
-## 🎯 프로젝트 개요
-
-AI Biz Eyes는 정부/공공기관의 공모·입찰·사업 공고를 자동으로 수집하고 분석하여 조직의 사업 참여 의사결정을 지원하는 웹서비스입니다.
-
-### 🎯 개발 목적
-- **자동화된 공고 수집**: 나라장터 OpenAPI 연동으로 실시간 공고 수집
-- **스마트 분석**: AI 기반 유사 공고 매칭 및 참여 가능성 분석
-- **리스크 최소화**: 인적 누락/중복 방지 및 담당자 리스크 관리
-- **레퍼런스 관리**: 조직의 사업 경험 체계적 관리 및 활용
-- **실시간 알림**: 중요 공고 및 마감일 실시간 알림
-
-### 👥 대상 사용자
-- **사업 담당자**: 기획/실무/관리자
-- **조직 규모**: 10명 이상 조직
-- **접근 환경**: PC/모바일 (Responsive Web, Chrome/Edge 기준)
-
----
+AI Biz Eyes는 Business to Government(B2G) 공모사업을 위한 종합적인 자동화 관리 시스템입니다. 나라장터 OpenAPI 연동, AI 기반 분석, 자동 알림 시스템을 통해 공모사업 참여 효율성을 극대화합니다.
 
 ## 🚀 주요 기능
 
-### 🔐 인증 시스템
-- **JWT 기반 인증**: 안전한 토큰 기반 인증
-- **역할 기반 접근 제어**: admin, user, guest 권한 관리
-- **자동 토큰 갱신**: 만료된 토큰 자동 갱신
-- **보안 강화**: bcrypt를 통한 비밀번호 해싱
-
-### 📢 공고 관리
-- **자동 수집**: 나라장터 OpenAPI 연동 자동 수집
-- **실시간 동기화**: 정기적인 공고 데이터 업데이트
-- **검색 및 필터링**: 다양한 조건으로 공고 검색
-- **상세 분석**: 공고별 상세 정보 및 분석 제공
-- **통계 대시보드**: 공고 현황 실시간 통계
-
-### 📚 레퍼런스 관리
-- **CRUD 기능**: 완전한 레퍼런스 관리 기능
-- **파일 첨부**: 사업 관련 문서 업로드 및 관리
-- **AI 기반 매칭**: 유사 공고 자동 매칭
-- **성과 분석**: 레퍼런스별 성과 통계
-- **검색 기능**: 다양한 조건으로 레퍼런스 검색
+### 📊 데이터 관리
+- **자동화된 공고 수집**: 나라장터 입찰공고정보서비스 API 연동으로 실시간 공고 수집
+- **AI 기반 분석**: 머신러닝을 통한 참여 가능성 분석 및 추천
+- **레퍼런스 관리**: 과거 사업 이력 및 성과 데이터 체계적 관리
 
 ### 🔔 알림 시스템
-- **실시간 알림**: 중요 공고 및 마감일 알림
-- **알림 설정**: 사용자별 알림 설정 관리
-- **알림 상태 관리**: 읽음/안읽음 상태 관리
-- **알림 분류**: 긴급, 마감일, 누락, 중복 알림
+- **실시간 알림**: 새로운 공고 등록 시 즉시 알림
+- **맞춤형 필터링**: 키워드, 예산, 기관별 맞춤 알림 설정
+- **다중 채널**: 이메일, SMS, Slack 등 다양한 알림 채널 지원
 
-### 👨‍💼 관리자 기능
-- **사용자 관리**: 사용자 등록, 수정, 삭제
-- **시스템 로그**: 시스템 활동 로그 관리
-- **통계 대시보드**: 전체 시스템 통계
-- **시스템 설정**: 시스템 설정 관리
-
-### 📁 파일 관리
-- **파일 업로드**: 다양한 형식 파일 업로드
-- **파일 다운로드**: 안전한 파일 다운로드
-- **파일 관리**: 파일 메타데이터 관리
-- **AWS S3 연동**: 클라우드 파일 저장
+### 📈 분석 및 리포트
+- **대시보드**: 실시간 현황 및 통계 시각화
+- **성과 분석**: 참여 이력 및 수주율 분석
+- **예측 모델**: AI 기반 수주 가능성 예측
 
 ## 🛠 기술 스택
 
-### 🖥️ Backend
-- **Runtime**: Node.js 18.x
-- **Framework**: Express.js 4.x
-- **Language**: TypeScript 5.x
-- **Database**: PostgreSQL 15.x
-- **Cache**: Redis 7.x
-- **ORM**: Prisma 5.x
-- **Authentication**: JWT + bcrypt
-- **Validation**: express-validator
-- **Security**: helmet, cors, rate-limiting
-- **Mock Data**: faker.js
+### Frontend
+- **React 18** + **TypeScript**
+- **Tailwind CSS** - 모던 UI/UX
+- **React Router** - SPA 라우팅
+- **React Query** - 서버 상태 관리
 
-### 🎨 Frontend
-- **Framework**: React 18.x
-- **Language**: TypeScript 5.x
-- **Styling**: Tailwind CSS 3.x
-- **State Management**: Zustand
-- **Routing**: React Router v6
-- **UI Components**: Headless UI, Radix UI
-- **Icons**: Heroicons, Lucide React
-- **Charts**: Recharts
-- **HTTP Client**: Axios
+### Backend
+- **Node.js** + **Express**
+- **TypeScript** - 타입 안정성
+- **PostgreSQL** - 관계형 데이터베이스
+- **Redis** - 캐싱 및 세션 관리
 
-### ☁️ Infrastructure
-- **Container**: Docker & Docker Compose
-- **Cloud**: AWS (EC2, RDS, S3, CloudFront)
-- **CI/CD**: GitHub Actions
-- **Monitoring**: CloudWatch + Sentry
-- **SSL**: Let's Encrypt
+### AI/ML
+- **Python** + **TensorFlow/PyTorch**
+- **Scikit-learn** - 머신러닝
+- **NLP** - 텍스트 분석
 
-## 🚀 빠른 시작
+### DevOps
+- **Docker** - 컨테이너화
+- **GitHub Actions** - CI/CD
+- **AWS/Azure** - 클라우드 배포
 
-### 📋 필수 요구사항
-- Node.js 18.x 이상
-- npm 9.x 이상
-- PostgreSQL 15.x (선택사항)
-- Redis 7.x (선택사항)
-- Git
+## 🔌 외부 시스템 연동
 
-### 🔧 설치 및 실행
+### 나라장터 입찰공고정보서비스 API
+- **엔드포인트**: `https://apis.data.go.kr/1230000/ad/BidPublicInfoService`
+- **데이터 형식**: JSON+XML
+- **인증키**: 조달청 제공 인증키 사용
+- **참고문서**: 조달청 OpenAPI참고자료 나라장터 입찰 공고정보서비스 1.0.docx
 
-#### 1. 프로젝트 클론
+### 기타 연동 시스템
+- **ERP 시스템**: 사내 ERP와 데이터 연동
+- **그룹웨어**: 알림 및 승인 프로세스 연동
+- **Google Sheets**: 데이터 내보내기/가져오기
+- **Slack/Discord**: 실시간 알림 연동
+
+## 📦 설치 및 실행
+
+### 1. 저장소 클론
 ```bash
-git clone https://github.com/your-org/ai-biz-eyes.git
+git clone https://github.com/your-username/ai-biz-eyes.git
 cd ai-biz-eyes
 ```
 
-#### 2. 백엔드 설정
+### 2. 의존성 설치
 ```bash
-# 의존성 설치
+# Backend 의존성 설치
 npm install
 
-# 환경 변수 설정
-cp .env.example .env.development
-
-# 개발 서버 실행
-npm run dev
+# Frontend 의존성 설치
+cd react-tailwind-app
+npm install
 ```
 
-#### 3. 프론트엔드 설정
+### 3. 환경 변수 설정
 ```bash
-# 프론트엔드 디렉토리로 이동
+# Backend .env 파일 생성
+cp .env.example .env
+
+# Frontend .env 파일 생성
 cd react-tailwind-app
+cp .env.example .env
+```
 
-# 의존성 설치
-npm install
+### 4. 데이터베이스 설정
+```bash
+# PostgreSQL 데이터베이스 생성
+createdb ai_biz_eyes
 
-# 개발 서버 실행
+# 마이그레이션 실행
+npm run migrate
+```
+
+### 5. 애플리케이션 실행
+```bash
+# Backend 서버 실행 (개발 모드)
+npm run dev
+
+# Frontend 개발 서버 실행
+cd react-tailwind-app
 npm start
 ```
 
-#### 4. Docker로 전체 환경 실행 (권장)
+## 🔧 환경 변수 설정
+
+### Backend (.env)
 ```bash
-# Docker Compose로 전체 환경 실행
-docker-compose -f docker-compose.dev.yml up -d
+# 데이터베이스 설정
+DATABASE_URL=postgresql://username:password@localhost:5432/ai_biz_eyes
+REDIS_URL=redis://localhost:6379
+
+# 나라장터 API 설정
+BID_API_URL=https://apis.data.go.kr/1230000/ad/BidPublicInfoService
+BID_SERVICE_KEY=your_service_key_here
+
+# JWT 설정
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRES_IN=24h
+
+# 이메일 설정
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_email_password
+
+# 기타 설정
+NODE_ENV=development
+PORT=3001
 ```
 
-### 🌐 접속 정보
-- **프론트엔드**: http://localhost:3000
-- **백엔드 API**: http://localhost:3001
-- **API 문서**: http://localhost:3001/api-docs
+### Frontend (.env)
+```bash
+# API 설정
+REACT_APP_API_BASE_URL=http://localhost:3001/api
+REACT_APP_BID_API_URL=https://apis.data.go.kr/1230000/ad/BidPublicInfoService
+REACT_APP_BID_SERVICE_KEY=your_service_key_here
 
-## 🔑 테스트 계정
-
-| 역할 | 이메일 | 비밀번호 |
-|------|--------|----------|
-| 관리자 | admin@example.com | password123 |
-| 일반 사용자 | user@example.com | password123 |
-| 매니저 | manager@example.com | password123 |
-
-## 📁 프로젝트 구조
-
-```
-ai-biz-eyes/
-├── src/                          # 백엔드 소스코드
-│   ├── controllers/              # 컨트롤러
-│   ├── routes/                   # 라우터
-│   ├── middleware/               # 미들웨어
-│   ├── database/                 # 데이터베이스 관련
-│   ├── types/                    # TypeScript 타입
-│   ├── utils/                    # 유틸리티 함수
-│   └── index.ts                  # 메인 서버 파일
-├── react-tailwind-app/           # 프론트엔드 애플리케이션
-│   ├── src/
-│   │   ├── components/           # React 컴포넌트
-│   │   ├── services/             # API 서비스
-│   │   ├── types/                # TypeScript 타입
-│   │   └── utils/                # 유틸리티 함수
-│   ├── public/                   # 정적 파일
-│   └── package.json
-├── public/docs/                  # 프로젝트 문서
-├── tests/                        # 테스트 파일
-├── docker-compose.yml            # Docker 설정
-├── package.json                  # 백엔드 패키지 설정
-└── README.md                     # 프로젝트 README
+# 기타 설정
+REACT_APP_DEBUG_MODE=true
+REACT_APP_MOCK_API=true
 ```
 
 ## 📚 API 문서
 
-### 🔗 API 엔드포인트
+### 나라장터 입찰공고정보서비스 API
 
-#### 인증 API
-- `POST /api/auth/login` - 로그인
-- `POST /api/auth/logout` - 로그아웃
-- `POST /api/auth/refresh` - 토큰 갱신
-- `GET /api/auth/me` - 내 정보 조회
-
-#### 공고 API
-- `GET /api/bids` - 공고 목록 조회
-- `GET /api/bids/:id` - 공고 상세 조회
-- `POST /api/bids/sync` - 공고 동기화
-- `GET /api/bids/statistics` - 공고 통계
-
-#### 레퍼런스 API
-- `GET /api/references` - 레퍼런스 목록
-- `POST /api/references` - 레퍼런스 등록
-- `PUT /api/references/:id` - 레퍼런스 수정
-- `DELETE /api/references/:id` - 레퍼런스 삭제
-- `GET /api/references/match` - 유사 공고 매칭
-
-#### 알림 API
-- `GET /api/notifications` - 알림 목록
-- `PUT /api/notifications/:id` - 알림 상태 변경
-- `POST /api/notifications/settings` - 알림 설정
-
-#### 관리자 API (관리자 권한 필요)
-- `GET /api/admin/users` - 사용자 목록
-- `POST /api/admin/users` - 사용자 등록
-- `PUT /api/admin/users/:id` - 사용자 수정
-- `GET /api/admin/logs` - 시스템 로그
-- `GET /api/admin/statistics` - 시스템 통계
-
-#### 파일 API
-- `POST /api/files/upload` - 파일 업로드
-- `GET /api/files/:id/download` - 파일 다운로드
-
-#### 웹훅 API
-- `POST /api/webhooks` - 웹훅 등록
-- `GET /api/webhooks` - 웹훅 목록
-
-### 📖 상세 API 문서
-- [API 상세 문서](public/docs/API_문서_상세.md)
-- [개발 기술명세서](public/docs/개발기술명세서.md)
-- [데이터베이스 설계서](public/docs/데이터베이스설계서.md)
-
-## 🔧 환경 변수
-
-### 개발 환경 (.env.development)
-```env
-# 서버 설정
-NODE_ENV=development
-PORT=3001
-HOST=localhost
-
-# 데이터베이스
-DATABASE_URL=postgresql://postgres:password@localhost:5432/ai_biz_eyes_dev
-REDIS_URL=redis://localhost:6379
-
-# JWT 설정
-JWT_SECRET=dev-secret-key-change-in-production
-JWT_EXPIRES_IN=7d
-
-# CORS 설정
-ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001
-
-# 외부 API
-NARA_API_KEY=your-nara-api-key
-SENDGRID_API_KEY=your-sendgrid-key
-
-# AWS 설정 (개발용)
-AWS_ACCESS_KEY_ID=your-dev-access-key
-AWS_SECRET_ACCESS_KEY=your-dev-secret-key
-AWS_REGION=ap-northeast-2
-AWS_S3_BUCKET=ai-biz-eyes-dev-files
+#### 공고 목록 조회
+```http
+GET https://apis.data.go.kr/1230000/ad/BidPublicInfoService/getBidPblancListInfoServc
 ```
 
-### 프로덕션 환경 (.env.production)
-```env
-# 서버 설정
-NODE_ENV=production
-PORT=3001
-HOST=0.0.0.0
+**파라미터:**
+- `serviceKey`: 인증키 (필수)
+- `pageNo`: 페이지 번호 (기본값: 1)
+- `numOfRows`: 페이지당 행 수 (기본값: 20)
+- `bidNtceNo`: 입찰공고번호 (선택)
+- `bidNtceNm`: 입찰공고명 (선택)
+- `ntceInsttNm`: 공고기관명 (선택)
 
-# 데이터베이스
-DATABASE_URL=postgresql://username:password@prod-db.region.rds.amazonaws.com:5432/ai_biz_eyes_prod
-REDIS_URL=redis://prod-redis.region.cache.amazonaws.com:6379
-
-# JWT 설정
-JWT_SECRET=production-secret-key-very-long-and-secure-random-string
-JWT_EXPIRES_IN=7d
-
-# CORS 설정
-ALLOWED_ORIGINS=https://bizeyes.moonwave.kr,https://www.bizeyes.moonwave.kr
-
-# 외부 API
-NARA_API_KEY=your-nara-api-key
-SENDGRID_API_KEY=your-sendgrid-key
-
-# AWS 설정
-AWS_ACCESS_KEY_ID=your-prod-access-key
-AWS_SECRET_ACCESS_KEY=your-prod-secret-key
-AWS_REGION=ap-northeast-2
-AWS_S3_BUCKET=ai-biz-eyes-prod-files
+**응답 예시:**
+```json
+{
+  "response": {
+    "header": {
+      "resultCode": "00",
+      "resultMsg": "NORMAL SERVICE"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "bidNtceNo": "2024000001",
+            "bidNtceNm": "○○공사 입찰",
+            "ntceInsttNm": "조달청",
+            "bidNtceDate": "2024-01-15",
+            "presmptPrce": "1000000000",
+            "dminsttNm": "○○기관",
+            "opengPlce": "조달청 본관",
+            "presnatnOprtnPlce": "조달청 세미나실",
+            "presnatnOprtnDt": "2024-01-30 14:00",
+            "bidMethd": "일반입찰",
+            "bidPblancNm": "○○공사 입찰공고",
+            "bidNtceUrl": "https://www.g2b.go.kr/..."
+          }
+        ]
+      },
+      "numOfRows": 20,
+      "pageNo": 1,
+      "totalCount": 150
+    }
+  }
+}
 ```
-
-## 📊 Mock 데이터
-
-서버는 다음과 같은 Mock 데이터를 제공합니다:
-
-- **공고**: 150개의 다양한 공고 데이터
-- **레퍼런스**: 50개의 레퍼런스 데이터
-- **알림**: 25개의 알림 데이터
-- **시스템 로그**: 100개의 로그 데이터
-- **사용자**: 3개의 테스트 사용자
 
 ## 🧪 테스트
 
-### 테스트 실행
+### 단위 테스트
 ```bash
-# 단위 테스트
+# Backend 테스트
 npm test
 
-# API 테스트
-npm run test:api
+# Frontend 테스트
+cd react-tailwind-app
+npm test
+```
 
-# 통합 테스트
+### 통합 테스트
+```bash
+# 전체 통합 테스트
 npm run test:integration
 
-# 전체 테스트
-npm run test:complete
+# API 연동 테스트
+npm run test:api
+```
 
+### E2E 테스트
+```bash
 # 브라우저 테스트
-npm run test:browser
+npm run test:e2e
 ```
 
-### 테스트 커버리지
+## 📊 모니터링 및 로깅
+
+### 로그 레벨
+- **ERROR**: 시스템 오류 및 예외 상황
+- **WARN**: 경고 상황 및 성능 이슈
+- **INFO**: 일반적인 시스템 동작 정보
+- **DEBUG**: 개발 및 디버깅 정보
+
+### 모니터링 지표
+- API 응답 시간
+- 데이터베이스 쿼리 성능
+- 메모리 및 CPU 사용률
+- 사용자 활동 통계
+
+## 🔒 보안
+
+### 인증 및 권한
+- **JWT 토큰**: 사용자 인증
+- **RBAC**: 역할 기반 접근 제어
+- **API 키 관리**: 외부 API 키 암호화 저장
+
+### 데이터 보안
+- **HTTPS**: 모든 통신 암호화
+- **SQL Injection 방지**: 파라미터화된 쿼리 사용
+- **XSS 방지**: 입력 데이터 검증 및 이스케이프
+
+## 🚀 배포
+
+### Docker 배포
 ```bash
-# 백엔드 테스트 커버리지
-npm run test:coverage
+# 이미지 빌드
+docker build -t ai-biz-eyes .
 
-# 프론트엔드 테스트 커버리지
-cd react-tailwind-app
-npm run test:coverage
+# 컨테이너 실행
+docker run -p 3001:3001 ai-biz-eyes
 ```
 
-## 🧪 API 테스트 예시
-
-### 로그인
+### 클라우드 배포
 ```bash
-curl -X POST http://localhost:3001/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "user@example.com",
-    "password": "password123"
-  }'
+# AWS 배포
+npm run deploy:aws
+
+# Azure 배포
+npm run deploy:azure
 ```
 
-### 공고 목록 조회
-```bash
-curl -X GET "http://localhost:3001/api/bids?page=1&limit=10" \
-  -H "Authorization: Bearer YOUR_TOKEN"
-```
+## 📈 성능 최적화
 
-### 레퍼런스 등록
-```bash
-curl -X POST http://localhost:3001/api/references \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "projectName": "스마트공장 구축 사업",
-    "projectType": "용역",
-    "contractAmount": 500000000,
-    "status": "success"
-  }'
-```
+### 프론트엔드
+- **코드 스플리팅**: React.lazy() 사용
+- **이미지 최적화**: WebP 포맷 및 lazy loading
+- **캐싱**: React Query 캐싱 전략
 
-## 🔒 보안 기능
-
-- **Helmet**: 보안 헤더 설정
-- **CORS**: Cross-Origin 요청 제어
-- **Rate Limiting**: 요청 제한 (15분당 100회)
-- **JWT**: 토큰 기반 인증
-- **Input Validation**: 입력값 검증
-- **bcrypt**: 비밀번호 해싱
-- **SQL Injection 방지**: 파라미터화된 쿼리
-- **XSS 방지**: 입력값 검증 및 이스케이핑
-- **CSRF 보호**: 토큰 기반 CSRF 방지
-
-## 📝 응답 형식
-
-### 성공 응답
-```json
-{
-  "success": true,
-  "data": {},
-  "message": "성공적으로 처리되었습니다.",
-  "timestamp": "2024-07-22T10:30:00Z"
-}
-```
-
-### 에러 응답
-```json
-{
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "입력값이 올바르지 않습니다.",
-    "details": {}
-  },
-  "timestamp": "2024-07-22T10:30:00Z"
-}
-```
-
-## 🚨 에러 코드
-
-- `AUTH_INVALID_CREDENTIALS`: 잘못된 로그인 정보
-- `AUTH_TOKEN_EXPIRED`: 토큰 만료
-- `AUTH_TOKEN_INVALID`: 유효하지 않은 토큰
-- `AUTH_INSUFFICIENT_PERMISSIONS`: 권한 부족
-- `VALIDATION_ERROR`: 유효성 검증 실패
-- `RESOURCE_NOT_FOUND`: 리소스를 찾을 수 없음
-- `RATE_LIMIT_EXCEEDED`: 요청 제한 초과
-- `INTERNAL_SERVER_ERROR`: 서버 오류
-
-## 📚 개발 가이드
-
-### 📖 문서
-- [통합 개발문서](public/docs/개발문서_통합.md)
-- [API 상세 문서](public/docs/API_문서_상세.md)
-- [배포 가이드](public/docs/배포_가이드.md)
-- [개발 기술명세서](public/docs/개발기술명세서.md)
-- [데이터베이스 설계서](public/docs/데이터베이스설계서.md)
-
-### 🔧 개발 환경 설정
-```bash
-# 개발 환경 설정
-npm run setup:dev
-
-# 데이터베이스 마이그레이션
-npm run migrate
-
-# 시드 데이터 생성
-npm run seed
-
-# 린팅 및 포맷팅
-npm run lint
-npm run format
-```
-
-### 🐳 Docker 개발 환경
-```bash
-# 개발 환경 실행
-docker-compose -f docker-compose.dev.yml up -d
-
-# 로그 확인
-docker-compose -f docker-compose.dev.yml logs -f
-
-# 컨테이너 중지
-docker-compose -f docker-compose.dev.yml down
-```
-
-## 🚀 배포 가이드
-
-### 📦 배포 방법
-- **로컬 배포**: Docker Compose 사용
-- **스테이징 배포**: AWS EC2 + RDS
-- **프로덕션 배포**: AWS ECS + RDS + CloudFront
-
-### 🔧 배포 스크립트
-```bash
-# 로컬 배포
-./scripts/deploy-local.sh
-
-# 스테이징 배포
-./scripts/deploy-staging.sh
-
-# 프로덕션 배포
-./scripts/deploy-production.sh
-```
-
-### 📖 상세 배포 문서
-- [배포 가이드](public/docs/배포_가이드.md)
-- [Docker 설정](docker-compose.yml)
-- [AWS 인프라 설정](terraform/)
+### 백엔드
+- **데이터베이스 인덱싱**: 쿼리 성능 최적화
+- **Redis 캐싱**: 자주 조회되는 데이터 캐싱
+- **API 응답 압축**: gzip 압축 적용
 
 ## 🤝 기여하기
 
-### 📋 기여 가이드라인
+### 개발 환경 설정
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: Add some amazing feature'`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### 🏷️ 커밋 메시지 규칙
-```
-feat: 새로운 기능 추가
-fix: 버그 수정
-docs: 문서 수정
-style: 코드 스타일 변경
-refactor: 코드 리팩토링
-test: 테스트 추가/수정
-chore: 빌드 프로세스 또는 보조 도구 변경
-```
+### 코딩 스타일
+- **TypeScript**: 엄격한 타입 체크 사용
+- **ESLint**: 코드 품질 관리
+- **Prettier**: 코드 포맷팅
+- **Conventional Commits**: 커밋 메시지 규칙
 
-### 🐛 이슈 리포트
-- [GitHub Issues](https://github.com/ai-biz-eyes/issues)
-- [기술 지원](mailto:dev@ai-biz-eyes.com)
+## 📄 라이센스
 
-## 📄 라이선스
+이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
-이 프로젝트는 MIT 라이선스 하에 배포됩니다.
+## 📞 지원
 
-## 📞 문의 및 지원
+### 문서
+- [API 문서](./docs/api.md)
+- [데이터베이스 설계서](./docs/database.md)
+- [개발 가이드](./docs/development.md)
 
-### 👥 개발팀 연락처
-- **프로젝트 매니저**: pm@ai-biz-eyes.com
-- **프론트엔드 개발자**: frontend@ai-biz-eyes.com
-- **백엔드 개발자**: backend@ai-biz-eyes.com
-- **DevOps 엔지니어**: devops@ai-biz-eyes.com
-- **기술 지원**: dev@ai-biz-eyes.com
+### 연락처
+- **이메일**: support@ai-biz-eyes.com
+- **GitHub Issues**: [이슈 등록](https://github.com/your-username/ai-biz-eyes/issues)
+- **Discord**: [커뮤니티 참여](https://discord.gg/ai-biz-eyes)
 
-### 📚 유용한 링크
-- [라이브 데모](https://bizeyes.moonwave.kr)
-- [API 문서](https://docs.ai-biz-eyes.com)
-- [개발 문서](public/docs/)
-- [GitHub Issues](https://github.com/ai-biz-eyes/issues)
-- [상태 페이지](https://status.ai-biz-eyes.com)
+## 🔄 업데이트 로그
 
-### 📊 프로젝트 정보
-- **버전**: v1.0.0
-- **최종 업데이트**: 2024년 12월
-- **다음 릴리스**: 2025년 1월
-- **지원 브라우저**: Chrome, Edge, Firefox, Safari (최신 버전)
+### v1.2.0 (2024-01-15)
+- ✅ 나라장터 입찰공고정보서비스 API 업데이트
+- ✅ 새로운 엔드포인트 적용: `https://apis.data.go.kr/1230000/ad/BidPublicInfoService`
+- ✅ JSON+XML 데이터 형식 지원
+- ✅ 조달청 제공 인증키 적용
+- ✅ API 설정 파일 구조화
+
+### v1.1.0 (2024-01-10)
+- ✅ AI 기반 분석 기능 추가
+- ✅ 실시간 알림 시스템 구현
+- ✅ 대시보드 성능 최적화
+
+### v1.0.0 (2024-01-01)
+- ✅ 초기 버전 릴리즈
+- ✅ 기본 CRUD 기능 구현
+- ✅ 나라장터 API 연동
+
+---
+
+**AI Biz Eyes** - B2G 공모사업의 미래를 여는 AI 기반 자동화 시스템 🚀
