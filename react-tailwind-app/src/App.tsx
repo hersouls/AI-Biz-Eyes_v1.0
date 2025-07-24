@@ -18,6 +18,7 @@ import { PersonalPage } from './components/Personal/PersonalPage';
 import ColorSystemDemo from './components/ColorSystemDemo';
 import UIComponentsDemo from './components/Demo/UIComponentsDemo';
 import G2BPage from './components/G2B/G2BPage';
+import PublicDataPage from './components/PublicData/PublicDataPage';
 // import { LoginPage, ProtectedRoute } from './components/Auth'; // TODO: 나중에 구현 예정
 import { ProtectedRoute } from './components/Auth';
 import { 
@@ -111,6 +112,13 @@ function App() {
               <ProtectedRoute>
                 <DashboardLayout>
                   <G2BPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/public-data" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <PublicDataPage />
                 </DashboardLayout>
               </ProtectedRoute>
             } />

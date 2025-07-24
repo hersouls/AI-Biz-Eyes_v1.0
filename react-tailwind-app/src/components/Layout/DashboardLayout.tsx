@@ -18,6 +18,7 @@ import {
   BellRing,
   PieChart,
   Settings,
+  Database,
 } from 'lucide-react';
 import { ChevronDown, Search } from 'lucide-react';
 import { logout } from '../../utils/auth';
@@ -30,6 +31,7 @@ const navigation = [
   { name: '레퍼런스 관리', href: '/references', icon: BookOpen, current: false },
   { name: '알림/리포트', href: '/notifications', icon: BellRing, current: false },
   { name: '통계/분석', href: '/statistics', icon: PieChart, current: false },
+  { name: '공공데이터', href: '/public-data', icon: Database, current: false },
   { name: '통합 관리', href: '/integration', icon: Settings, current: false },
   { name: '개인 설정', href: '/personal', icon: Users, current: false },
 ];
