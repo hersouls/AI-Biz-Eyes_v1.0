@@ -41,16 +41,15 @@ const mockIntegrationSystems: IntegrationSystem[] = [
   },
   {
     id: '2',
-    name: '나라장터',
+    name: '나라장터 입찰공고정보서비스',
     type: 'OpenAPI',
     status: 'active',
-    description: '나라장터 웹 스크래핑',
+    description: '조달청 나라장터 입찰공고정보서비스 API',
     config: {
-      baseUrl: 'https://www.g2b.go.kr',
-      selectors: {
-        bidList: '.bid-list',
-        bidDetail: '.bid-detail'
-      }
+      baseUrl: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
+      apiKey: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDOADaTMcg%3D%3D',
+      dataFormat: 'JSON+XML',
+      timeout: 15000
     },
     lastSyncAt: new Date('2024-07-22T09:15:00Z'),
     syncInterval: '1800',
@@ -88,7 +87,7 @@ const mockIntegrationLogs: IntegrationLog[] = [
     id: '2',
     systemId: '2',
     type: 'success',
-    message: '웹 스크래핑 완료',
+    message: '나라장터 입찰공고정보서비스 API 데이터 수집 완료',
     duration: 1800,
     createdAt: new Date('2024-07-22T09:15:00Z')
   },

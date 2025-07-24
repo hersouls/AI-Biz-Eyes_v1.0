@@ -172,8 +172,8 @@ export const mockSystemConfigs: SystemConfig[] = [
   {
     id: 1,
     key: 'api.base_url',
-    value: 'https://api.g2b.go.kr',
-    description: '나라장터 API 기본 URL',
+    value: 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService',
+    description: '나라장터 입찰공고정보서비스 API 기본 URL',
     category: 'api',
     isEncrypted: false,
     createdAt: '2024-01-01T00:00:00Z'
@@ -181,8 +181,8 @@ export const mockSystemConfigs: SystemConfig[] = [
   {
     id: 2,
     key: 'api.api_key',
-    value: 'encrypted_api_key_here',
-    description: '나라장터 API 키',
+    value: 'w8uFE%2BfALZiqCJBLK8lPowqGye3vCpMytaFBmfaq5uNGiyM%2FqByWrt9gZ406%2FITajbX1Q8%2FESHI1LDOADaTMcg%3D%3D',
+    description: '나라장터 입찰공고정보서비스 API 키 (인코딩)',
     category: 'api',
     isEncrypted: true,
     createdAt: '2024-01-01T00:00:00Z'
